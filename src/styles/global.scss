@@ -85,6 +85,12 @@ select.form-control {
     -moz-appearance: none;
     border: none;
     border-bottom: 1px solid #333;
+    &:hover,
+    &:focus,
+    &:active {
+        border: none;
+        border-bottom: 1px solid #6d79b5;
+    }
 }
 
 .margin-bottom-40 {

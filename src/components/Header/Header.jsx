@@ -2,9 +2,12 @@ import { useState } from "react";
 import "./Header.scss";
 import { IoMdMenu } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import DrawerCart from "../../pages/User/Home/Modal/DrawerCart";
 import { Nav } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { doLogoutAction } from "../../redux/account/accountSlice";
+import { message } from "antd";
 const Header = () => {
     const [isBtnShow, setIsBtnShow] = useState(false);
     const [isShowNav, setShowNav] = useState(false);
@@ -12,6 +15,12 @@ const Header = () => {
     const [isShowDropdownLv2, setShowDropdownLv2] = useState(false);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const isAuthenticated = useSelector(
+        (state) => state.account.isAuthenticated
+    );
 
     const showLoading = () => {
         setOpen(true);
@@ -21,6 +30,11 @@ const Header = () => {
         setTimeout(() => {
             setLoading(false);
         }, 2000);
+    };
+    const handleLogout = () => {
+        dispatch(doLogoutAction());
+        message.success("Đăng xuất thành công");
+        navigate("/");
     };
 
     const handleClickShowNav = () => {
@@ -227,14 +241,30 @@ const Header = () => {
                         </NavLink>
                         <ul>
                             <li className="ng-scope">
-                                <NavLink to="/dang-nhap" title="Đăng nhập">
-                                    Đăng nhập
-                                </NavLink>
+                                {isAuthenticated ? (
+                                    <NavLink to="/tai-khoan" title="Tài khoản">
+                                        Tài khoản
+                                    </NavLink>
+                                ) : (
+                                    <NavLink to="/dang-nhap" title="Đăng nhập">
+                                        Đăng nhập
+                                    </NavLink>
+                                )}
                             </li>
                             <li className="ng-scope">
-                                <NavLink to="/dang-ky" title="Đăng ký">
-                                    Đăng ký
-                                </NavLink>
+                                {isAuthenticated ? (
+                                    <NavLink
+                                        to="/"
+                                        title="Đăng xuất"
+                                        onClick={handleLogout}
+                                    >
+                                        Đăng xuất
+                                    </NavLink>
+                                ) : (
+                                    <NavLink to="/dang-ky" title="Đăng ký">
+                                        Đăng ký
+                                    </NavLink>
+                                )}
                             </li>
 
                             <li>

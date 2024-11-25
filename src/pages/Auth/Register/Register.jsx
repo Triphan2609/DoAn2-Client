@@ -1,10 +1,34 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 import Footer from "../../../components/Footer/Footer";
 import Header from "../../../components/Header/Header";
 import "../Auth.scss";
+import { Button, Form, Input, message, notification } from "antd";
+import { useState } from "react";
+import { callRegister } from "../../../services/api";
+import GoogleLoginComponent from "../../../components/GoogleLogin/GoogleLogin";
 
 const Register = () => {
+    const navigate = useNavigate();
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const onFinish = async (values) => {
+        const { name, email, password, phone } = values;
+        const res = await callRegister(name, email, password, phone);
+        setIsSubmit(false);
+        if (res?.data?.user) {
+            message.success("Đăng ký tài khoản thành công!");
+            navigate("/dang-nhap");
+        } else {
+            console.log(res);
+
+            notification.error({
+                message: "Có lỗi xảy ra",
+                description: res.data.message,
+                duration: 5,
+            });
+        }
+    };
     return (
         <>
             <div className="login-page">
@@ -52,11 +76,130 @@ const Register = () => {
                                         </ul>
 
                                         <div className="clearfix"></div>
+                                        <Form
+                                            layout={"vertical"}
+                                            name="basic"
+                                            style={{
+                                                maxWidth: "100%",
+                                                padding: "0 10px",
+                                            }}
+                                            initialValues={{
+                                                remember: true,
+                                            }}
+                                            onFinish={onFinish}
+                                            autoComplete="off"
+                                        >
+                                            <Form.Item
+                                                style={{
+                                                    fontWeight: "bold",
+                                                }}
+                                                labelCol={{
+                                                    span: 24,
+                                                }}
+                                                wrapperCol={{
+                                                    span: 24,
+                                                }}
+                                                label="Email"
+                                                name="email"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Vui lòng nhập email",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Nhập email" />
+                                            </Form.Item>
+
+                                            <Form.Item
+                                                style={{
+                                                    fontWeight: "bold",
+                                                }}
+                                                labelCol={{
+                                                    span: 24,
+                                                }}
+                                                wrapperCol={{
+                                                    span: 24,
+                                                }}
+                                                label="Họ và tên"
+                                                name="name"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Vui lòng nhập họ và tên",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Nhập họ và tên" />
+                                            </Form.Item>
+                                            <Form.Item
+                                                style={{
+                                                    fontWeight: "bold",
+                                                }}
+                                                labelCol={{
+                                                    span: 24,
+                                                }}
+                                                wrapperCol={{
+                                                    span: 24,
+                                                }}
+                                                label="Số điện thoại"
+                                                name="phone"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Vui lòng nhập số điện thoại",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input placeholder="Nhập số điện thoại" />
+                                            </Form.Item>
+
+                                            <Form.Item
+                                                label="Mật khẩu"
+                                                style={{
+                                                    fontWeight: "bold",
+                                                }}
+                                                name="password"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Vui lòng nhập mật khẩu!",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input
+                                                    placeholder="Nhập mật khẩu"
+                                                    type="password"
+                                                />
+                                            </Form.Item>
+
+                                            <Form.Item label={null}>
+                                                <Button
+                                                    type="primary"
+                                                    htmlType="submit"
+                                                    className="btn-blues"
+                                                    style={{
+                                                        marginTtop: "10px",
+                                                        float: "right",
+                                                        width: "100%",
+                                                        padding: "0px",
+                                                    }}
+                                                    loading={isSubmit}
+                                                >
+                                                    ĐĂNG KÝ
+                                                </Button>
+                                            </Form.Item>
+                                        </Form>
                                         <div className="line-break">
                                             <span>hoặc đăng nhập qua</span>
                                         </div>
                                         <div className="social-login text-center">
-                                            <a
+                                            <GoogleLoginComponent />
+                                            {/* <a
                                                 href="javascript:void(0)"
                                                 className="social-login--facebook"
                                             >
@@ -77,7 +220,7 @@ const Register = () => {
                                                     alt="google-login-button"
                                                     src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"
                                                 />
-                                            </a>
+                                            </a> */}
                                         </div>
                                     </div>
                                 </div>

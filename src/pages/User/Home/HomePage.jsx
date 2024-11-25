@@ -7,10 +7,17 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { NavLink } from "react-router-dom";
 import BlockProducts from "../../../components/BlockProducts/BlockProducts";
+import { Helmet } from "react-helmet";
 
 const HomePage = () => {
     return (
         <div>
+            <Helmet>
+                <title>
+                    Petshop thương hiệu dệt may truyền thống của Lamell - Thăng
+                    Long | Pet Shop
+                </title>
+            </Helmet>
             <section className="home-page">
                 <div className="bg">
                     <Swiper className="mySwiper">

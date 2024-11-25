@@ -16,6 +16,8 @@ import Register from "./pages/Auth/Register/Register";
 import Contact from "./pages/User/Contact/Contact";
 import Introduce from "./pages/User/Introduce/introduce";
 import Product from "./pages/User/Product/Product";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Admin from "./pages/Admin/Admin";
 
 const App = () => {
     const Layout = () => {
@@ -56,6 +58,14 @@ const App = () => {
         {
             path: "/dang-ky",
             element: <Register />,
+        },
+        {
+            path: "/admin",
+            element: (
+                <ProtectedRoute>
+                    <Admin />
+                </ProtectedRoute>
+            ),
         },
     ]);
 

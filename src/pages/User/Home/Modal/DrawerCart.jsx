@@ -1,6 +1,5 @@
 import { Drawer } from "antd";
 import "./DrawerCart.scss";
-import { NavLink } from "react-router-dom";
 const DrawerCart = ({ loading, open, setOpen }) => {
     return (
         <>
@@ -35,14 +34,13 @@ const DrawerCart = ({ loading, open, setOpen }) => {
                             <i className="ico ico-cart"></i>
                         </span>
                         <div className="btn-cart-empty">
-                            <NavLink
+                            <a
                                 className="btn btn-default"
-                                to="/"
                                 title="Tiếp tục mua hàng"
                                 onClick={() => setOpen(false)}
                             >
                                 Tiếp tục mua hàng
-                            </NavLink>
+                            </a>
                         </div>
                     </div>
                 </div>

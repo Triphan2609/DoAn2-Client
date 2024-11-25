@@ -1,12 +1,44 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 import Footer from "../../../components/Footer/Footer";
 import Header from "../../../components/Header/Header";
 import "../Auth.scss";
-
+import { Helmet } from "react-helmet";
+import { Button, Form, Input, message, notification } from "antd";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { callLogin } from "../../../services/api";
+import { doLoginAction } from "../../../redux/account/accountSlice";
+import GoogleLoginComponent from "../../../components/GoogleLogin/GoogleLogin";
 const Login = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const onFinish = async (values) => {
+        const { email, password } = values;
+        setIsSubmit(true);
+        const res = await callLogin(email, password);
+        setIsSubmit(false);
+        if (res?.data?.user) {
+            localStorage.setItem("access_token", res.data.token);
+            dispatch(doLoginAction(res.data.user));
+            message.success("Đăng nhập tài khoản thành công!");
+            navigate("/");
+        } else {
+            notification.error({
+                message: "Có lỗi xảy ra",
+                description: res.data.message,
+                duration: 5,
+            });
+        }
+    };
+
     return (
         <>
+            <Helmet>
+                <title>Đăng nhập</title>
+            </Helmet>
             <div className="login-page">
                 <Header />
                 <BreadCrumb title={"Đăng nhập tài khoản"} />
@@ -52,11 +84,85 @@ const Login = () => {
                                         </ul>
                                         <div id="evo-login">
                                             <div className="clearfix"></div>
+
+                                            <Form
+                                                layout={"vertical"}
+                                                name="basic"
+                                                style={{
+                                                    maxWidth: "100%",
+                                                    padding: "0 10px",
+                                                }}
+                                                initialValues={{
+                                                    remember: true,
+                                                }}
+                                                onFinish={onFinish}
+                                                autoComplete="off"
+                                            >
+                                                <Form.Item
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    labelCol={{
+                                                        span: 24,
+                                                    }}
+                                                    wrapperCol={{
+                                                        span: 24,
+                                                    }}
+                                                    label="Email"
+                                                    name="email"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Vui lòng nhập email",
+                                                        },
+                                                    ]}
+                                                >
+                                                    <Input placeholder="Nhập email" />
+                                                </Form.Item>
+
+                                                <Form.Item
+                                                    label="Mật khẩu"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    name="password"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Vui lòng nhập mật khẩu!",
+                                                        },
+                                                    ]}
+                                                >
+                                                    <Input
+                                                        placeholder="Nhập mật khẩu"
+                                                        type="password"
+                                                    />
+                                                </Form.Item>
+
+                                                <Form.Item label={null}>
+                                                    <Button
+                                                        type="primary"
+                                                        htmlType="submit"
+                                                        className="btn-blues"
+                                                        style={{
+                                                            marginTtop: "10px",
+                                                            float: "right",
+                                                            width: "100%",
+                                                            padding: "0px",
+                                                        }}
+                                                        loading={isSubmit}
+                                                    >
+                                                        ĐĂNG NHẬP
+                                                    </Button>
+                                                </Form.Item>
+                                            </Form>
                                             <div className="line-break">
                                                 <span>hoặc đăng nhập qua</span>
                                             </div>
                                             <div className="social-login text-center">
-                                                <a
+                                                {/* <a
                                                     href="javascript:void(0)"
                                                     className="social-login--facebook"
                                                 >
@@ -66,8 +172,9 @@ const Login = () => {
                                                         alt="facebook-login-button"
                                                         src="//bizweb.dktcdn.net/assets/admin/images/login/fb-btn.svg"
                                                     />
-                                                </a>
-                                                <a
+                                                </a> */}
+                                                <GoogleLoginComponent />
+                                                {/* <a
                                                     href="javascript:void(0)"
                                                     className="social-login--google"
                                                 >
@@ -77,7 +184,7 @@ const Login = () => {
                                                         alt="google-login-button"
                                                         src="//bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"
                                                     />
-                                                </a>
+                                                </a> */}
                                             </div>
                                         </div>
                                     </div>
