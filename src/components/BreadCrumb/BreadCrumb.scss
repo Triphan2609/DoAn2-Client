@@ -1,0 +1,83 @@
+.bread-crumb {
+    margin: 0;
+    background-color: #6d79b5;
+    overflow: hidden;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(//bizweb.dktcdn.net/100/147/060/themes/880570/assets/floral_pattern.png?1687579687145);
+    padding: 40px 0;
+    margin-bottom: 25px;
+
+    .evo-main-title-breadcrumb {
+        color: #fff;
+        font-weight: 700;
+        font-size: 24px;
+    }
+    .breadcrumb-pet {
+        padding: 10px;
+        color: #fff;
+        text-align: center;
+        background-color: transparent;
+        font-size: 14px;
+        margin: 0;
+        li {
+            display: inline-block;
+        }
+        li:after {
+            content: "/";
+            padding: 0 5px;
+        }
+        li:last-child:after {
+            content: "";
+        }
+        a.active {
+            color: #fff !important;
+            font-size: 14px !important;
+            span {
+                color: #fff;
+                &:hover,
+                &:focus {
+                    color: #000;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .bread-crumb {
+        padding: 20px 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .bread-crumb {
+        padding: 7px 0;
+        margin-bottom: 15px;
+        .breadcrumb-pet {
+            padding: 0;
+            text-align: start;
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .bread-crumb .evo-main-title-breadcrumb {
+        font-size: 18px;
+        line-height: 1.3;
+    }
+}
+
+@media (max-width: 767px) {
+    .bread-crumb .evo-main-title-breadcrumb {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .breadcrumb li {
+        flex: none;
+    }
+}

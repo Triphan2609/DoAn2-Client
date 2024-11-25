@@ -1,0 +1,48 @@
+.page-404 {
+    h3 {
+        font-size: 180px;
+        margin-bottom: 0;
+        line-height: 1;
+        color: #000;
+        font-weight: 600;
+    }
+    h1 {
+        font-size: 28px;
+        font-weight: 600;
+    }
+    .land {
+        color: #787878;
+        margin: 10px 0;
+    }
+    .btn-blues {
+        position: relative;
+        display: inline-block;
+        padding: 15px 28px;
+        line-height: normal;
+        border: 1px solid #000;
+        text-transform: uppercase;
+        font-size: 14px;
+        text-align: center;
+        font-weight: 400;
+        font-style: normal;
+        background-color: #000 !important;
+        color: #fff;
+        border-radius: 0;
+        &:hover {
+            color: #fff !important;
+            background-color: #6d79b5 !important;
+            border-color: #6d79b5 !important;
+            box-shadow: none;
+            outline: none;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .page-404 {
+        text-align: center;
+    }
+    .page-404 h3 {
+        font-size: 150px;
+    }
+}

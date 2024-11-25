@@ -1,0 +1,83 @@
+.contact-page {
+    .leave-your-message {
+        h3 {
+            font-size: 20px;
+            margin: 0;
+            font-weight: 900;
+        }
+        .p-bottom {
+            color: #787878;
+            margin: 10px 0;
+            font-size: 15px;
+            line-height: 30px;
+        }
+        .contact-box {
+            margin-top: 10px;
+            font-size: 15px;
+        }
+        .contact-box p.ant-add {
+            padding-left: 40px;
+        }
+        .contact-box p {
+            margin-bottom: 15px;
+            position: relative;
+            color: #787878;
+        }
+        .contact-box p.ant-add:before {
+            content: "";
+            height: 30px;
+            width: 30px;
+            background-image: url(//bizweb.dktcdn.net/100/147/060/themes/880570/assets/contact_icon_1.svg?1687579687145);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: contain;
+        }
+        .contact-box p strong {
+            display: block;
+            font-weight: 700;
+            color: #000;
+        }
+        .contact-box p.ant-phone {
+            padding-left: 40px;
+        }
+        .contact-box p.ant-phone:before {
+            content: "";
+            height: 30px;
+            width: 30px;
+            background-image: url(//bizweb.dktcdn.net/100/147/060/themes/880570/assets/contact_icon_2.svg?1687579687145);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: contain;
+        }
+        .contact-box a {
+            color: #787878;
+        }
+        .contact-box p.ant-mail {
+            padding-left: 40px;
+        }
+        .contact-box p.ant-mail:before {
+            content: "";
+            height: 30px;
+            width: 30px;
+            background-image: url(//bizweb.dktcdn.net/100/147/060/themes/880570/assets/contact_icon_3.svg?1687579687145);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: contain;
+        }
+    }
+    .form-control {
+        display: block;
+        width: 100%;
+        min-height: 40px;
+        padding: 0.375rem 0.75rem;
+        font-size: 1em;
+        line-height: 1.5;
+        color: #333;
+        background-color: #fff;
+        background-image: none;
+        margin: 0;
+    }
+}

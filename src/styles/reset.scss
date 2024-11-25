@@ -1,0 +1,19 @@
+*,
+*::before,
+*::after {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    overflow-x: hidden;
+    font-family: "Quicksand", sans-serif !important;
+    color: #000000 !important;
+}
+
+a,
+.text-link {
+    color: #000;
+    text-decoration: none !important;
+    background: transparent !important;
+}

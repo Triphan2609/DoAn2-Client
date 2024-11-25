@@ -1,0 +1,98 @@
+.ant-drawer-body {
+    .cart_heading {
+        padding: 15px 15px;
+        display: block;
+        position: relative;
+        .cart_title {
+            margin-bottom: 0;
+            text-align: left;
+            font-size: 18px;
+            display: block;
+            text-transform: uppercase;
+            color: #222;
+            font-weight: 600;
+        }
+        .cart_btn-close {
+            position: absolute;
+            margin-left: 0;
+            right: 15px;
+            top: 18px;
+            line-height: 0;
+            padding: 0;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            border-radius: 0;
+            z-index: 999;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            &:hover {
+                transform: translate(0%, 0%) rotate(360deg);
+            }
+            svg {
+                width: 15px;
+                height: 15px;
+                stroke-width: 1.5px;
+            }
+        }
+    }
+    .cart_body {
+        padding: 15px;
+        height: calc(100vh - 210px);
+        overflow-y: auto;
+        .empty-icon {
+            display: block;
+            .ico-cart {
+                height: 200px;
+                width: 200px;
+                background-image: url("https://bizweb.dktcdn.net/100/147/060/themes/880570/assets/mobile-shopping.svg?1687579687145");
+                background-size: contain;
+                background-repeat: no-repeat;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        .btn-cart-empty {
+            margin-top: 20px;
+            text-align: center;
+            a {
+                background-color: #6d79b5 !important;
+                display: inline-block;
+                padding: 12px 30px;
+                color: #fff;
+                height: auto;
+                line-height: 1.1;
+            }
+        }
+    }
+    .cart-footer {
+        display: none;
+        .cart__subtotal {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            .cart__col-6 {
+                width: 50%;
+                float: left;
+            }
+            .cart__totle {
+                width: 50%;
+                float: left;
+                .total-price {
+                    color: #6d79b5;
+                }
+            }
+        }
+        .cart__btn-proceed-checkout-dt {
+            display: block;
+            position: relative;
+            padding-top: 24px;
+            button {
+                width: 100%;
+                background-color: #6d79b5;
+                color: #fff;
+                text-align: center;
+            }
+        }
+    }
+}

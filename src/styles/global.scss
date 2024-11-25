@@ -1,0 +1,223 @@
+:root {
+    --bs-blue: #0d6efd;
+    --bs-indigo: #6610f2;
+    --bs-purple: #6f42c1;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #ffc107;
+    --bs-green: #198754;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-white: #fff;
+    --bs-gray: #6c757d;
+    --bs-gray-dark: #343a40;
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    --bs-gradient: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0)
+    );
+}
+li {
+    list-style: none;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+:root {
+    --swiper-theme-color: #007aff;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+}
+.btn-blues {
+    position: relative;
+    display: inline-block;
+    padding: 15px 28px;
+    line-height: normal;
+    border: 1px solid #000;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #000;
+    color: #fff;
+    border-radius: 0;
+    &:hover {
+        color: #fff !important;
+        background-color: #6d79b5 !important;
+        border-color: #6d79b5 !important;
+        box-shadow: none;
+        outline: none;
+    }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+input[type="password"],
+textarea.form-control,
+select.form-control {
+    border-radius: 0px;
+    color: #333;
+    outline: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    border-bottom: 1px solid #333;
+}
+
+.margin-bottom-40 {
+    margin-bottom: 40px !important;
+}
+.margin-top-40 {
+    margin-top: 40px !important;
+}
+
+.account-box-shadow .evo-account-content #customer_login,
+.account-box-shadow .evo-account-content #customer_register,
+.account-box-shadow .evo-account-content #recover_customer_password {
+    padding: 20px;
+    margin-bottom: 0;
+}
+
+.page-login #login p.recover .btn-link-style,
+.page-login #customer-reset-password p.recover .btn-link-style,
+.page-login #recover-password p.recover .btn-link-style {
+    margin-top: 0;
+    color: #6d79b5;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.page-login #login .btn-blues,
+.page-login #customer-reset-password .btn-blues,
+.page-login #recover-password .btn-blues {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 40px;
+    font-weight: 700;
+    font-size: 13px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.ant-drawer-body {
+    padding: 5px !important;
+    .cart_heading {
+        padding: 15px 5px !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-15 {
+        -ms-flex: 0 0 20% !important;
+        flex: 0 0 20% !important;
+        max-width: 20% !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-15 {
+        -ms-flex: 0 0 20% !important;
+        flex: 0 0 20% !important;
+        max-width: 20% !important;
+    }
+}
+@media (min-width: 768px) {
+    #root {
+        background-color: #f7f8f9;
+    }
+}
+.col-xs-15,
+.col-sm-15,
+.col-md-15,
+.col-lg-15 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+    &:hover .swiper-button-prev,
+    &:hover .swiper-button-next {
+        display: inline-block !important;
+    }
+}
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
+}
+.margin-top-30 {
+    margin-top: 30px !important;
+}
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swiper-button-prev,
+.swiper-button-next {
+    display: none !important;
+    cursor: pointer;
+    color: #fff !important;
+    border: none;
+    outline: none;
+    background: #6d79b5;
+    line-height: 40px;
+    text-align: center;
+    display: block;
+    width: 30px;
+    height: 40px;
+    padding: 5px;
+    font-size: 12px;
+    -webkit-transition: all 0.25s ease !important;
+    transition: all 0.25s ease !important;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-family: swiper-icons;
+    font-size: 30px !important;
+    text-transform: none !important;
+    letter-spacing: 0;
+    font-variant: initial;
+    line-height: 1;
+}
+
+input[type="text"].error,
+input[type="search"].error,
+input[type="password"].error,
+input[type="email"].error,
+input[type="file"].error,
+input[type="number"].error,
+input[type="tel"].error,
+textarea.error {
+    color: red !important;
+}

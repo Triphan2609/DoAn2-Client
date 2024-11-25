@@ -1,0 +1,149 @@
+.login-page {
+    .account-box-shadow {
+        background: #fff;
+        box-shadow: 0 0 10px rgba(204, 204, 204, 0.3);
+    }
+    .account-box-shadow .account-banner {
+        background: #f4f5f6
+            url(//bizweb.dktcdn.net/100/147/060/themes/880570/assets/account-banner.jpg?1687579687145)
+            no-repeat top;
+        padding: 370px 20px 30px;
+        .account_policy_title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 16px;
+            line-height: 22px;
+            color: #303846;
+        }
+        .account_policy_content {
+            p {
+                margin-bottom: 7px;
+                margin-top: 0 !important;
+                position: relative;
+                padding-left: 22px;
+                font-size: 13px;
+                line-height: 1.3;
+            }
+            p:after {
+                content: "";
+                height: 15px;
+                width: 15px;
+                background-image: url(//bizweb.dktcdn.net/100/147/060/themes/880570/assets/account_policy_icon.svg?1687579687145);
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                left: 0;
+                top: 50%;
+                transform: translate(0, -50%);
+                position: absolute;
+            }
+        }
+    }
+    .auth-block__menu-list li a {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        line-height: 22px;
+        color: #999;
+    }
+    .account-box-shadow .evo-account-content .auth-block__menu-list {
+        list-style: none;
+        display: flex;
+        height: 50px;
+        border-bottom: 1px solid #eee;
+        li {
+            flex: 1 1;
+            text-align: center;
+            border-right: 1px solid #eee;
+            position: relative;
+        }
+        li.active:before {
+            content: "";
+            position: absolute;
+            height: 1px;
+            left: 30px;
+            right: 30px;
+            bottom: -1px;
+            background-color: #6d79b5;
+        }
+        li.active a {
+            font-weight: 900;
+            color: #303846;
+        }
+    }
+    .login--notes {
+        text-align: center;
+        color: #999;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 0;
+        line-height: 1.1;
+    }
+    .line-break {
+        max-width: 100%;
+        margin: 0px auto 20px;
+        text-align: center;
+        position: relative;
+    }
+    .line-break::before {
+        content: "";
+        width: 100%;
+        height: 1px;
+        background: #eee;
+        z-index: 1;
+        position: absolute;
+        left: 0;
+        top: 10px;
+    }
+    .line-break span {
+        display: inline-block;
+        font-size: 13px;
+        color: #999;
+        padding: 1px 10px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+        border: 1px solid #eee;
+        background-color: #fff;
+        position: relative;
+        z-index: 1;
+    }
+    .account-box-shadow .evo-account-content .social-login {
+        padding-bottom: 20px;
+    }
+    .social-login a.social-login--google {
+        margin-left: 10px;
+    }
+    #recover-password .fix-sblock {
+        margin-bottom: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 1.3;
+    }
+
+    .fix-sblock {
+        font-size: 14px;
+        line-height: 24px;
+        color: #333;
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+    .social-login a {
+        display: inline-block;
+        min-width: 140px;
+    }
+    @media (min-width: 768px) {
+        .justify-content-md-center {
+            justify-content: center !important;
+        }
+    }
+    @media (min-width: 768px) {
+        .account-box-shadow .evo-account-content {
+            padding-left: 0;
+        }
+    }
+}
