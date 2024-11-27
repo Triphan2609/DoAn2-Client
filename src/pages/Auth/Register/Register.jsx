@@ -197,7 +197,13 @@ const Register = () => {
                                         <div className="line-break">
                                             <span>hoặc đăng nhập qua</span>
                                         </div>
-                                        <div className="social-login text-center">
+                                        <div
+                                            className="social-login text-center"
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                            }}
+                                        >
                                             <GoogleLoginComponent />
                                             {/* <a
                                                 href="javascript:void(0)"

@@ -29,7 +29,7 @@ const Header = () => {
         // Simple loading mock. You should add cleanup logic in real world.
         setTimeout(() => {
             setLoading(false);
-        }, 2000);
+        }, 1000);
     };
     const handleLogout = () => {
         dispatch(doLogoutAction());
@@ -486,6 +486,28 @@ const Header = () => {
                                     className="nav-link"
                                     href="/quan-ao"
                                     title="Thời trang người lớn"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        const liElement = e.target.closest(
+                                            "li.dropdown-submenu"
+                                        );
+                                        const dropdownMenu =
+                                            liElement.querySelector(
+                                                "ul.dropdown-menu"
+                                            );
+                                        if (isShowDropdownLv2) {
+                                            dropdownMenu.style.display = "none";
+                                            setShowDropdownLv2(
+                                                !isShowDropdownLv2
+                                            );
+                                        } else {
+                                            dropdownMenu.style.display =
+                                                "block";
+                                            setShowDropdownLv2(
+                                                !isShowDropdownLv2
+                                            );
+                                        }
+                                    }}
                                 >
                                     Thời trang người lớn{" "}
                                     <svg

@@ -1,0 +1,97 @@
+.main_container {
+    .category-products .sort-cate {
+        display: block;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .category-products .sort-cate .sort-cate-left {
+        float: left;
+        margin-top: 5px;
+    }
+    .category-products .sort-cate .sort-cate-left h3 {
+        color: #000;
+        font-size: 14px;
+        float: left;
+        margin: 0;
+        margin-top: 2px;
+        font-weight: 700;
+    }
+    .category-products .sort-cate .sort-cate-left h3 svg {
+        width: 15px;
+        height: 15px;
+    }
+    .category-products .sort-cate .sort-cate-left ul li {
+        float: left;
+        padding: 0 0 0 10px;
+    }
+    .category-products .sort-cate .sort-cate-left ul li a {
+        color: #000;
+        font-size: 14px;
+        position: relative;
+        font-weight: 700;
+    }
+    .btn-quick-sort {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        label {
+            margin-left: 5px;
+            font-weight: 900;
+            font-size: 15px;
+        }
+        input[type="radio"]:checked:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 15px;
+            top: -2px;
+            left: -1px;
+            position: relative;
+            background-color: #6d79b5;
+            content: "";
+            display: inline-block;
+            visibility: visible;
+            border: 2px solid white;
+        }
+    }
+    .ant-pagination-item-active {
+        border: none;
+        outline: none;
+        background-color: #6d79b5;
+        color: #fff;
+    }
+    .ant-pagination-item:hover {
+        border: none;
+        outline: none;
+        background-color: #6d79b5 !important;
+        transition: none !important;
+        color: #fff;
+    }
+}
+@media (min-width: 992px) {
+    .main_container {
+        padding-left: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .category-products {
+        background-color: #fff;
+        padding: 10px;
+        border: 1px solid #e8e8e8;
+        border-radius: 3px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 992px) {
+    .category-products .sort-cate .sort-cate-left {
+        display: flex;
+        align-items: center;
+    }
+}
+@media (min-width: 768px) {
+    .category-products .products-view-grid {
+        padding-top: 10px;
+    }
+}

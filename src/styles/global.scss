@@ -32,9 +32,10 @@
         rgba(255, 255, 255, 0)
     );
 }
-li {
-    list-style: none;
+ul {
+    list-style: none inside;
 }
+
 img {
     max-width: 100%;
     height: auto;
@@ -202,7 +203,7 @@ select.form-control {
     display: block;
     width: 30px;
     height: 40px;
-    padding: 5px;
+    padding: 5px !important;
     font-size: 12px;
     -webkit-transition: all 0.25s ease !important;
     transition: all 0.25s ease !important;
@@ -226,4 +227,9 @@ input[type="number"].error,
 input[type="tel"].error,
 textarea.error {
     color: red !important;
+}
+
+ul,
+ol {
+    margin-bottom: 0 !important ;
 }

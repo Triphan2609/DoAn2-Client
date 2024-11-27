@@ -14,12 +14,9 @@ const GoogleLoginComponent = () => {
         console.log(tokenId);
 
         // Gửi token đến backend để xác thực
-        const res = await axios.post(
-            "http://localhost:5000/api/v1/auth/google",
-            {
-                tokenId,
-            }
-        );
+        const res = await axios.post("/auth/google", {
+            tokenId,
+        });
 
         console.log(res.data); // Xử lý dữ liệu trả về từ server
         if (res?.data?.user) {

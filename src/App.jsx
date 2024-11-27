@@ -15,9 +15,9 @@ import Login from "./pages/Auth/Login/Login";
 import Register from "./pages/Auth/Register/Register";
 import Contact from "./pages/User/Contact/Contact";
 import Introduce from "./pages/User/Introduce/introduce";
-import Product from "./pages/User/Product/Product";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Admin from "./pages/Admin/Admin";
+import AllProducts from "./pages/User/Product/AllProducts.jsx/AllProducts";
 
 const App = () => {
     const Layout = () => {
@@ -48,7 +48,7 @@ const App = () => {
                     path: "gioi-thieu",
                     element: <Introduce />,
                 },
-                { path: "tat-ca-san-pham", element: <Product /> },
+                { path: "tat-ca-san-pham", element: <AllProducts /> },
             ],
         },
         {

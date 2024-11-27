@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../redux/counter/counterSlice";
 import accountReducer from "../redux/account/accountSlice";
 import orderReducer from "../redux/order/orderSlice";
 
@@ -22,7 +21,6 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    counter: counterReducer,
     account: accountReducer,
     order: orderReducer,
 });

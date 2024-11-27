@@ -161,7 +161,13 @@ const Login = () => {
                                             <div className="line-break">
                                                 <span>hoặc đăng nhập qua</span>
                                             </div>
-                                            <div className="social-login text-center">
+                                            <div
+                                                className="social-login text-center"
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
                                                 {/* <a
                                                     href="javascript:void(0)"
                                                     className="social-login--facebook"
