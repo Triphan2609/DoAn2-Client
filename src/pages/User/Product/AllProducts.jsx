@@ -1,8 +1,8 @@
 import { Helmet } from "react-helmet";
-import BreadCrumb from "../../../../components/BreadCrumb/BreadCrumb";
-import "../Product.scss";
-import Sidebar from "../../../../components/Sidebar/Sidebar";
-import Collection from "../../../../components/Collection/Collection";
+import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
+import "./Product.scss";
+import Sidebar from "../../../components/Sidebar/Sidebar";
+import Collection from "../../../components/Collection/Collection";
 const AllProducts = () => {
     return (
         <div className="product-page">

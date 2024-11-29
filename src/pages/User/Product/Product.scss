@@ -1,0 +1,288 @@
+.product-detail-page {
+    .ant-carousel .slick-dots li button {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 20px;
+        padding: 2;
+        color: transparent;
+        font-size: 0;
+        background: #000;
+        border: 0;
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+        opacity: 0.2;
+        transition: all 0.3s;
+    }
+
+    .ant-carousel .slick-dots li.slick-active button {
+        background: #6d79b5;
+        opacity: 1;
+    }
+
+    .ant-product-page {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        .ant-info-product {
+            .title-head {
+                font-weight: 600;
+                font-size: 20px;
+                color: #000;
+                margin-bottom: 5px;
+                line-height: 28px;
+                letter-spacing: 0.3px;
+            }
+            .price-box {
+                margin-bottom: 10px;
+                .special-price {
+                    color: #6d79b5;
+                    font-weight: 700;
+                    font-size: 18px;
+                }
+            }
+            .summary {
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
+
+            .form-product #add-to-cart-form .form-groups .custom-btn-number {
+                margin-bottom: 20px;
+                display: flex;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                flex-direction: row;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-align-items: center;
+                text-align: center;
+                label {
+                    padding-right: 15px;
+                    font-weight: 700;
+                }
+                .custom-btn-numbers {
+                    position: relative;
+                    max-width: 150px;
+                    button {
+                        border: none;
+                        color: #000;
+                        background-color: transparent;
+                        position: absolute;
+                        bottom: 0;
+                        height: 40px;
+                        width: 40px;
+                        svg {
+                            width: 15px;
+                            height: 15px;
+                            position: absolute;
+                            top: 7px;
+                            bottom: 0;
+                            right: 0;
+                            left: 0;
+                            margin: auto;
+                        }
+                    }
+
+                    button.btn-minus {
+                        left: 0;
+                    }
+
+                    input {
+                        border: 1px solid rgba(0, 0, 0, 0.2);
+                        margin: 0;
+                        padding: 0 40px;
+                        max-width: 150px;
+                        color: #000;
+                        font-size: 20px;
+                        text-align: center;
+                    }
+                    button.btn-plus {
+                        right: 0;
+                    }
+                }
+            }
+            .btn-mua {
+                display: flex;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                flex-direction: row;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-align-items: center;
+                -webkit-justify-content: center;
+                justify-content: center;
+                button {
+                    width: 100%;
+                    background-color: #fff;
+                    color: #6d79b5;
+                    border: 2px solid #6d79b5;
+                    font-weight: 700;
+                    padding: 0 15px;
+                    text-align: center;
+                    font-size: 16px;
+                    height: 45px;
+                    line-height: 43px;
+                    border-radius: 22px;
+                }
+                button.btn-buy-now {
+                    margin-left: 10px;
+                    background-color: #6d79b5;
+                    color: #fff;
+                }
+            }
+        }
+    }
+    .ant-product-page
+        .ant-info-product
+        .form-product
+        #add-to-cart-form
+        .form-groups
+        .custom-btn-number
+        .custom-btn-numbers
+        button:hover,
+    .ant-product-page
+        .ant-info-product
+        .form-product
+        #add-to-cart-form
+        .form-groups
+        .custom-btn-number
+        .custom-btn-numbers
+        button:focus {
+        outline: none;
+        box-shadow: none;
+        background-color: transparent;
+    }
+
+    .ant-product-page
+        .ant-info-product
+        .form-product
+        #add-to-cart-form
+        .form-groups
+        .btn-mua
+        button.btn-buy-now:hover,
+    .ant-product-page
+        .ant-info-product
+        .form-product
+        #add-to-cart-form
+        .form-groups
+        .btn-mua
+        button.btn-buy-now:focus {
+        color: #6d79b5;
+        background-color: #fff;
+        border-color: #6d79b5;
+    }
+    .ant-product-page
+        .ant-info-product
+        .form-product
+        #add-to-cart-form
+        .form-groups
+        .btn-mua
+        button:hover,
+    .ant-product-page
+        .ant-info-product
+        .form-product
+        #add-to-cart-form
+        .form-groups
+        .btn-mua
+        button:focus {
+        color: #fff;
+        background-color: #6d79b5;
+        border-color: #6d79b5;
+    }
+
+    .ant-product-tab {
+        .nav-tabs {
+            position: static;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            margin-bottom: 25px !important;
+            background-color: #6d79b5;
+            overflow: hidden;
+            border-radius: 3px;
+            .nav-item a {
+                font-weight: 600;
+                color: #fff;
+                font-size: 14px;
+                text-transform: uppercase;
+                border: none;
+                padding: 10px;
+                background-color: transparent;
+                border-radius: 0;
+                cursor: pointer;
+                &:hover,
+                &.active {
+                    color: #fff !important;
+                    background-color: #505d9f !important;
+                }
+            }
+        }
+        .tab-content {
+            color: #121314;
+            font-size: 15px;
+            padding: 10px;
+            padding-top: 0;
+        }
+
+        .tab-content > .active {
+            display: block;
+        }
+    }
+
+    .ant-similar-product {
+        position: relative;
+        padding: 10px;
+        border: 1px solid #e8e8e8;
+        border-radius: 3px;
+        background-color: #fff;
+        margin-top: 10px;
+        .home-title {
+            margin-bottom: 30px;
+            margin-bottom: 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            text-transform: uppercase;
+            a {
+                color: #000;
+            }
+        }
+    }
+    .product-bottom-banner {
+        margin-top: 10px;
+    }
+    .ant-product-page .ant-similar-product .home-title a:hover,
+    .ant-product-page .ant-similar-product .home-title a:focus {
+        color: #6d79b5;
+    }
+    @media (min-width: 768px) {
+        .evo-bg {
+            position: relative;
+            padding: 10px;
+            border: 1px solid #e8e8e8;
+            border-radius: 3px;
+            background-color: #fff;
+        }
+    }
+    @media (min-width: 768px) {
+        .ant-product-page .ant-product-tab {
+            position: relative;
+            padding: 10px;
+            border: 1px solid #e8e8e8;
+            border-radius: 3px;
+            background-color: #fff;
+            margin-top: 10px;
+        }
+    }
+}

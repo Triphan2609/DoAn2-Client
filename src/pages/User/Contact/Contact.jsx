@@ -1,14 +1,14 @@
-import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 import { Button, Form, Input } from "antd";
 import { Helmet } from "react-helmet";
 
-const onFinish = (values) => {
-    console.log("Success:", values);
-};
-
 import "./Contact.scss";
 import TextArea from "antd/es/input/TextArea";
+import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 const Contact = () => {
+    const onFinish = (values) => {
+        console.log("Success:", values);
+    };
+
     return (
         <div className="contact-page">
             <Helmet>

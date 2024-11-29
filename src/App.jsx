@@ -13,11 +13,19 @@ import Notfound from "./pages/Notfound/Notfound";
 import Footer from "./components/Footer/Footer";
 import Login from "./pages/Auth/Login/Login";
 import Register from "./pages/Auth/Register/Register";
-import Contact from "./pages/User/Contact/Contact";
 import Introduce from "./pages/User/Introduce/introduce";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Admin from "./pages/Admin/Admin";
-import AllProducts from "./pages/User/Product/AllProducts.jsx/AllProducts";
+import Info from "./pages/User/Account/Info";
+import Order from "./pages/User/Account/Order";
+import ChangePass from "./pages/User/Account/ChangePass";
+import Address from "./pages/User/Account/Address";
+import ProductDetail from "./pages/User/Product/ProductDetail";
+import AllProducts from "./pages/User/Product/AllProducts";
+import Contact from "./pages/User/Contact/Contact";
+import FindPage from "./pages/User/FindPage/FindPage";
+import Payment from "./pages/User/Payment/Payment";
+import Cart from "./pages/User/Cart/Cart";
 
 const App = () => {
     const Layout = () => {
@@ -49,6 +57,34 @@ const App = () => {
                     element: <Introduce />,
                 },
                 { path: "tat-ca-san-pham", element: <AllProducts /> },
+                {
+                    path: "tai-khoan/thong-tin-tai-khoan",
+                    element: <Info />,
+                },
+                {
+                    path: "tai-khoan/don-hang",
+                    element: <Order />,
+                },
+                {
+                    path: "tai-khoan/doi-mat-khau",
+                    element: <ChangePass />,
+                },
+                {
+                    path: "tai-khoan/dia-chi",
+                    element: <Address />,
+                },
+                {
+                    path: "/san-pham",
+                    element: <ProductDetail />,
+                },
+                {
+                    path: "/tim-kiem",
+                    element: <FindPage />,
+                },
+                {
+                    path: "/gio-hang",
+                    element: <Cart />,
+                },
             ],
         },
         {
@@ -58,6 +94,10 @@ const App = () => {
         {
             path: "/dang-ky",
             element: <Register />,
+        },
+        {
+            path: "/thanh-toan",
+            element: <Payment />,
         },
         {
             path: "/admin",

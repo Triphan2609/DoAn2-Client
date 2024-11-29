@@ -175,8 +175,8 @@ const HomePage = () => {
                                             src="//bizweb.dktcdn.net/100/147/060/themes/880570/assets/evo_block_product_icon_2.png?1722413377105"
                                             className="lazy img-responsive loaded"
                                             data-was-processed="true"
-                                        />{" "}
-                                        <span>SẢN PHẨM MỚI</span>{" "}
+                                        />
+                                        <span>SẢN PHẨM MỚI</span>
                                     </a>
                                 </div>
                                 <div className="col-lg-6 col-md-12 col-12 category-menu">

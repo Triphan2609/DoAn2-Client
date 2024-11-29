@@ -22,6 +22,8 @@ const Header = () => {
         (state) => state.account.isAuthenticated
     );
 
+    const isAdmin = useSelector((state) => state.account.user.role);
+
     const showLoading = () => {
         setOpen(true);
         setLoading(true);
@@ -224,7 +226,11 @@ const Header = () => {
                     </div>
                     <div className="evo-main-account d-lg-flex d-none">
                         <NavLink
-                            to="/dang-nhap"
+                            to={
+                                isAuthenticated
+                                    ? "/tai-khoan/thong-tin-tai-khoan"
+                                    : "/dang-nhap"
+                            }
                             className="header-account"
                             aria-label="Tài khoản"
                             title="Tài khoản"
@@ -242,7 +248,10 @@ const Header = () => {
                         <ul>
                             <li className="ng-scope">
                                 {isAuthenticated ? (
-                                    <NavLink to="/tai-khoan" title="Tài khoản">
+                                    <NavLink
+                                        to="/tai-khoan/thong-tin-tai-khoan"
+                                        title="Tài khoản"
+                                    >
                                         Tài khoản
                                     </NavLink>
                                 ) : (
@@ -251,6 +260,15 @@ const Header = () => {
                                     </NavLink>
                                 )}
                             </li>
+                            {isAuthenticated && isAdmin === "admin" ? (
+                                <li className="ng-scope">
+                                    <NavLink to="/admin" title="Admin">
+                                        Quản lý
+                                    </NavLink>
+                                </li>
+                            ) : (
+                                ""
+                            )}
                             <li className="ng-scope">
                                 {isAuthenticated ? (
                                     <NavLink
@@ -265,17 +283,6 @@ const Header = () => {
                                         Đăng ký
                                     </NavLink>
                                 )}
-                            </li>
-
-                            <li>
-                                <NavLink
-                                    to="/tat-ca-san-pham"
-                                    aria-label="Sản phẩm Yêu thích"
-                                    title="Sản phẩm Yêu thích"
-                                >
-                                    Yêu thích{" "}
-                                    <span className="js-wishlist-count">0</span>
-                                </NavLink>
                             </li>
                         </ul>
                     </div>
