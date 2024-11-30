@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Header.scss";
 import { IoMdMenu } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
@@ -8,21 +8,47 @@ import { Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { doLogoutAction } from "../../redux/account/accountSlice";
 import { message } from "antd";
+import { callFetchCategoryCat, callFetchCategoryDog } from "../../services/api";
 const Header = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    // React State
     const [isBtnShow, setIsBtnShow] = useState(false);
     const [isShowNav, setShowNav] = useState(false);
     const [isShowDropdown, setShowDropdown] = useState(false);
     const [isShowDropdownLv2, setShowDropdownLv2] = useState(false);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+    // Data
+    const [categoriesDog, setCategoriesDog] = useState();
+    const [categoriesCat, setCategoriesCat] = useState();
 
+    // Redux State
     const isAuthenticated = useSelector(
         (state) => state.account.isAuthenticated
     );
-
     const isAdmin = useSelector((state) => state.account.user.role);
+
+    // Fetch API
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    // Fuction
+    const fetchCategories = async () => {
+        const resDog = await callFetchCategoryDog();
+        if (resDog && resDog.data) {
+            let raw = resDog.data;
+            setCategoriesDog(raw);
+        }
+
+        const resCat = await callFetchCategoryCat();
+        if (resCat && resCat.data) {
+            let raw = resCat.data;
+            setCategoriesCat(raw);
+        }
+    };
 
     const showLoading = () => {
         setOpen(true);
@@ -388,12 +414,12 @@ const Header = () => {
 
                         <ul className="dropdown-menu">
                             <li className="dropdown-submenu nav-item-lv2 has-childs2">
-                                <a
+                                <NavLink
                                     className="nav-link"
-                                    href="/tui-xach-balo"
-                                    title="Thời trang trẻ em"
+                                    to="/tat-ca-san-pham"
+                                    title="Sản phẩm cho mèo"
                                 >
-                                    Thời trang trẻ em{" "}
+                                    Sản phẩm cho mèo{" "}
                                     <svg
                                         className="plus-nClick2"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -434,517 +460,99 @@ const Header = () => {
                                             fill="#141414"
                                         ></path>
                                     </svg>
-                                </a>
+                                </NavLink>
                                 <ul className="dropdown-menu">
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/quan-ao"
-                                            title="Quần, Áo"
-                                        >
-                                            Quần, Áo
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/do-bo-tre-em"
-                                            title="Đồ bộ trẻ em"
-                                        >
-                                            Đồ bộ trẻ em
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/non-tre-em"
-                                            title="Nón trẻ em"
-                                        >
-                                            Nón trẻ em
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/dep"
-                                            title="Dép"
-                                        >
-                                            Dép
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/phu-kien-thoi-trang"
-                                            title="Phụ kiện &amp; Thời trang"
-                                        >
-                                            Phụ kiện &amp; Thời trang
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li className="dropdown-submenu nav-item-lv2 has-childs2">
-                                <a
-                                    className="nav-link"
-                                    href="/quan-ao"
-                                    title="Thời trang người lớn"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        const liElement = e.target.closest(
-                                            "li.dropdown-submenu"
-                                        );
-                                        const dropdownMenu =
-                                            liElement.querySelector(
-                                                "ul.dropdown-menu"
+                                    {categoriesCat &&
+                                        categoriesCat?.map((cat) => {
+                                            return (
+                                                <li
+                                                    key={cat.id}
+                                                    className="nav-item-lv3"
+                                                >
+                                                    <a
+                                                        className="nav-link"
+                                                        to="/quan-ao"
+                                                        title={cat.name}
+                                                        style={{
+                                                            cursor: "pointer",
+                                                        }}
+                                                    >
+                                                        {cat.name}
+                                                    </a>
+                                                </li>
                                             );
-                                        if (isShowDropdownLv2) {
-                                            dropdownMenu.style.display = "none";
-                                            setShowDropdownLv2(
-                                                !isShowDropdownLv2
+                                        })}
+                                </ul>
+                            </li>
+                            <li className="dropdown-submenu nav-item-lv2 has-childs2">
+                                <NavLink
+                                    className="nav-link"
+                                    to="/tat-ca-san-pham"
+                                    title="Sản phẩm cho chó"
+                                >
+                                    Sản phẩm cho chó{" "}
+                                    <svg
+                                        className="plus-nClick2"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        x="0px"
+                                        y="0px"
+                                        viewBox="0 0 490.656 490.656"
+                                        width="25px"
+                                        height="25px"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            const liElement = e.target.closest(
+                                                "li.dropdown-submenu"
                                             );
-                                        } else {
-                                            dropdownMenu.style.display =
-                                                "block";
-                                            setShowDropdownLv2(
-                                                !isShowDropdownLv2
+                                            const dropdownMenu =
+                                                liElement.querySelector(
+                                                    "ul.dropdown-menu"
+                                                );
+                                            if (isShowDropdownLv2) {
+                                                dropdownMenu.style.display =
+                                                    "none";
+                                                setShowDropdownLv2(
+                                                    !isShowDropdownLv2
+                                                );
+                                            } else {
+                                                dropdownMenu.style.display =
+                                                    "block";
+                                                setShowDropdownLv2(
+                                                    !isShowDropdownLv2
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        <path
+                                            d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z"
+                                            data-original="#000000"
+                                            className="active-path"
+                                            data-old_color="#000000"
+                                            fill="#141414"
+                                        ></path>
+                                    </svg>
+                                </NavLink>
+                                <ul className="dropdown-menu">
+                                    {categoriesDog &&
+                                        categoriesDog?.map((dog) => {
+                                            return (
+                                                <li
+                                                    key={dog.id}
+                                                    className="nav-item-lv3"
+                                                >
+                                                    <a
+                                                        className="nav-link"
+                                                        to="/quan-ao"
+                                                        title={dog.name}
+                                                        style={{
+                                                            cursor: "pointer",
+                                                        }}
+                                                    >
+                                                        {dog.name}
+                                                    </a>
+                                                </li>
                                             );
-                                        }
-                                    }}
-                                >
-                                    Thời trang người lớn{" "}
-                                    <svg
-                                        className="plus-nClick2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        x="0px"
-                                        y="0px"
-                                        viewBox="0 0 490.656 490.656"
-                                        width="25px"
-                                        height="25px"
-                                    >
-                                        <path
-                                            d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z"
-                                            data-original="#000000"
-                                            className="active-path"
-                                            data-old_color="#000000"
-                                            fill="#141414"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/quan-ao-nguoi-lon"
-                                            title="Quần áo người lớn"
-                                        >
-                                            Quần áo người lớn
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/non-nguoi-lon"
-                                            title="Nón người lớn"
-                                        >
-                                            Nón người lớn
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/phu-kien-thoi-trang"
-                                            title="Phụ kiện &amp; Thời trang"
-                                        >
-                                            Phụ kiện &amp; Thời trang
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li className="dropdown-submenu nav-item-lv2 has-childs2">
-                                <a
-                                    className="nav-link"
-                                    href="/phong-ngu"
-                                    title="Phòng Ngủ"
-                                >
-                                    Phòng Ngủ{" "}
-                                    <svg
-                                        className="plus-nClick2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        x="0px"
-                                        y="0px"
-                                        viewBox="0 0 490.656 490.656"
-                                        width="25px"
-                                        height="25px"
-                                    >
-                                        <path
-                                            d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z"
-                                            data-original="#000000"
-                                            className="active-path"
-                                            data-old_color="#000000"
-                                            fill="#141414"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/bo-men-nguoi-lon"
-                                            title="Bộ mền người lớn"
-                                        >
-                                            Bộ mền người lớn
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/goi-nam"
-                                            title="Gối nằm"
-                                        >
-                                            Gối nằm
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/goi-om"
-                                            title="Gối ôm"
-                                        >
-                                            Gối ôm
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/chan"
-                                            title="Chăn"
-                                        >
-                                            Chăn
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/nem"
-                                            title="Nệm"
-                                        >
-                                            Nệm
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/tham"
-                                            title="Thảm"
-                                        >
-                                            Thảm
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/thu-nhoi-bong"
-                                            title="Thú nhồi bông"
-                                        >
-                                            Thú nhồi bông
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/dem"
-                                            title="Đệm"
-                                        >
-                                            Đệm
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/goi-tre-nz-485p-25x34cm-1"
-                                            title="Gối trẻ em"
-                                        >
-                                            Gối trẻ em
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li className="dropdown-submenu nav-item-lv2 has-childs2">
-                                <a
-                                    className="nav-link"
-                                    href="/vat-dung-nha-bep"
-                                    title="Phòng Bếp"
-                                >
-                                    Phòng Bếp{" "}
-                                    <svg
-                                        className="plus-nClick2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        x="0px"
-                                        y="0px"
-                                        viewBox="0 0 490.656 490.656"
-                                        width="25px"
-                                        height="25px"
-                                    >
-                                        <path
-                                            d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z"
-                                            data-original="#000000"
-                                            className="active-path"
-                                            data-old_color="#000000"
-                                            fill="#141414"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/tap-de"
-                                            title="Tạp dề"
-                                        >
-                                            Tạp dề
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/bao-tay"
-                                            title="Bao tay"
-                                        >
-                                            Bao tay
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/bao-hop-khan-giay"
-                                            title="Bao hộp khăn giấy"
-                                        >
-                                            Bao hộp khăn giấy
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/mieng-nhac-noi"
-                                            title="Miếng nhấc nồi"
-                                        >
-                                            Miếng nhấc nồi
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/tui-treo-tuong"
-                                            title="Túi treo tường"
-                                        >
-                                            Túi treo tường
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/vat-dung-nha-bep"
-                                            title="Phòng bếp"
-                                        >
-                                            Phòng bếp
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li className="dropdown-submenu nav-item-lv2 has-childs2">
-                                <a
-                                    className="nav-link"
-                                    href="/do-thun-christlie"
-                                    title="Bộ sưu tập"
-                                >
-                                    Bộ sưu tập{" "}
-                                    <svg
-                                        className="plus-nClick2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        x="0px"
-                                        y="0px"
-                                        viewBox="0 0 490.656 490.656"
-                                        width="25px"
-                                        height="25px"
-                                    >
-                                        <path
-                                            d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z"
-                                            data-original="#000000"
-                                            className="active-path"
-                                            data-old_color="#000000"
-                                            fill="#141414"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/hanh-trang-den-truong"
-                                            title="Hành trang đến trường"
-                                        >
-                                            Hành trang đến trường
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/hanh-trang-cong-so"
-                                            title="Hành trang công sở"
-                                        >
-                                            Hành trang công sở
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/xuan-vui-sac-mau-2023"
-                                            title="Xuân vui sắc màu 2023"
-                                        >
-                                            Xuân vui sắc màu 2023
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li className="dropdown-submenu nav-item-lv2 has-childs2">
-                                <a
-                                    className="nav-link"
-                                    href="/bop-vi-tui-nho"
-                                    title="Phụ kiện &amp; Thời trang"
-                                >
-                                    Phụ kiện &amp; Thời trang{" "}
-                                    <svg
-                                        className="plus-nClick2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        x="0px"
-                                        y="0px"
-                                        viewBox="0 0 490.656 490.656"
-                                        width="25px"
-                                        height="25px"
-                                    >
-                                        <path
-                                            d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z"
-                                            data-original="#000000"
-                                            className="active-path"
-                                            data-old_color="#000000"
-                                            fill="#141414"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/bop-vi-tui-nho"
-                                            title="Bóp &amp; Ví &amp; Túi"
-                                        >
-                                            Bóp &amp; Ví &amp; Túi
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/goi-ke-co"
-                                            title="Gối kê cổ"
-                                        >
-                                            Gối kê cổ
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/bop-tui-deo-bung"
-                                            title="Túi đeo bụng"
-                                        >
-                                            Túi đeo bụng
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/khau-trang"
-                                            title="Khẩu trang"
-                                        >
-                                            Khẩu trang
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li className="dropdown-submenu nav-item-lv2 has-childs2">
-                                <a
-                                    className="nav-link"
-                                    href="/non-khau-trang"
-                                    title="Nhãn Hiệu"
-                                >
-                                    Nhãn Hiệu{" "}
-                                    <svg
-                                        className="plus-nClick2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        x="0px"
-                                        y="0px"
-                                        viewBox="0 0 490.656 490.656"
-                                        width="25px"
-                                        height="25px"
-                                    >
-                                        <path
-                                            d="M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0    c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667    C491.696,131.368,491.696,124.605,487.536,120.445z"
-                                            data-original="#000000"
-                                            className="active-path"
-                                            data-old_color="#000000"
-                                            fill="#141414"
-                                        ></path>
-                                    </svg>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/petshop"
-                                            title="Petshop"
-                                        >
-                                            Petshop
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item-lv3">
-                                        <a
-                                            className="nav-link"
-                                            href="/christlie"
-                                            title="Christlie"
-                                        >
-                                            Christlie
-                                        </a>
-                                    </li>
+                                        })}
                                 </ul>
                             </li>
                         </ul>

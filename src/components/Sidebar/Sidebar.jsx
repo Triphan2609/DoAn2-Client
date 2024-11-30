@@ -1,9 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Sidebar.scss";
+import {
+    callFetchBrand,
+    callFetchCategoryCat,
+    callFetchCategoryDog,
+} from "../../services/api";
 
 const Sidebar = () => {
+    // React State
     const [activeItem, setActiveItem] = useState(true);
     const [activeItemFilter, setActiveItemFilter] = useState(false);
+
+    // Data
+    const [categoriesDog, setCategoriesDog] = useState();
+    const [categoriesCat, setCategoriesCat] = useState();
+    const [brands, setBrands] = useState();
+
+    // Fetch API
+    useEffect(() => {
+        fetchCategories();
+        fetchBrands();
+    }, []);
+
+    // Fuction
+    const fetchCategories = async () => {
+        const resDog = await callFetchCategoryDog();
+        if (resDog && resDog.data) {
+            let raw = resDog.data;
+            setCategoriesDog(raw);
+        }
+
+        const resCat = await callFetchCategoryCat();
+        if (resCat && resCat.data) {
+            let raw = resCat.data;
+            setCategoriesCat(raw);
+        }
+    };
+
+    const fetchBrands = async () => {
+        const res = await callFetchBrand();
+        if (res && res.data) {
+            let raw = res.data;
+            setBrands(raw);
+        }
+    };
 
     return (
         <>
@@ -18,7 +58,7 @@ const Sidebar = () => {
                                     className="nav-link"
                                     title="Thời trang trẻ em"
                                 >
-                                    Thời trang trẻ em
+                                    Sản phẩm cho mèo
                                 </a>
                                 <span
                                     className="Collapsible__Plus"
@@ -38,49 +78,69 @@ const Sidebar = () => {
                                     }}
                                 ></span>
                                 <ul className="dropdown-menu">
-                                    <li className="dropdown-submenu nav-item">
-                                        <a
-                                            className="nav-link"
-                                            href="/quan-ao"
-                                            title="Quần, Áo"
-                                        >
-                                            Quần, Áo
-                                        </a>
-                                        <span className="Collapsible__Plus"></span>
-                                        <ul className="dropdown-menu">
-                                            <li className="dropdown-submenu nav-item">
-                                                <a
-                                                    className="nav-link"
-                                                    href="/quan-ao-nguoi-lon"
-                                                    title="Quần áo người lớn"
+                                    {categoriesCat &&
+                                        categoriesCat?.map((cat) => {
+                                            return (
+                                                <li
+                                                    key={cat.id}
+                                                    className="dropdown-submenu nav-item"
                                                 >
-                                                    Quần áo người lớn
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                                    <a
+                                                        className="nav-link"
+                                                        to="/quan-ao"
+                                                        title={cat.name}
+                                                    >
+                                                        {cat.name}
+                                                    </a>
+                                                </li>
+                                            );
+                                        })}
                                 </ul>
                             </li>
 
                             <li className="nav-item">
                                 <a
-                                    href="/do-bo-tre-em"
+                                    href="/tui-xach-balo"
                                     className="nav-link"
-                                    title="Đồ bộ trẻ em"
+                                    title="Thời trang trẻ em"
                                 >
-                                    Đồ bộ trẻ em
+                                    Sản phẩm cho chó
                                 </a>
-                                <span className="Collapsible__Plus"></span>
+                                <span
+                                    className="Collapsible__Plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        const liElement =
+                                            e.target.closest("li.nav-item");
+                                        if (activeItem) {
+                                            liElement.classList.add("active");
+                                            setActiveItem(!activeItem);
+                                        } else {
+                                            liElement.classList.remove(
+                                                "active"
+                                            );
+                                            setActiveItem(!activeItem);
+                                        }
+                                    }}
+                                ></span>
                                 <ul className="dropdown-menu">
-                                    <li className="nav-item">
-                                        <a
-                                            className="nav-link"
-                                            href="/ao-khoac-tre-em"
-                                            title="Áo khoác trẻ em"
-                                        >
-                                            Áo khoác trẻ em
-                                        </a>
-                                    </li>
+                                    {categoriesDog &&
+                                        categoriesDog?.map((dog) => {
+                                            return (
+                                                <li
+                                                    key={dog.id}
+                                                    className="dropdown-submenu nav-item"
+                                                >
+                                                    <a
+                                                        className="nav-link"
+                                                        to="/quan-ao"
+                                                        title={dog.name}
+                                                    >
+                                                        {dog.name}
+                                                    </a>
+                                                </li>
+                                            );
+                                        })}
                                 </ul>
                             </li>
                         </ul>
@@ -143,43 +203,26 @@ const Sidebar = () => {
                                                 : "d-block"
                                         }`}
                                     >
-                                        <li className="filter-item filter-item--check-box filter-item--green ">
-                                            <label
-                                                data-filter="c.ty tnhh may mặc thăng long"
-                                                className="c-ty-tnhh-may-mac-thang-long"
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    id="filter-c-ty-tnhh-may-mac-thang-long"
-                                                    data-group="Hãng"
-                                                    data-field="vendor.filter_key"
-                                                    data-text="C.ty TNHH may mặc Thăng Long"
-                                                    value='("C.ty TNHH may mặc Thăng Long")'
-                                                    data-operator="OR"
-                                                />
-                                                <i className="fa"></i>
-                                                C.ty TNHH may mặc Thăng Long
-                                            </label>
-                                        </li>
-
-                                        <li className="filter-item filter-item--check-box filter-item--green ">
-                                            <label
-                                                data-filter="lamell"
-                                                className="lamell"
-                                            >
-                                                <input
-                                                    type="checkbox"
-                                                    id="filter-lamell"
-                                                    data-group="Hãng"
-                                                    data-field="vendor.filter_key"
-                                                    data-text="Lamell"
-                                                    value='("Lamell")'
-                                                    data-operator="OR"
-                                                />
-                                                <i className="fa"></i>
-                                                Lamell
-                                            </label>
-                                        </li>
+                                        {brands &&
+                                            brands.map((brand, index) => {
+                                                return (
+                                                    <li
+                                                        key={index}
+                                                        className="filter-item filter-item--check-box filter-item--green "
+                                                    >
+                                                        <label className="c-ty-tnhh-may-mac-thang-long">
+                                                            <input
+                                                                type="checkbox"
+                                                                value={
+                                                                    brand.name
+                                                                }
+                                                            />
+                                                            <i className="fa"></i>
+                                                            {brand.name}
+                                                        </label>
+                                                    </li>
+                                                );
+                                            })}
                                     </ul>
                                 </div>
                             </aside>
@@ -366,89 +409,6 @@ const Sidebar = () => {
                                                     />
                                                     <i className="fa"></i>
                                                     Giá trên 7.000.000đ
-                                                </label>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </aside>
-
-                            <aside className="aside-item filter-type">
-                                <div className="aside-title">
-                                    Loại sản phẩm{" "}
-                                    <span className="ant-svg collapsible-plus"></span>
-                                </div>
-                                <div className="aside-content filter-group">
-                                    <ul className="filter-type">
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <label data-filter="túi đeo trẻ em">
-                                                <input
-                                                    type="checkbox"
-                                                    id="filter-tui-deo-tre-em"
-                                                    data-group="Loại"
-                                                    data-field="product_type.filter_key"
-                                                    data-text="TÚI ĐEO TRẺ EM"
-                                                    value='("TÚI ĐEO TRẺ EM")'
-                                                    data-operator="OR"
-                                                />
-                                                <i className="fa"></i>
-                                                TÚI ĐEO TRẺ EM
-                                            </label>
-                                        </li>
-
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <label data-filter="vỏ gối cục xương">
-                                                <input
-                                                    type="checkbox"
-                                                    id="filter-vo-goi-cuc-xuong"
-                                                    data-group="Loại"
-                                                    data-field="product_type.filter_key"
-                                                    data-text="Vỏ gối cục xương"
-                                                    value='("Vỏ gối cục xương")'
-                                                    data-operator="OR"
-                                                />
-                                                <i className="fa"></i>
-                                                Vỏ gối cục xương
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </aside>
-
-                            <aside className="aside-item filter-tag-style-1 tag-filtster">
-                                <div className="aside-title">
-                                    Nhãn hiệu{" "}
-                                    <span className="ant-svg collapsible-plus"></span>
-                                </div>
-                                <div className="aside-content filter-group">
-                                    <ul>
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <span>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-lamell-kids"
-                                                        data-text="Lamell Kids"
-                                                        value="(Lamell Kids)"
-                                                        data-operator="OR"
-                                                    />
-                                                    Lamell Kids
-                                                </label>
-                                            </span>
-                                        </li>
-
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <span>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-lamell-teen"
-                                                        data-text="Lamell Teen"
-                                                        value="(Lamell Teen)"
-                                                        data-operator="OR"
-                                                    />
-                                                    <i className="fa"></i>
-                                                    Lamell Teen
                                                 </label>
                                             </span>
                                         </li>

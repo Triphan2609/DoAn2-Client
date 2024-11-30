@@ -2,7 +2,9 @@ import { Pagination } from "antd";
 import BlockProducts from "../BlockProducts/BlockProducts";
 import "./Collection.scss";
 
-const Collection = () => {
+const Collection = (props) => {
+    const { products, pagination, setPagination } = props;
+
     return (
         <>
             <section className="main_container collection col-lg-9 col-md-12 col-sm-12 col-12">
@@ -41,22 +43,58 @@ const Collection = () => {
                             </h3>
                             <ul>
                                 <li className="btn-quick-sort alpha-asc">
-                                    <input type="radio" name="sort" id="" />
-                                    <label htmlFor="a-z">Tên A-Z</label>
+                                    <input
+                                        type="radio"
+                                        name="sort"
+                                        id="a-z"
+                                        style={{ cursor: "pointer" }}
+                                    />
+                                    <label
+                                        htmlFor="a-z"
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        Tên A-Z
+                                    </label>
                                 </li>
                                 <li className="btn-quick-sort alpha-desc">
-                                    <input type="radio" name="sort" id="" />
-                                    <label htmlFor="z-a">Tên Z-A</label>
+                                    <input
+                                        type="radio"
+                                        name="sort"
+                                        id="z-a"
+                                        style={{ cursor: "pointer" }}
+                                    />
+                                    <label
+                                        htmlFor="z-a"
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        Tên Z-A
+                                    </label>
                                 </li>
                                 <li className="btn-quick-sort price-asc">
-                                    <input type="radio" name="sort" id="" />
-                                    <label htmlFor="a-z">
+                                    <input
+                                        type="radio"
+                                        name="sort"
+                                        id="l-h"
+                                        style={{ cursor: "pointer" }}
+                                    />
+                                    <label
+                                        htmlFor="l-h"
+                                        style={{ cursor: "pointer" }}
+                                    >
                                         Giá từ thấp đến cao
                                     </label>
                                 </li>
                                 <li className="btn-quick-sort price-desc">
-                                    <input type="radio" name="sort" id="" />
-                                    <label htmlFor="a-z">
+                                    <input
+                                        type="radio"
+                                        name="sort"
+                                        id="h-l"
+                                        style={{ cursor: "pointer" }}
+                                    />
+                                    <label
+                                        htmlFor="h-l"
+                                        style={{ cursor: "pointer" }}
+                                    >
                                         Giá từ cao xuống thấp
                                     </label>
                                 </li>
@@ -97,35 +135,34 @@ const Collection = () => {
                     </div>
 
                     <section className="products-view products-view-grid row">
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-6 col-6">
-                            <BlockProducts />
-                        </div>
+                        {products &&
+                            products.map((product) => {
+                                return (
+                                    <div
+                                        key={product.id}
+                                        className="col-lg-3 col-md-3 col-sm-6 col-6"
+                                    >
+                                        <BlockProducts
+                                            product_id={product.id}
+                                            image_url={product.image_url}
+                                            name={product.name}
+                                            price={product.price}
+                                        />
+                                    </div>
+                                );
+                            })}
                     </section>
                     <Pagination
                         align="center"
-                        defaultCurrent={1}
-                        total={50}
+                        current={pagination.currentPage}
+                        total={pagination.totalProducts}
+                        pageSize={pagination.limit}
+                        onChange={(page) =>
+                            setPagination((prev) => ({
+                                ...prev,
+                                currentPage: page,
+                            }))
+                        }
                         className="mt-4"
                     />
                 </div>

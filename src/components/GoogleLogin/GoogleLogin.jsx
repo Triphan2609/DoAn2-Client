@@ -11,14 +11,12 @@ const GoogleLoginComponent = () => {
 
     const handleLoginSuccess = async (response) => {
         const tokenId = response.credential; // Nhận tokenId từ Google
-        console.log(tokenId);
 
         // Gửi token đến backend để xác thực
         const res = await axios.post("/auth/google", {
             tokenId,
         });
 
-        console.log(res.data); // Xử lý dữ liệu trả về từ server
         if (res?.data?.user) {
             localStorage.setItem("access_token", res.data.token);
             dispatch(doLoginAction(res.data.user));

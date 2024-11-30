@@ -44,12 +44,32 @@ export const callDeleteUser = (id) => {
 
 ///////////////////////
 
-export const callFetchListBook = (query) => {
-    return axios.get(`/api/v1/book?${query}`);
+export const callFetchAllProducts = (page, limit) => {
+    return axios.get(`/products/all`, {
+        params: { page, limit },
+    });
 };
 
+export const callFetchAllProductsOutstanding = () => {
+    return axios.get(`/products/getOutstanding`);
+};
+
+///////////////////////
+
 export const callFetchCategory = () => {
-    return axios.get("/api/v1/database/category");
+    return axios.get("/categories");
+};
+
+export const callFetchCategoryDog = () => {
+    return axios.get("/categories/dog");
+};
+
+export const callFetchCategoryCat = () => {
+    return axios.get("/categories/cat");
+};
+
+export const callFetchBrand = () => {
+    return axios.get("/brands/all");
 };
 
 export const callCreateBook = (

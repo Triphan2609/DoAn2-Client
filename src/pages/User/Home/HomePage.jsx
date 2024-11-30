@@ -8,8 +8,29 @@ import "swiper/css/navigation";
 import { NavLink } from "react-router-dom";
 import BlockProducts from "../../../components/BlockProducts/BlockProducts";
 import { Helmet } from "react-helmet";
+import { callFetchAllProductsOutstanding } from "../../../services/api";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
+    // React State
+
+    // Data
+    const [outStanding, setOutStanding] = useState();
+
+    // Fetch API
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    // Fuction
+    const fetchCategories = async () => {
+        const res = await callFetchAllProductsOutstanding();
+        if (res && res.data) {
+            let raw = res.data;
+            setOutStanding(raw);
+        }
+    };
+
     return (
         <div>
             <Helmet>
@@ -130,21 +151,24 @@ const HomePage = () => {
                         </section>
                         <section className="awe-section-3s">
                             <div className="row">
-                                <div className="col-lg-15 col-md-15 col-sm-4 col-6">
-                                    <BlockProducts />
-                                </div>
-                                <div className="col-lg-15 col-md-15 col-sm-4 col-6">
-                                    <BlockProducts />
-                                </div>
-                                <div className="col-lg-15 col-md-15 col-sm-4 col-6">
-                                    <BlockProducts />
-                                </div>
-                                <div className="col-lg-15 col-md-15 col-sm-4 col-6">
-                                    <BlockProducts />
-                                </div>
-                                <div className="col-lg-15 col-md-15 col-sm-4 col-6">
-                                    <BlockProducts />
-                                </div>
+                                {outStanding &&
+                                    outStanding.map((product) => {
+                                        return (
+                                            <div
+                                                key={product.id}
+                                                className="col-lg-15 col-md-15 col-sm-4 col-6"
+                                            >
+                                                <BlockProducts
+                                                    product_id={product.id}
+                                                    image_url={
+                                                        product.image_url
+                                                    }
+                                                    name={product.name}
+                                                    price={product.price}
+                                                />
+                                            </div>
+                                        );
+                                    })}
                             </div>
                             <div className="ant-view-more text-center mt-5">
                                 <NavLink
