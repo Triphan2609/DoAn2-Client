@@ -237,15 +237,7 @@ const Sidebar = () => {
                                         <li className="filter-item filter-item--check-box filter-item--green">
                                             <span>
                                                 <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-duoi-100-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="Dưới 100.000đ"
-                                                        value="(<100000)"
-                                                        data-operator="OR"
-                                                    />
+                                                    <input type="checkbox" />
                                                     <i className="fa"></i>
                                                     Giá dưới 100.000đ
                                                 </label>
@@ -255,15 +247,7 @@ const Sidebar = () => {
                                         <li className="filter-item filter-item--check-box filter-item--green">
                                             <span>
                                                 <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-100-000d-200-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="100.000đ - 200.000đ"
-                                                        value="(>100000 AND <200000)"
-                                                        data-operator="OR"
-                                                    />
+                                                    <input type="checkbox" />
                                                     <i className="fa"></i>
                                                     100.000đ - 200.000đ
                                                 </label>
@@ -273,15 +257,7 @@ const Sidebar = () => {
                                         <li className="filter-item filter-item--check-box filter-item--green">
                                             <span>
                                                 <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-200-000d-300-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="200.000đ - 300.000đ"
-                                                        value="(>200000 AND <300000)"
-                                                        data-operator="OR"
-                                                    />
+                                                    <input type="checkbox" />
                                                     <i className="fa"></i>
                                                     200.000đ - 300.000đ
                                                 </label>
@@ -291,15 +267,7 @@ const Sidebar = () => {
                                         <li className="filter-item filter-item--check-box filter-item--green">
                                             <span>
                                                 <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-300-000d-500-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="300.000đ - 500.000đ"
-                                                        value="(>300000 AND <500000)"
-                                                        data-operator="OR"
-                                                    />
+                                                    <input type="checkbox" />
                                                     <i className="fa"></i>
                                                     300.000đ - 500.000đ
                                                 </label>
@@ -309,106 +277,9 @@ const Sidebar = () => {
                                         <li className="filter-item filter-item--check-box filter-item--green">
                                             <span>
                                                 <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-500-000d-1-000-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="500.000đ - 1.000.000đ"
-                                                        value="(>500000 AND <1000000)"
-                                                        data-operator="OR"
-                                                    />
+                                                    <input type="checkbox" />
                                                     <i className="fa"></i>
                                                     500.000đ - 1.000.000đ
-                                                </label>
-                                            </span>
-                                        </li>
-
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <span>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-1-000-000d-2-000-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="1.000.000đ - 2.000.000đ"
-                                                        value="(>1000000 AND <2000000)"
-                                                        data-operator="OR"
-                                                    />
-                                                    <i className="fa"></i>
-                                                    1.000.000đ - 2.000.000đ
-                                                </label>
-                                            </span>
-                                        </li>
-
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <span>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-2-000-000d-3-000-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="2.000.000đ - 3.000.000đ"
-                                                        value="(>2000000 AND <3000000)"
-                                                        data-operator="OR"
-                                                    />
-                                                    <i className="fa"></i>
-                                                    2.000.000đ - 3.000.000đ
-                                                </label>
-                                            </span>
-                                        </li>
-
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <span>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-3-000-000d-5-000-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="3.000.000đ - 5.000.000đ"
-                                                        value="(>3000000 AND <5000000)"
-                                                        data-operator="OR"
-                                                    />
-                                                    <i className="fa"></i>
-                                                    3.000.000đ - 5.000.000đ
-                                                </label>
-                                            </span>
-                                        </li>
-
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <span>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-5-000-000d-7-000-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="5.000.000đ - 7.000.000đ"
-                                                        value="(>5000000 AND <7000000)"
-                                                        data-operator="OR"
-                                                    />
-                                                    <i className="fa"></i>
-                                                    5.000.000đ - 7.000.000đ
-                                                </label>
-                                            </span>
-                                        </li>
-                                        <li className="filter-item filter-item--check-box filter-item--green">
-                                            <span>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="filter-tren7-000-000d"
-                                                        data-group="Khoảng giá"
-                                                        data-field="price_min"
-                                                        data-text="Trên 7.000.000đ"
-                                                        value="(>7000000)"
-                                                        data-operator="OR"
-                                                    />
-                                                    <i className="fa"></i>
-                                                    Giá trên 7.000.000đ
                                                 </label>
                                             </span>
                                         </li>

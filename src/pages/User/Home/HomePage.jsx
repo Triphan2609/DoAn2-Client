@@ -8,27 +8,54 @@ import "swiper/css/navigation";
 import { NavLink } from "react-router-dom";
 import BlockProducts from "../../../components/BlockProducts/BlockProducts";
 import { Helmet } from "react-helmet";
-import { callFetchAllProductsOutstanding } from "../../../services/api";
+import {
+    callFetchAllProductsOutstanding,
+    callFetchNewProducts,
+    callFetchProductByType,
+} from "../../../services/api";
 import { useEffect, useState } from "react";
 
 const HomePage = () => {
     // React State
+    const [productByType1, setProductsByType1] = useState();
+    const [productByType2, setProductsByType2] = useState();
+    const [productByType3, setProductsByType3] = useState();
 
     // Data
     const [outStanding, setOutStanding] = useState();
+    const [newProducts, setNewProducts] = useState();
 
     // Fetch API
     useEffect(() => {
-        fetchCategories();
+        fetchAllProductsOutstanding();
+        fetchNewProducts();
+        fetctProductsByType();
     }, []);
 
     // Fuction
-    const fetchCategories = async () => {
+    const fetchAllProductsOutstanding = async () => {
         const res = await callFetchAllProductsOutstanding();
         if (res && res.data) {
             let raw = res.data;
             setOutStanding(raw);
         }
+    };
+
+    const fetchNewProducts = async () => {
+        const res = await callFetchNewProducts();
+        if (res && res.data) {
+            let raw = res.data;
+            setNewProducts(raw);
+        }
+    };
+
+    const fetctProductsByType = async () => {
+        const res1 = await callFetchProductByType("TA002");
+        setProductsByType1(res1.data);
+        const res2 = await callFetchProductByType("VS002");
+        setProductsByType2(res2.data);
+        const res3 = await callFetchProductByType("PC004");
+        setProductsByType3(res3.data);
     };
 
     return (
@@ -268,27 +295,21 @@ const HomePage = () => {
                                     modules={[Navigation, Pagination]}
                                     className="mySwiper"
                                 >
-                                    <SwiperSlide>
-                                        <BlockProducts />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <BlockProducts />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <BlockProducts />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <BlockProducts />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <BlockProducts />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <BlockProducts />
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <BlockProducts />
-                                    </SwiperSlide>
+                                    {newProducts &&
+                                        newProducts.map((product) => {
+                                            return (
+                                                <SwiperSlide key={product.id}>
+                                                    <BlockProducts
+                                                        product_id={product.id}
+                                                        image_url={
+                                                            product.image_url
+                                                        }
+                                                        name={product.name}
+                                                        price={product.price}
+                                                    />
+                                                </SwiperSlide>
+                                            );
+                                        })}
                                 </Swiper>
                             </div>
                         </div>
@@ -338,372 +359,204 @@ const HomePage = () => {
                                     </NavLink>
                                 </div>
                                 <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
-                                    <a
-                                        href="phong-ngu"
-                                        title="Phòng ngủ "
+                                    <NavLink
+                                        to="products/thuc-an-hat"
+                                        title="hức ăn hạt"
                                         className="section-title"
                                     >
-                                        Phòng ngủ
-                                    </a>
+                                        Thức ăn hạt
+                                    </NavLink>
 
                                     <div className="fix-item-mobile">
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
+                                        {productByType1 &&
+                                            productByType1.map((product) => {
+                                                return (
+                                                    <div
+                                                        key={product.id}
+                                                        className="evo-product-block-item evo-product-block-item-small"
+                                                    >
+                                                        <NavLink
+                                                            to="/product/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                            title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                            className="product__box-image"
+                                                        >
+                                                            <img
+                                                                className="lazy loaded"
+                                                                src={
+                                                                    product.image_url
+                                                                }
+                                                                alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                            />
+                                                        </NavLink>
+                                                        <div className="evo-product-right">
+                                                            <a
+                                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                                className="product__box-name"
+                                                            >
+                                                                {product.name}
+                                                            </a>
+                                                            <div className="product__box-price">
+                                                                <span className="price">
+                                                                    {new Intl.NumberFormat(
+                                                                        "vi-VN",
+                                                                        {
+                                                                            style: "currency",
+                                                                            currency:
+                                                                                "VND",
+                                                                        }
+                                                                    ).format(
+                                                                        product.price
+                                                                    )}
+                                                                </span>
+                                                            </div>
 
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
+                                                            <a
+                                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                                className="action add_to_cart cart-button d-none"
+                                                                rel="nofollow"
+                                                                title="Mua ngay"
+                                                            >
+                                                                Mua ngay
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                    </div>
+                                </div>
+                                <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
+                                    <NavLink
+                                        to="phong-ngu"
+                                        title="cát mèo"
+                                        className="section-title"
+                                    >
+                                        Cát mèo
+                                    </NavLink>
 
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
+                                    <div className="fix-item-mobile">
+                                        {productByType2 &&
+                                            productByType2.map((product) => {
+                                                return (
+                                                    <div
+                                                        key={product.id}
+                                                        className="evo-product-block-item evo-product-block-item-small"
+                                                    >
+                                                        <NavLink
+                                                            to="/product/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                            title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                            className="product__box-image"
+                                                        >
+                                                            <img
+                                                                className="lazy loaded"
+                                                                src={
+                                                                    product.image_url
+                                                                }
+                                                                alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                            />
+                                                        </NavLink>
+                                                        <div className="evo-product-right">
+                                                            <a
+                                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                                className="product__box-name"
+                                                            >
+                                                                {product.name}
+                                                            </a>
+                                                            <div className="product__box-price">
+                                                                <span className="price">
+                                                                    {new Intl.NumberFormat(
+                                                                        "vi-VN",
+                                                                        {
+                                                                            style: "currency",
+                                                                            currency:
+                                                                                "VND",
+                                                                        }
+                                                                    ).format(
+                                                                        product.price
+                                                                    )}
+                                                                </span>
+                                                            </div>
 
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
+                                                            <a
+                                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                                className="action add_to_cart cart-button d-none"
+                                                                rel="nofollow"
+                                                                title="Mua ngay"
+                                                            >
+                                                                Mua ngay
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
                                     </div>
                                 </div>
                                 <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
                                     <a
                                         href="phong-ngu"
-                                        title="Phòng ngủ "
+                                        title="Vòng cổ cho mèo "
                                         className="section-title"
                                     >
-                                        Phòng ngủ
+                                        Vòng cổ cho mèo
                                     </a>
 
                                     <div className="fix-item-mobile">
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
+                                        {productByType3 &&
+                                            productByType3.map((product) => {
+                                                return (
+                                                    <div
+                                                        key={product.id}
+                                                        className="evo-product-block-item evo-product-block-item-small"
+                                                    >
+                                                        <NavLink
+                                                            to="/product/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                            title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                            className="product__box-image"
+                                                        >
+                                                            <img
+                                                                className="lazy loaded"
+                                                                src={
+                                                                    product.image_url
+                                                                }
+                                                                alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                            />
+                                                        </NavLink>
+                                                        <div className="evo-product-right">
+                                                            <a
+                                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
+                                                                className="product__box-name"
+                                                            >
+                                                                {product.name}
+                                                            </a>
+                                                            <div className="product__box-price">
+                                                                <span className="price">
+                                                                    {new Intl.NumberFormat(
+                                                                        "vi-VN",
+                                                                        {
+                                                                            style: "currency",
+                                                                            currency:
+                                                                                "VND",
+                                                                        }
+                                                                    ).format(
+                                                                        product.price
+                                                                    )}
+                                                                </span>
+                                                            </div>
 
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
-
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
-
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
-                                    <a
-                                        href="phong-ngu"
-                                        title="Phòng ngủ "
-                                        className="section-title"
-                                    >
-                                        Phòng ngủ
-                                    </a>
-
-                                    <div className="fix-item-mobile">
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
-
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
-
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="evo-product-block-item evo-product-block-item-small">
-                                            <a
-                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                className="product__box-image"
-                                            >
-                                                <img
-                                                    className="lazy loaded"
-                                                    src="//bizweb.dktcdn.net/thumb/medium/100/147/060/products/ed1e0889-099f-4882-ba4b-a09d7741fbab-1c87a690-382e-44a2-8422-570bb7b59250.png?v=1650979722583"
-                                                    alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                />
-                                            </a>
-                                            <div className="evo-product-right">
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    title="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
-                                                    className="product__box-name"
-                                                >
-                                                    Bộ chăn ga gối (bọc) Gấu
-                                                    Grizzly (1.6*2m)
-                                                </a>
-                                                <div className="product__box-price">
-                                                    <span className="price">
-                                                        3.949.000₫
-                                                    </span>
-                                                </div>
-
-                                                <a
-                                                    href="/bo-chan-ga-goi-boc-gau-grizzly-16"
-                                                    className="action add_to_cart cart-button d-none"
-                                                    rel="nofollow"
-                                                    title="Mua ngay"
-                                                >
-                                                    Mua ngay
-                                                </a>
-                                            </div>
-                                        </div>
+                                                            <a
+                                                                href="/bo-chan-ga-goi-boc-gau-grizzly-16"
+                                                                className="action add_to_cart cart-button d-none"
+                                                                rel="nofollow"
+                                                                title="Mua ngay"
+                                                            >
+                                                                Mua ngay
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
                                     </div>
                                 </div>
                                 <div className="d-block d-md-none">

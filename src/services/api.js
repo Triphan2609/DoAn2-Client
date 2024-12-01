@@ -44,14 +44,32 @@ export const callDeleteUser = (id) => {
 
 ///////////////////////
 
-export const callFetchAllProducts = (page, limit) => {
+export const callFetchAllProducts = (
+    page,
+    limit,
+    sortBy = "createdAt",
+    sortOrder = "ASC"
+) => {
     return axios.get(`/products/all`, {
-        params: { page, limit },
+        params: {
+            page,
+            limit,
+            sortBy, // Tham số sắp xếp theo trường (mặc định 'createdAt')
+            sortOrder, // Tham số thứ tự sắp xếp (mặc định 'ASC')
+        },
     });
 };
 
 export const callFetchAllProductsOutstanding = () => {
     return axios.get(`/products/getOutstanding`);
+};
+
+export const callFetchNewProducts = () => {
+    return axios.get(`/products/getNewProducts`);
+};
+
+export const callFetchProductByType = (query) => {
+    return axios.get(`/products/getByType?product_type_id=${query}`);
 };
 
 ///////////////////////
@@ -68,9 +86,13 @@ export const callFetchCategoryCat = () => {
     return axios.get("/categories/cat");
 };
 
+///////////////////////
+
 export const callFetchBrand = () => {
     return axios.get("/brands/all");
 };
+
+///////////////////////
 
 export const callCreateBook = (
     thumbnail,

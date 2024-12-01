@@ -5,10 +5,12 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import Collection from "../../../components/Collection/Collection";
 import { useEffect, useState } from "react";
 import { callFetchAllProducts } from "../../../services/api";
+
 const AllProducts = () => {
     // Data
-    const [products, setProducts] = useState();
+    const [products, setProducts] = useState([]);
     console.log(products);
+
     // States React
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -17,14 +19,27 @@ const AllProducts = () => {
         limit: 10,
     });
 
+    const [sortBy, setSortBy] = useState("createdAt"); // Mặc định sắp xếp theo ngày thêm mới
+    const [sortOrder, setSortOrder] = useState("ASC");
+
     // Fetch data khi component mount hoặc pagination thay đổi
     useEffect(() => {
-        fetchProducts(pagination.currentPage, pagination.limit);
-    }, [pagination.currentPage, pagination.limit]);
+        fetchProducts(
+            pagination.currentPage,
+            pagination.limit,
+            sortBy,
+            sortOrder
+        );
+    }, [pagination.currentPage, pagination.limit, sortBy, sortOrder]);
 
-    // Function
-    const fetchProducts = async (page = 1, limit = 10) => {
-        const res = await callFetchAllProducts(page, limit);
+    // Fetch function
+    const fetchProducts = async (
+        page = 1,
+        limit = 10,
+        sortBy = "createdAt",
+        sortOrder = "ASC"
+    ) => {
+        const res = await callFetchAllProducts(page, limit, sortBy, sortOrder);
 
         if (res && res.data) {
             setProducts(res.data.products);
@@ -37,9 +52,13 @@ const AllProducts = () => {
         }
     };
 
-    return (
-        // Data
+    // Handle sorting change
+    const handleSortChange = (field, order) => {
+        setSortBy(field);
+        setSortOrder(order);
+    };
 
+    return (
         <div className="product-page">
             <Helmet>
                 <title>Tất cả sản phẩm</title>
@@ -52,6 +71,9 @@ const AllProducts = () => {
                         products={products}
                         pagination={pagination}
                         setPagination={setPagination}
+                        onSortChange={handleSortChange}
+                        sortBy={sortBy}
+                        sortOrder={sortOrder}
                     />
                 </div>
             </div>
