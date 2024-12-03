@@ -26,6 +26,8 @@ import Contact from "./pages/User/Contact/Contact";
 import FindPage from "./pages/User/FindPage/FindPage";
 import Payment from "./pages/User/Payment/Payment";
 import Cart from "./pages/User/Cart/Cart";
+import ProductsAnimals from "./pages/User/Product/ProductsAnimals";
+import ProductsCategories from "./pages/User/Product/ProductsCategories";
 
 const App = () => {
     const Layout = () => {
@@ -56,7 +58,22 @@ const App = () => {
                     path: "gioi-thieu",
                     element: <Introduce />,
                 },
-                { path: "tat-ca-san-pham", element: <AllProducts /> },
+                {
+                    path: "san-pham/tat-ca-san-pham",
+                    element: <AllProducts />,
+                },
+                {
+                    path: "san-pham/san-pham-cho-meo",
+                    element: <ProductsAnimals />,
+                },
+                {
+                    path: "san-pham/san-pham-cho-cho",
+                    element: <ProductsAnimals />,
+                },
+                {
+                    path: "san-pham/loai-san-pham",
+                    element: <ProductsCategories />,
+                },
                 {
                     path: "tai-khoan/thong-tin-tai-khoan",
                     element: <Info />,
@@ -74,33 +91,33 @@ const App = () => {
                     element: <Address />,
                 },
                 {
-                    path: "/san-pham",
+                    path: "san-pham/chi-tiet-san-pham/:slug",
                     element: <ProductDetail />,
                 },
                 {
-                    path: "/tim-kiem",
+                    path: "tim-kiem",
                     element: <FindPage />,
                 },
                 {
-                    path: "/gio-hang",
+                    path: "gio-hang",
                     element: <Cart />,
                 },
             ],
         },
         {
-            path: "/dang-nhap",
+            path: "dang-nhap",
             element: <Login />,
         },
         {
-            path: "/dang-ky",
+            path: "dang-ky",
             element: <Register />,
         },
         {
-            path: "/thanh-toan",
+            path: "thanh-toan",
             element: <Payment />,
         },
         {
-            path: "/admin",
+            path: "admin",
             element: (
                 <ProtectedRoute>
                     <Admin />

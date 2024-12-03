@@ -1,8 +1,11 @@
+import { useSelector } from "react-redux";
 import BlockAccount from "../../../components/BlockAccount/BlockAccount";
 import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 import "./Account.scss";
 
 const Info = () => {
+    const user = useSelector((state) => state.account.user);
+
     return (
         <div className="info-page" style={{ background: "#fff" }}>
             <BreadCrumb title="Trang khách hàng" />
@@ -18,11 +21,12 @@ const Info = () => {
                             </h1>
                             <div className="form-signup name-account m992">
                                 <p>
-                                    <strong>Họ tên:</strong> PiTi Coder
+                                    <strong>Họ tên:</strong>{" "}
+                                    {user ? user?.name : ""}
                                 </p>
                                 <p>
-                                    {" "}
-                                    <strong>Email:</strong> titp269@gmail.com
+                                    <strong>Email:</strong>{" "}
+                                    {user ? user?.email : ""}
                                 </p>
                             </div>
                         </div>

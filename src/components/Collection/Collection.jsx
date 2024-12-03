@@ -40,6 +40,26 @@ const Collection = ({
                                 Xếp theo
                             </h3>
                             <ul>
+                                <li className="btn-quick-sort createdAt-asc">
+                                    <input
+                                        type="radio"
+                                        name="sort"
+                                        id="newest"
+                                        checked={sortBy === "createdAt"}
+                                        onChange={() =>
+                                            handleSortOptionChange(
+                                                "createdAt",
+                                                "ASC"
+                                            )
+                                        }
+                                    />
+                                    <label
+                                        htmlFor="newest"
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        Mới nhất
+                                    </label>
+                                </li>
                                 <li className="btn-quick-sort alpha-asc">
                                     <input
                                         type="radio"
@@ -132,59 +152,54 @@ const Collection = ({
                                         Giá từ cao xuống thấp
                                     </label>
                                 </li>
-                                <li className="btn-quick-sort createdAt-asc">
-                                    <input
-                                        type="radio"
-                                        name="sort"
-                                        id="newest"
-                                        checked={sortBy === "createdAt"}
-                                        onChange={() =>
-                                            handleSortOptionChange(
-                                                "createdAt",
-                                                "ASC"
-                                            )
-                                        }
-                                    />
-                                    <label
-                                        htmlFor="newest"
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        Mới nhất
-                                    </label>
-                                </li>
                             </ul>
                         </div>
                     </div>
-                    <section className="products-view products-view-grid row">
-                        {products &&
-                            products.map((product) => {
-                                return (
-                                    <div
-                                        key={product.id}
-                                        className="col-lg-3 col-md-3 col-sm-6 col-6"
-                                    >
-                                        <BlockProducts
-                                            product_id={product.id}
-                                            image_url={product.image_url}
-                                            name={product.name}
-                                            price={product.price}
-                                        />
-                                    </div>
-                                );
-                            })}
-                    </section>
-                    <Pagination
-                        current={pagination.currentPage}
-                        pageSize={pagination.limit}
-                        total={pagination.totalProducts}
-                        onChange={(page, pageSize) =>
-                            setPagination((prev) => ({
-                                ...prev,
-                                currentPage: page,
-                                limit: pageSize,
-                            }))
-                        }
-                    />
+                    {products?.length > 0 ? (
+                        <>
+                            <section className="products-view products-view-grid row">
+                                {products &&
+                                    products.map((product) => {
+                                        return (
+                                            <div
+                                                key={product.id}
+                                                className="col-lg-3 col-md-3 col-sm-6 col-6"
+                                            >
+                                                <BlockProducts
+                                                    product_id={product.id}
+                                                    image_url={
+                                                        product.image_url
+                                                    }
+                                                    name={product.name}
+                                                    price={product.price}
+                                                    slug={product.slug}
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                            </section>
+                            <Pagination
+                                style={{
+                                    justifyContent: "center",
+                                    marginTop: "24px",
+                                }}
+                                current={pagination.currentPage}
+                                pageSize={pagination.limit}
+                                total={pagination.totalProducts}
+                                onChange={(page, pageSize) =>
+                                    setPagination((prev) => ({
+                                        ...prev,
+                                        currentPage: page,
+                                        limit: pageSize,
+                                    }))
+                                }
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <p>Không tìm thấy bất kỳ sản phẩm nào!</p>
+                        </>
+                    )}
                 </div>
             </section>
         </>

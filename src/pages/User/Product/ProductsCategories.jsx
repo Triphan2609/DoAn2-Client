@@ -3,14 +3,17 @@ import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 import "./Product.scss";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import Collection from "../../../components/Collection/Collection";
-import { useEffect, useState } from "react";
-import { callFetchAllProducts } from "../../../services/api";
+import { useContext, useEffect, useState } from "react";
+import { callFetchAllProductsCategories } from "../../../services/api";
+import { AnimalContext } from "../../../context/animal.context";
 
-const AllProducts = () => {
+const ProductsCategories = () => {
     // Data
     const [products, setProducts] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+    const [sortBy, setSortBy] = useState("createdAt"); // Mặc định sắp xếp theo ngày thêm mới
+    const [sortOrder, setSortOrder] = useState("ASC");
 
     // States React
     const [pagination, setPagination] = useState({
@@ -20,8 +23,8 @@ const AllProducts = () => {
         limit: 10,
     });
 
-    const [sortBy, setSortBy] = useState("createdAt"); // Mặc định sắp xếp theo ngày thêm mới
-    const [sortOrder, setSortOrder] = useState("ASC");
+    // Context
+    const { filter } = useContext(AnimalContext);
 
     useEffect(() => {
         fetchProducts(
@@ -30,7 +33,8 @@ const AllProducts = () => {
             sortBy,
             sortOrder,
             selectedBrands,
-            selectedPriceRange
+            selectedPriceRange,
+            filter
         );
     }, [
         pagination.currentPage,
@@ -39,6 +43,7 @@ const AllProducts = () => {
         sortOrder,
         selectedBrands,
         selectedPriceRange,
+        filter,
     ]);
 
     // Fetch function
@@ -48,16 +53,17 @@ const AllProducts = () => {
         sortBy = "createdAt",
         sortOrder = "ASC",
         brand = [],
-        priceRange = []
-        // New parameter for brand filters
+        priceRange = [],
+        filter
     ) => {
-        const res = await callFetchAllProducts(
+        const res = await callFetchAllProductsCategories(
             page,
             limit,
             sortBy,
             sortOrder,
             brand,
-            priceRange
+            priceRange,
+            filter
         );
 
         if (res && res.data) {
@@ -80,7 +86,7 @@ const AllProducts = () => {
     return (
         <div className="product-page">
             <Helmet>
-                <title>Tất cả sản phẩm</title>
+                <title>Sản phẩm cho thú cưng</title>
             </Helmet>
             <BreadCrumb title={"Tất cả sản phẩm"} />
             <div className="container ant-cate-content">
@@ -105,4 +111,4 @@ const AllProducts = () => {
     );
 };
 
-export default AllProducts;
+export default ProductsCategories;

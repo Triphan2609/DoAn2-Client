@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isAuthenticated: false,
     isLoading: true,
+    isLoginWithGoogle: false,
     user: {
         email: "",
         phone: "",
@@ -26,19 +27,18 @@ export const accountSlide = createSlice({
             state.isLoading = false;
             state.user = action.payload;
         },
-        doGetAccountAction: (state, action) => {
+        doLoginWithGoogle: (state) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
-            state.isAuthenticated = true;
-            state.isLoading = false;
-            state.user = action.payload.user;
+            state.isLoginWithGoogle = true;
         },
 
         doLogoutAction: (state) => {
             localStorage.removeItem("access_token");
             state.isAuthenticated = false;
+            state.isLoginWithGoogle = false;
             state.user = {
                 email: "",
                 phone: "",
@@ -46,15 +46,6 @@ export const accountSlide = createSlice({
                 role: "",
                 id: "",
             };
-        },
-        doUpdateUserInfoAction: (state, action) => {
-            state.user.avatar = action.payload.avatar;
-            state.user.phone = action.payload.phone;
-            state.user.fullName = action.payload.fullName;
-        },
-
-        doUploadAvatarAction: (state, action) => {
-            state.tempAvatar = action.payload.avatar;
         },
     },
     // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -64,12 +55,7 @@ export const accountSlide = createSlice({
 export const selectIsAuthenticated = (state) =>
     state.accountSlide.isAuthenticated;
 
-export const {
-    doLoginAction,
-    doGetAccountAction,
-    doLogoutAction,
-    doUpdateUserInfoAction,
-    doUploadAvatarAction,
-} = accountSlide.actions;
+export const { doLoginAction, doLoginWithGoogle, doLogoutAction } =
+    accountSlide.actions;
 
 export default accountSlide.reducer;

@@ -1,7 +1,12 @@
 import { NavLink } from "react-router-dom";
 import "./BlockAccount.scss";
+import { useSelector } from "react-redux";
 
 const BlockAccount = () => {
+    const isLoginWithGoogle = useSelector(
+        (state) => state.account.isLoginWithGoogle
+    );
+
     return (
         <>
             <div className="block-account">
@@ -35,17 +40,24 @@ const BlockAccount = () => {
                             Đơn hàng của bạn
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink
-                            to="/tai-khoan/doi-mat-khau"
-                            className={({ isActive }) =>
-                                isActive ? "title-info active" : "title-info"
-                            }
-                            title="Đổi mật khẩu"
-                        >
-                            Đổi mật khẩu
-                        </NavLink>
-                    </li>
+                    {isLoginWithGoogle && isLoginWithGoogle === false ? (
+                        <li>
+                            <NavLink
+                                to="/tai-khoan/doi-mat-khau"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "title-info active"
+                                        : "title-info"
+                                }
+                                title="Đổi mật khẩu"
+                            >
+                                Đổi mật khẩu
+                            </NavLink>
+                        </li>
+                    ) : (
+                        ""
+                    )}
+
                     <li>
                         <NavLink
                             className={({ isActive }) =>

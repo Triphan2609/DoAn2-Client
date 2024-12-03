@@ -67,6 +67,7 @@
         .cart_product {
             margin-bottom: 15px;
             padding-bottom: 15px;
+            padding-top: 15px;
             display: table;
             width: 100%;
             .cart_image {
@@ -151,8 +152,6 @@
                     width: 50%;
                     float: left;
                     .cart__price {
-                        margin-bottom: 5px;
-                        margin-top: 5px;
                         .cart__sale-price {
                             font-weight: 700;
                             display: block;
@@ -162,7 +161,7 @@
                     }
                     .cart__btn-remove {
                         display: inline-block;
-                        margin-top: 5px;
+                        margin-top: 10px;
                         font-size: 14px;
                         color: #6d79b5;
                     }
@@ -172,6 +171,9 @@
                     }
                 }
             }
+        }
+        .cart_product + .cart_product {
+            border-top: 1px solid #ccc;
         }
     }
     .cart-footer {

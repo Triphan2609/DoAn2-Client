@@ -192,6 +192,7 @@ const HomePage = () => {
                                                     }
                                                     name={product.name}
                                                     price={product.price}
+                                                    slug={product.slug}
                                                 />
                                             </div>
                                         );
@@ -306,6 +307,7 @@ const HomePage = () => {
                                                         }
                                                         name={product.name}
                                                         price={product.price}
+                                                        slug={product.slug}
                                                     />
                                                 </SwiperSlide>
                                             );
@@ -494,7 +496,7 @@ const HomePage = () => {
                                 </div>
                                 <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
                                     <a
-                                        href="phong-ngu"
+                                        to="phong-ngu"
                                         title="Vòng cổ cho mèo "
                                         className="section-title"
                                     >

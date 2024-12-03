@@ -2,7 +2,10 @@ import { GoogleLogin } from "@react-oauth/google";
 import axios from "../../utils/axiosCustomize.js";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { doLoginAction } from "../../redux/account/accountSlice";
+import {
+    doLoginAction,
+    doLoginWithGoogle,
+} from "../../redux/account/accountSlice";
 import { message, notification } from "antd";
 import "./GoogleLogin.scss";
 const GoogleLoginComponent = () => {
@@ -20,6 +23,7 @@ const GoogleLoginComponent = () => {
         if (res?.data?.user) {
             localStorage.setItem("access_token", res.data.token);
             dispatch(doLoginAction(res.data.user));
+            dispatch(doLoginWithGoogle());
             message.success("Đăng nhập tài khoản thành công!");
             navigate("/");
         } else {

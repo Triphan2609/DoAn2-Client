@@ -7,32 +7,51 @@ import DrawerCart from "../../pages/User/Home/Modal/DrawerCart";
 import { Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { doLogoutAction } from "../../redux/account/accountSlice";
-import { message } from "antd";
-import { callFetchCategoryCat, callFetchCategoryDog } from "../../services/api";
+import { Flex, message, Spin } from "antd";
+import {
+    callFetchAnimal,
+    callFetchCategoryCat,
+    callFetchCategoryDog,
+    callSearchProducts,
+} from "../../services/api";
+import { useContext } from "react";
+import { AnimalContext } from "../../context/animal.context";
+import { debounce } from "lodash";
+import { doGetSearchQuery } from "../../redux/find/findSlice";
+import { DrawerContext } from "../../context/drawer.context";
+
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     // React State
     const [isBtnShow, setIsBtnShow] = useState(false);
     const [isShowNav, setShowNav] = useState(false);
     const [isShowDropdown, setShowDropdown] = useState(false);
     const [isShowDropdownLv2, setShowDropdownLv2] = useState(false);
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loadingOrder, setLoadingOrder] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [products, setProducts] = useState([]);
+
+    // Context
+    const { drawer, setDrawer } = useContext(DrawerContext);
+    const { setFilter } = useContext(AnimalContext);
+
     // Data
     const [categoriesDog, setCategoriesDog] = useState();
     const [categoriesCat, setCategoriesCat] = useState();
+    const [animals, setAnimals] = useState();
 
     // Redux State
     const isAuthenticated = useSelector(
         (state) => state.account.isAuthenticated
     );
-    const isAdmin = useSelector((state) => state.account.user.role);
+    const isAdmin = useSelector((state) => state.account?.user?.role);
 
     // Fetch API
     useEffect(() => {
         fetchCategories();
+        fetchAnimals();
     }, []);
 
     // Fuction
@@ -50,15 +69,37 @@ const Header = () => {
         }
     };
 
-    const showLoading = () => {
-        setOpen(true);
+    const fetchAnimals = async () => {
+        const res = await callFetchAnimal();
+        if (res && res.data) {
+            let raw = res.data;
+            setAnimals(raw);
+        }
+    };
+
+    const handleSearch = debounce(async (value) => {
+        setSearchQuery(value);
         setLoading(true);
 
-        // Simple loading mock. You should add cleanup logic in real world.
+        const res = await callSearchProducts(value);
+
+        if (res && res.data) {
+            setProducts(res.data.products);
+        }
+
+        setLoading(false);
+    }, 500);
+
+    const showLoading = () => {
+        setDrawer(true);
+        setLoadingOrder(true);
+
+        // Simple loadingOrder mock. You should add cleanup logic in real world.
         setTimeout(() => {
-            setLoading(false);
-        }, 1000);
+            setLoadingOrder(false);
+        }, 500);
     };
+
     const handleLogout = () => {
         dispatch(doLogoutAction());
         message.success("Đăng xuất thành công");
@@ -152,24 +193,24 @@ const Header = () => {
                         </NavLink>
                     </div>
                     <div className="evo-header-search evo-searchs">
-                        <form
-                            action="/search"
-                            method="get"
-                            className="evo-header-search-form evo-search-form has-validation-callback"
-                            role="search"
-                        >
+                        <form className="evo-header-search-form evo-search-form has-validation-callback">
                             <input
                                 type="text"
                                 name="query"
                                 className="search-auto form-control"
                                 placeholder="Bạn cần tìm gì?"
                                 autoComplete="off"
+                                onChange={(e) => handleSearch(e.target.value)}
+                                onFocus={(e) => handleSearch(e.target.value)}
                             />
-                            <input type="hidden" name="type" value="product" />
                             <button
                                 className="btn btn-default"
-                                type="submit"
                                 aria-label="Tìm kiếm"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(doGetSearchQuery(searchQuery));
+                                    navigate("/tim-kiem");
+                                }}
                             >
                                 <svg
                                     className="Icon Icon--search-desktop"
@@ -194,23 +235,94 @@ const Header = () => {
                             </button>
                         </form>
                         <div className="results-box">
-                            <div className="search-results d-none">
-                                <a
-                                    className="clearfix"
-                                    href="/ba-lo-thu-cung-27"
-                                    title="KBL-MK-H47-12365-L"
+                            {loading === true ? (
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
+                                        alignContent: "center",
+                                    }}
                                 >
-                                    <div className="img">
-                                        <img src="//bizweb.dktcdn.net/thumb/compact/100/147/060/products/4f95b3ac-99ad-476d-8b9b-35f69d64afde-3992c290-0bc8-4b8c-9e7c-6cae1005cbb8.jpg?v=1651032333887" />
-                                    </div>
-                                    <div className="d-title">
-                                        KBL-MK-H47-12365-L
-                                    </div>
-                                    <div className="d-title d-price">
-                                        289.000₫
-                                    </div>
-                                </a>
-                            </div>
+                                    <Flex
+                                        justify="center"
+                                        align="center"
+                                        gap="middle"
+                                    >
+                                        <Spin size="large" />
+                                    </Flex>
+                                </div>
+                            ) : (
+                                <div
+                                    className="search-results"
+                                    style={{ display: "block" }}
+                                >
+                                    {products && products.length > 0
+                                        ? products
+                                              .slice(0, 4)
+                                              .map((product, index) => (
+                                                  <NavLink
+                                                      key={index}
+                                                      className="clearfix"
+                                                      to={`san-pham/chi-tiet-san-pham/${product.slug}`}
+                                                      title={product.name}
+                                                      onClick={() => {
+                                                          setProducts("");
+                                                      }}
+                                                  >
+                                                      <div className="img">
+                                                          <img
+                                                              src={
+                                                                  product.image_url
+                                                              }
+                                                              alt={product.name}
+                                                          />
+                                                      </div>
+                                                      <div className="d-title">
+                                                          {product.name}
+                                                      </div>
+                                                      <div className="d-title d-price">
+                                                          {new Intl.NumberFormat(
+                                                              "vi-VN",
+                                                              {
+                                                                  style: "currency",
+                                                                  currency:
+                                                                      "VND",
+                                                              }
+                                                          ).format(
+                                                              product.price
+                                                          )}
+                                                      </div>
+                                                  </NavLink>
+                                              ))
+                                        : ""}
+                                    {products && products.length > 0 ? (
+                                        <NavLink
+                                            className="clearfix"
+                                            to="/tim-kiem"
+                                            title={"Xem tất cả"}
+                                            onClick={() => {
+                                                dispatch(
+                                                    doGetSearchQuery(
+                                                        searchQuery
+                                                    )
+                                                );
+                                                setProducts("");
+                                            }}
+                                        >
+                                            <div
+                                                className="d-title"
+                                                style={{ textAlign: "center" }}
+                                            >
+                                                Xem tất cả
+                                            </div>
+                                        </NavLink>
+                                    ) : (
+                                        ""
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="evo-header-policy">
@@ -373,7 +485,7 @@ const Header = () => {
 
                     <li className=" nav-item has-childs  ">
                         <NavLink
-                            to="/tat-ca-san-pham"
+                            to="san-pham/tat-ca-san-pham"
                             className={({ isActive }) =>
                                 isActive ? "nav-link active" : "nav-link"
                             }
@@ -416,10 +528,20 @@ const Header = () => {
                             <li className="dropdown-submenu nav-item-lv2 has-childs2">
                                 <NavLink
                                     className="nav-link"
-                                    to="/tat-ca-san-pham"
+                                    to="san-pham/san-pham-cho-meo"
                                     title="Sản phẩm cho mèo"
+                                    data-animal={
+                                        animals &&
+                                        animals[0]?.animal_id &&
+                                        "MEO"
+                                    }
+                                    onClick={(e) => {
+                                        setFilter(
+                                            e.target.getAttribute("data-animal")
+                                        );
+                                    }}
                                 >
-                                    Sản phẩm cho mèo{" "}
+                                    Sản phẩm cho mèo
                                     <svg
                                         className="plus-nClick2"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -469,16 +591,26 @@ const Header = () => {
                                                     key={cat.id}
                                                     className="nav-item-lv3"
                                                 >
-                                                    <a
+                                                    <NavLink
                                                         className="nav-link"
-                                                        to="/quan-ao"
+                                                        to="san-pham/loai-san-pham"
                                                         title={cat.name}
                                                         style={{
                                                             cursor: "pointer",
                                                         }}
+                                                        data-animal={
+                                                            cat.category_id
+                                                        }
+                                                        onClick={(e) => {
+                                                            setFilter(
+                                                                e.target.getAttribute(
+                                                                    "data-animal"
+                                                                )
+                                                            );
+                                                        }}
                                                     >
                                                         {cat.name}
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                             );
                                         })}
@@ -487,8 +619,18 @@ const Header = () => {
                             <li className="dropdown-submenu nav-item-lv2 has-childs2">
                                 <NavLink
                                     className="nav-link"
-                                    to="/tat-ca-san-pham"
+                                    to="san-pham/san-pham-cho-cho"
                                     title="Sản phẩm cho chó"
+                                    data-animal={
+                                        animals &&
+                                        animals[0]?.animal_id &&
+                                        "CHO"
+                                    }
+                                    onClick={(e) => {
+                                        setFilter(
+                                            e.target.getAttribute("data-animal")
+                                        );
+                                    }}
                                 >
                                     Sản phẩm cho chó{" "}
                                     <svg
@@ -534,22 +676,32 @@ const Header = () => {
                                 </NavLink>
                                 <ul className="dropdown-menu">
                                     {categoriesDog &&
-                                        categoriesDog?.map((dog) => {
+                                        categoriesDog?.map((dog, index) => {
                                             return (
                                                 <li
-                                                    key={dog.id}
+                                                    key={index}
                                                     className="nav-item-lv3"
                                                 >
-                                                    <a
+                                                    <NavLink
                                                         className="nav-link"
-                                                        to="/quan-ao"
+                                                        to="/san-pham/loai-san-pham"
                                                         title={dog.name}
                                                         style={{
                                                             cursor: "pointer",
                                                         }}
+                                                        data-animal={
+                                                            dog.category_id
+                                                        }
+                                                        onClick={(e) => {
+                                                            setFilter(
+                                                                e.target.getAttribute(
+                                                                    "data-animal"
+                                                                )
+                                                            );
+                                                        }}
                                                     >
                                                         {dog.name}
-                                                    </a>
+                                                    </NavLink>
                                                 </li>
                                             );
                                         })}
@@ -584,9 +736,9 @@ const Header = () => {
                 </ul>
             </div>
             <DrawerCart
-                open={open}
-                setOpen={setOpen}
-                loading={loading}
+                drawer={drawer}
+                setDrawer={setDrawer}
+                loadingOrder={loadingOrder}
                 showLoading={showLoading}
             />
         </section>
