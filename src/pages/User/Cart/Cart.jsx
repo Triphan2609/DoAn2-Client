@@ -1,8 +1,37 @@
 import { Helmet } from "react-helmet";
 import "./Cart.scss";
 import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart, updateQuantity } from "../../../redux/cart/cartSlice";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Cart = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const cartItems = useSelector((state) => state.cart.items);
+
+    // Hàm tính tổng tiền
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => {
+            return total + item.price * item.quantity;
+        }, 0);
+    };
+
+    // Hàm xử lý thay đổi số lượng sản phẩm
+    const handleQuantityChange = (item, newQuantity) => {
+        if (newQuantity < 1) return; // Không cho phép số lượng nhỏ hơn 1
+        dispatch(
+            updateQuantity({
+                productId: item.product_id,
+                quantity: newQuantity,
+            })
+        );
+    };
+
+    const handleRemove = (product) => {
+        dispatch(removeFromCart(product));
+    };
+
     return (
         <div className="cart-page">
             <Helmet>
@@ -20,7 +49,7 @@ const Cart = () => {
                                         <span>
                                             (
                                             <span className="count_item_pr hascart">
-                                                1
+                                                {cartItems?.length}
                                             </span>{" "}
                                             sản phẩm)
                                         </span>
@@ -29,159 +58,237 @@ const Cart = () => {
                                         <div className="cart page_cart cart_des_page hidden-xs-down row">
                                             <div className="col-lg-12 cart-col-1">
                                                 <div className="cart-tbody">
-                                                    <div className="row shopping-cart-item productid-7485584">
-                                                        <div className="col-lg-3 img-thumnail-custom">
-                                                            <p className="image">
-                                                                <a
-                                                                    href="/tui-treo-tuong-doz-902"
-                                                                    title="Túi treo tường DOZ-902"
-                                                                    target="_blank"
-                                                                >
-                                                                    <img
-                                                                        className="img-responsive"
-                                                                        src="https://bizweb.dktcdn.net/thumb/medium/100/147/060/products/1946236doz-902-230-jpeg.jpg"
-                                                                        alt="Túi treo tường DOZ-902"
-                                                                    />
-                                                                </a>
-                                                            </p>
-                                                        </div>
-                                                        <div className="col-right col-lg-9">
-                                                            <div className="box-info-product">
-                                                                <p className="name">
-                                                                    <a
-                                                                        href="/tui-treo-tuong-doz-902"
-                                                                        title="Túi treo tường DOZ-902"
-                                                                        target="_blank"
+                                                    {cartItems &&
+                                                    cartItems.length > 0 ? (
+                                                        cartItems.map(
+                                                            (item, index) => {
+                                                                return (
+                                                                    <div
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        className="row shopping-cart-item "
                                                                     >
-                                                                        Túi treo
-                                                                        tường
-                                                                        DOZ-902
-                                                                    </a>
-                                                                </p>
-                                                                <p className="c-brands">
-                                                                    Thương hiệu:
-                                                                    Đang cập
-                                                                    nhật
-                                                                </p>
-                                                                <p className="seller-by d-none">
-                                                                    Default
-                                                                    Title
-                                                                </p>
-                                                                <p className="action">
-                                                                    <a
-                                                                        href="javascript:;"
-                                                                        className="btn btn-link btn-item-delete remove-item-cart"
-                                                                        data-id="7485584"
-                                                                        title="Xóa"
-                                                                    >
-                                                                        Xóa
-                                                                    </a>
-                                                                </p>
-                                                            </div>
-                                                            <div className="box-price">
-                                                                <p className="price pricechange">
-                                                                    270.000₫
-                                                                </p>
-                                                            </div>
-                                                            <div className="quantity-block">
-                                                                <div className="bootstrap-touchspin">
-                                                                    <div className="input-group-btn">
-                                                                        <button
-                                                                            className="increase_pop items-count btn-plus btn btn-default bootstrap-touchspin-up"
-                                                                            type="button"
-                                                                        >
-                                                                            +
-                                                                        </button>
-                                                                        <input
-                                                                            type="text"
-                                                                            maxLength="12"
-                                                                            min="1"
-                                                                            disabled
-                                                                            className="form-control quantity-r2 quantity js-quantity-product input-text number-sidebar input_pop input_pop qtyItem7485584"
-                                                                            id="qtyItem7485584"
-                                                                            name="Lines"
-                                                                            size="4"
-                                                                            value="1"
-                                                                        />
-                                                                        <button
-                                                                            className="reduced_pop items-count btn-minus btn btn-default bootstrap-touchspin-down"
-                                                                            type="button"
-                                                                            disabled=""
-                                                                        >
-                                                                            –
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12 cart-col-2 cart-collaterals cart_submit">
-                                                <div id="right-affix">
-                                                    <div className="row">
-                                                        <div className="col-lg-6">
-                                                            <a
-                                                                className="btn-proceed-checkout btn-checkouts"
-                                                                title="Tiếp tục mua hàng"
-                                                                href="collections/all"
-                                                            >
-                                                                Tiếp tục mua
-                                                                hàng
-                                                            </a>
-                                                        </div>
-                                                        <div className="col-lg-6">
-                                                            <div className="each-row">
-                                                                <div className="box-style fee">
-                                                                    <p className="list-info-price">
-                                                                        <span>
-                                                                            Tạm
-                                                                            tính:{" "}
-                                                                        </span>
-                                                                        <strong className="totals_price price _text-right text_color_right1">
-                                                                            270.000₫
-                                                                        </strong>
-                                                                    </p>
-                                                                </div>
-                                                                <div className="box-style fee d-none">
-                                                                    <p className="list-info-price">
-                                                                        <span>
-                                                                            Giảm
-                                                                            giá:{" "}
-                                                                        </span>
-                                                                        <strong
-                                                                            className="discounted price _text-right text_color_right1"
-                                                                            id="price_sale"
-                                                                            data-price="0"
-                                                                        ></strong>
-                                                                    </p>
-                                                                </div>
-                                                                <div className="box-style fee">
-                                                                    <div className="total2 clearfix">
-                                                                        <span className="text-label">
-                                                                            Thành
-                                                                            tiền:{" "}
-                                                                        </span>
-                                                                        <div className="amount">
-                                                                            <p>
-                                                                                <strong className="totals_price">
-                                                                                    270.000₫
-                                                                                </strong>
+                                                                        <div className="col-lg-3 img-thumnail-custom">
+                                                                            <p className="image">
+                                                                                <NavLink
+                                                                                    to={`/san-pham/chi-tiet-san-pham/${item.slug}`}
+                                                                                    title={
+                                                                                        item.name
+                                                                                    }
+                                                                                >
+                                                                                    <img
+                                                                                        src={
+                                                                                            item.image_url
+                                                                                        }
+                                                                                        alt={
+                                                                                            item.name
+                                                                                        }
+                                                                                    />
+                                                                                </NavLink>
                                                                             </p>
+                                                                        </div>
+                                                                        <div className="col-right col-lg-9">
+                                                                            <div className="box-info-product">
+                                                                                <p className="name">
+                                                                                    <NavLink
+                                                                                        to={`/san-pham/chi-tiet-san-pham/${item.slug}`}
+                                                                                        title={
+                                                                                            item.name
+                                                                                        }
+                                                                                    >
+                                                                                        {
+                                                                                            item.name
+                                                                                        }
+                                                                                    </NavLink>
+                                                                                </p>
+
+                                                                                <p className="seller-by d-none">
+                                                                                    Default
+                                                                                    Title
+                                                                                </p>
+                                                                                <p className="action">
+                                                                                    <a
+                                                                                        className="btn btn-link btn-item-delete remove-item-cart"
+                                                                                        title="Xóa"
+                                                                                        onClick={(
+                                                                                            e
+                                                                                        ) => {
+                                                                                            e.preventDefault();
+                                                                                            handleRemove(
+                                                                                                item
+                                                                                            );
+                                                                                        }}
+                                                                                    >
+                                                                                        Xóa
+                                                                                    </a>
+                                                                                </p>
+                                                                            </div>
+                                                                            <div className="box-price">
+                                                                                <p className="price pricechange">
+                                                                                    {new Intl.NumberFormat(
+                                                                                        "vi-VN",
+                                                                                        {
+                                                                                            style: "currency",
+                                                                                            currency:
+                                                                                                "VND",
+                                                                                        }
+                                                                                    ).format(
+                                                                                        item.price
+                                                                                    )}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div className="quantity-block">
+                                                                                <div className="bootstrap-touchspin">
+                                                                                    <div className="input-group-btn">
+                                                                                        <button
+                                                                                            className="increase_pop items-count btn-plus btn btn-default bootstrap-touchspin-up"
+                                                                                            type="button"
+                                                                                            onClick={() =>
+                                                                                                handleQuantityChange(
+                                                                                                    item,
+                                                                                                    item.quantity +
+                                                                                                        1
+                                                                                                )
+                                                                                            }
+                                                                                        >
+                                                                                            +
+                                                                                        </button>
+                                                                                        <input
+                                                                                            type="text"
+                                                                                            maxLength="12"
+                                                                                            min="1"
+                                                                                            disabled
+                                                                                            className="form-control quantity-r2 quantity js-quantity-product input-text number-sidebar input_pop input_pop qtyItem7485584"
+                                                                                            id="qtyItem7485584"
+                                                                                            name="Lines"
+                                                                                            size="4"
+                                                                                            value={
+                                                                                                item.quantity
+                                                                                            }
+                                                                                        />
+                                                                                        <button
+                                                                                            className="reduced_pop items-count btn-minus btn btn-default bootstrap-touchspin-down"
+                                                                                            type="button"
+                                                                                            onClick={() =>
+                                                                                                handleQuantityChange(
+                                                                                                    item,
+                                                                                                    item.quantity -
+                                                                                                        1
+                                                                                                )
+                                                                                            }
+                                                                                        >
+                                                                                            –
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            }
+                                                        )
+                                                    ) : (
+                                                        <div className="cart-empty">
+                                                            <span className="empty-icon">
+                                                                <i className="ico ico-cart"></i>
+                                                            </span>
+                                                            <div className="btn-cart-empty">
+                                                                <NavLink
+                                                                    to="/"
+                                                                    className="btn btn-default"
+                                                                    title="Tiếp tục mua hàng"
+                                                                >
+                                                                    Tiếp tục mua
+                                                                    hàng
+                                                                </NavLink>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {cartItems &&
+                                                        cartItems.length >
+                                                            0 && (
+                                                            <div className="col-lg-12 cart-col-2 cart-collaterals cart_submit">
+                                                                <div id="right-affix">
+                                                                    <div className="row">
+                                                                        <div className="col-lg-6">
+                                                                            <a
+                                                                                className="btn-proceed-checkout btn-checkouts"
+                                                                                title="Tiếp tục mua hàng"
+                                                                                href="collections/all"
+                                                                            >
+                                                                                Tiếp
+                                                                                tục
+                                                                                mua
+                                                                                hàng
+                                                                            </a>
+                                                                        </div>
+                                                                        <div className="col-lg-6">
+                                                                            <div className="each-row">
+                                                                                <div className="box-style fee">
+                                                                                    <p className="list-info-price">
+                                                                                        <span>
+                                                                                            Tạm
+                                                                                            tính:{" "}
+                                                                                        </span>
+                                                                                        <strong className="totals_price price _text-right text_color_right1">
+                                                                                            {new Intl.NumberFormat(
+                                                                                                "vi-VN",
+                                                                                                {
+                                                                                                    style: "currency",
+                                                                                                    currency:
+                                                                                                        "VND",
+                                                                                                }
+                                                                                            ).format(
+                                                                                                calculateTotal()
+                                                                                            )}
+                                                                                        </strong>
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div className="box-style fee">
+                                                                                    <div className="total2 clearfix">
+                                                                                        <span className="text-label">
+                                                                                            Thành
+                                                                                            tiền:{" "}
+                                                                                        </span>
+                                                                                        <div className="amount">
+                                                                                            <p>
+                                                                                                <strong className="totals_price">
+                                                                                                    {new Intl.NumberFormat(
+                                                                                                        "vi-VN",
+                                                                                                        {
+                                                                                                            style: "currency",
+                                                                                                            currency:
+                                                                                                                "VND",
+                                                                                                        }
+                                                                                                    ).format(
+                                                                                                        calculateTotal()
+                                                                                                    )}
+                                                                                                </strong>
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <button
+                                                                                    className="button btn btn-large btn-block btn-danger btn-checkout evo-button"
+                                                                                    title="Thanh toán ngay"
+                                                                                    type="button"
+                                                                                    onClick={() =>
+                                                                                        navigate(
+                                                                                            "/thanh-toan"
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    Thanh
+                                                                                    toán
+                                                                                    ngay
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <button
-                                                                    className="button btn btn-large btn-block btn-danger btn-checkout evo-button"
-                                                                    title="Thanh toán ngay"
-                                                                    type="button"
-                                                                >
-                                                                    Thanh toán
-                                                                    ngay
-                                                                </button>
                                                             </div>
-                                                        </div>
-                                                    </div>
+                                                        )}
                                                 </div>
                                             </div>
                                         </div>
@@ -255,8 +362,6 @@ const Cart = () => {
                                                     </div>
                                                     <a
                                                         className="button remove-item remove-item-cart"
-                                                        href="javascript:;"
-                                                        data-id="7485584"
                                                         title="Xóa"
                                                     >
                                                         Xoá

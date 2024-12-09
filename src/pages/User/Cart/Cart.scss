@@ -311,4 +311,30 @@
     .side-module.block .content-asset .payment li + li {
         margin-left: 5px;
     }
+
+    .empty-icon {
+        display: block;
+        .ico-cart {
+            height: 200px;
+            width: 200px;
+            background-image: url("https://bizweb.dktcdn.net/100/147/060/themes/880570/assets/mobile-shopping.svg?1687579687145");
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    .btn-cart-empty {
+        margin-top: 20px;
+        text-align: center;
+        a {
+            background-color: #6d79b5 !important;
+            display: inline-block;
+            padding: 12px 30px;
+            color: #fff;
+            height: auto;
+            line-height: 1.1;
+        }
+    }
 }

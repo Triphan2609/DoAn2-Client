@@ -36,11 +36,22 @@ const cartSlice = createSlice({
             // Xóa tất cả sản phẩm trong giỏ hàng
             state.items = [];
         },
+        updateQuantity(state, action) {
+            const { productId, quantity } = action.payload;
+            console.log(action.payload);
+            const item = state.items.find(
+                (item) => item.product_id === productId
+            );
+            if (item) {
+                item.quantity = quantity;
+            }
+        },
     },
 });
 
 // Export các action để sử dụng
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, updateQuantity } =
+    cartSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default cartSlice.reducer;

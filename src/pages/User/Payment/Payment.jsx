@@ -4,8 +4,19 @@ import { NavLink } from "react-router-dom";
 import { Form, Input, Radio, Select, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Payment = () => {
+    const dispatch = useDispatch();
+    const cartItems = useSelector((state) => state.cart.items);
+
+    // Hàm tính tổng tiền
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => {
+            return total + item.price * item.quantity;
+        }, 0);
+    };
+
     const [value, setValue] = useState(1);
     const onFinish = (values) => {
         console.log("Success:", values);
@@ -33,13 +44,13 @@ const Payment = () => {
                     <div className="main">
                         <header className="main__header">
                             <div className="logo logo--center">
-                                <a href="/">
+                                <NavLink to="/">
                                     <img
                                         className="logo__image  logo__image--medium "
                                         alt="Pet Shop"
                                         src="//bizweb.dktcdn.net/100/147/060/themes/880570/assets/logo.png?1722413377105"
                                     />
-                                </a>
+                                </NavLink>
                             </div>
                         </header>
                         <div className="main__content">
@@ -219,69 +230,72 @@ const Payment = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr className="product">
-                                                    <td className="product__image">
-                                                        <div className="product-thumbnail">
-                                                            <div
-                                                                className="product-thumbnail__wrapper"
-                                                                data-tg-static=""
-                                                            >
-                                                                <img
-                                                                    src="//bizweb.dktcdn.net/thumb/thumb/100/147/060/products/bai-117-p-22-811f5084-22e5-4554-9ab2-c1857f6e51d1.png?v=1650979638550"
-                                                                    alt=""
-                                                                    className="product-thumbnail__image"
-                                                                />
-                                                            </div>
-                                                            <span className="product-thumbnail__quantity">
-                                                                1
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <th className="product__description">
-                                                        <span className="product__description__name">
-                                                            Bộ chăn ga gối (bọc)
-                                                            Gấu Grizzly (1.6*2m)
-                                                        </span>
-                                                    </th>
-                                                    <td className="product__quantity visually-hidden">
-                                                        <em>Số lượng:</em> 1
-                                                    </td>
-                                                    <td className="product__price">
-                                                        3.949.000₫
-                                                    </td>
-                                                </tr>
-
-                                                <tr className="product">
-                                                    <td className="product__image">
-                                                        <div className="product-thumbnail">
-                                                            <div
-                                                                className="product-thumbnail__wrapper"
-                                                                data-tg-static=""
-                                                            >
-                                                                <img
-                                                                    src="//bizweb.dktcdn.net/thumb/thumb/100/147/060/products/1946236doz-902-230-jpeg.jpg?v=1478254009390"
-                                                                    alt=""
-                                                                    className="product-thumbnail__image"
-                                                                />
-                                                            </div>
-                                                            <span className="product-thumbnail__quantity">
-                                                                1
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <th className="product__description">
-                                                        <span className="product__description__name">
-                                                            Túi treo tường
-                                                            DOZ-902
-                                                        </span>
-                                                    </th>
-                                                    <td className="product__quantity visually-hidden">
-                                                        <em>Số lượng:</em> 1
-                                                    </td>
-                                                    <td className="product__price">
-                                                        270.000₫
-                                                    </td>
-                                                </tr>
+                                                {cartItems &&
+                                                cartItems.length > 0
+                                                    ? cartItems.map(
+                                                          (item, index) => {
+                                                              return (
+                                                                  <tr
+                                                                      key={
+                                                                          index
+                                                                      }
+                                                                      className="product"
+                                                                  >
+                                                                      <td className="product__image">
+                                                                          <div className="product-thumbnail">
+                                                                              <div
+                                                                                  className="product-thumbnail__wrapper"
+                                                                                  data-tg-static=""
+                                                                              >
+                                                                                  <img
+                                                                                      src={
+                                                                                          item.image_url
+                                                                                      }
+                                                                                      alt={
+                                                                                          item.name
+                                                                                      }
+                                                                                  />
+                                                                              </div>
+                                                                              <span className="product-thumbnail__quantity">
+                                                                                  {
+                                                                                      item.quantity
+                                                                                  }
+                                                                              </span>
+                                                                          </div>
+                                                                      </td>
+                                                                      <th className="product__description">
+                                                                          <span className="product__description__name">
+                                                                              {
+                                                                                  item.name
+                                                                              }
+                                                                          </span>
+                                                                      </th>
+                                                                      <td className="product__quantity visually-hidden">
+                                                                          <em>
+                                                                              Số
+                                                                              lượng:
+                                                                          </em>{" "}
+                                                                          {
+                                                                              item.quantity
+                                                                          }
+                                                                      </td>
+                                                                      <td className="product__price">
+                                                                          {new Intl.NumberFormat(
+                                                                              "vi-VN",
+                                                                              {
+                                                                                  style: "currency",
+                                                                                  currency:
+                                                                                      "VND",
+                                                                              }
+                                                                          ).format(
+                                                                              item.price
+                                                                          )}
+                                                                      </td>
+                                                                  </tr>
+                                                              );
+                                                          }
+                                                      )
+                                                    : ""}
                                             </tbody>
                                         </table>
                                     </div>
@@ -315,7 +329,15 @@ const Payment = () => {
                                                         Tạm tính
                                                     </th>
                                                     <td className="total-line__price">
-                                                        4.219.000₫
+                                                        {new Intl.NumberFormat(
+                                                            "vi-VN",
+                                                            {
+                                                                style: "currency",
+                                                                currency: "VND",
+                                                            }
+                                                        ).format(
+                                                            calculateTotal()
+                                                        )}
                                                     </td>
                                                 </tr>
 
@@ -346,7 +368,16 @@ const Payment = () => {
                                                             className="payment-due__price"
                                                             data-bind="getTextTotalPrice()"
                                                         >
-                                                            4.219.000₫
+                                                            {new Intl.NumberFormat(
+                                                                "vi-VN",
+                                                                {
+                                                                    style: "currency",
+                                                                    currency:
+                                                                        "VND",
+                                                                }
+                                                            ).format(
+                                                                calculateTotal()
+                                                            )}
                                                         </span>
                                                     </td>
                                                 </tr>

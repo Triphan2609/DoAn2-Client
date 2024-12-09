@@ -8,6 +8,7 @@
         font-size: 16px;
         max-width: 40em;
         margin: 0 auto;
+        height: 100vh;
     }
     .wrap:after,
     .wrap:before {
@@ -174,6 +175,7 @@
                             .product__description__name,
                             .product__description__property {
                                 display: block;
+                                margin: 0 5px;
                             }
                         }
                     }
