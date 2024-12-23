@@ -79,7 +79,10 @@ const Cart = () => {
                                                                                 >
                                                                                     <img
                                                                                         src={
-                                                                                            item.image_url
+                                                                                            "/public/" +
+                                                                                            JSON.parse(
+                                                                                                item.image_url
+                                                                                            )[0]
                                                                                         }
                                                                                         alt={
                                                                                             item.name

@@ -15,7 +15,7 @@ import {
 import "swiper/css";
 import "swiper/css/navigation";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../../redux/Cart/cartSlice";
+import { addToCart, updateQuantity } from "../../../redux/Cart/cartSlice";
 import { DrawerContext } from "../../../context/drawer.context";
 
 const ProductDetail = () => {
@@ -49,6 +49,16 @@ const ProductDetail = () => {
         if (res && res.data) {
             setProductSimilar(res.data);
         }
+    };
+
+    const handleQuantityChange = (item, newQuantity) => {
+        if (newQuantity < 1) return; // Không cho phép số lượng nhỏ hơn 1
+        dispatch(
+            updateQuantity({
+                productId: item.product_id,
+                quantity: newQuantity,
+            })
+        );
     };
 
     // Fetch
@@ -117,21 +127,40 @@ const ProductDetail = () => {
                                             dotPosition="left"
                                             infinite={true}
                                         >
-                                            <div>
-                                                <h3 style={contentStyle}>
-                                                    <Image
-                                                        width={"auto"}
-                                                        style={{
-                                                            objectFit: "cover",
-                                                            maxHeight: "100%",
-                                                        }}
-                                                        src={
-                                                            product &&
-                                                            product.image_url
-                                                        }
-                                                    />
-                                                </h3>
-                                            </div>
+                                            {product &&
+                                                product.image_url &&
+                                                JSON.parse(
+                                                    product.image_url
+                                                ).map((item, index) => {
+                                                    return (
+                                                        <div key={index}>
+                                                            <h3
+                                                                style={
+                                                                    contentStyle
+                                                                }
+                                                            >
+                                                                <Image
+                                                                    width={
+                                                                        "auto"
+                                                                    }
+                                                                    height={
+                                                                        "100%"
+                                                                    }
+                                                                    style={{
+                                                                        objectFit:
+                                                                            "cover",
+                                                                        maxHeight:
+                                                                            "100%",
+                                                                    }}
+                                                                    src={
+                                                                        "/public/" +
+                                                                        item
+                                                                    }
+                                                                />
+                                                            </h3>
+                                                        </div>
+                                                    );
+                                                })}
                                         </Carousel>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-12 col-12 details-pro">
@@ -170,9 +199,9 @@ const ProductDetail = () => {
                                                     Mua hàng{" "}
                                                     <strong>ONLINE</strong>: Quý
                                                     khách chỉ cần Click vào nút
-                                                    <strong>MUA HÀNG</strong>
-                                                    -Hoăc gọi hoặc nhắn tin tới
-                                                    0901238819 để mua hàng
+                                                    <strong> MUA HÀNG </strong>
+                                                    Hoặc gọi hay nhắn tin tới
+                                                    0398944226 để mua hàng
                                                 </p>
                                             </div>
 
@@ -182,54 +211,6 @@ const ProductDetail = () => {
                                                     className="clearfix has-validation-callback"
                                                 >
                                                     <div className="form-groups clearfix">
-                                                        <div className="qty-ant clearfix custom-btn-number ">
-                                                            <label>
-                                                                Số lượng:
-                                                            </label>
-                                                            <div className="custom custom-btn-numbers clearfix">
-                                                                <button
-                                                                    className="btn-minus btn-cts"
-                                                                    type="button"
-                                                                >
-                                                                    <svg
-                                                                        x="0px"
-                                                                        y="0px"
-                                                                        width="121.805px"
-                                                                        height="121.804px"
-                                                                        viewBox="0 0 121.805 121.804"
-                                                                        xmlSpace="preserve"
-                                                                    >
-                                                                        <path
-                                                                            d="M7.308,68.211h107.188c4.037,0,7.309-3.272,7.309-7.31c0-4.037-3.271-7.309-7.309-7.309H7.308
-														 C3.272,53.593,0,56.865,0,60.902C0,64.939,3.272,68.211,7.308,68.211z"
-                                                                        ></path>
-                                                                    </svg>
-                                                                </button>
-                                                                <input
-                                                                    aria-label="Số lượng"
-                                                                    type="text"
-                                                                    className="qty input-text"
-                                                                    id="qty"
-                                                                    name="quantity"
-                                                                    size="4"
-                                                                    value="1"
-                                                                    maxLength="3"
-                                                                />
-                                                                <button
-                                                                    className="btn-plus btn-cts"
-                                                                    type="button"
-                                                                >
-                                                                    <svg
-                                                                        height="426.66667pt"
-                                                                        viewBox="0 0 426.66667 426.66667"
-                                                                        width="426.66667pt"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                    >
-                                                                        <path d="m405.332031 192h-170.664062v-170.667969c0-11.773437-9.558594-21.332031-21.335938-21.332031-11.773437 0-21.332031 9.558594-21.332031 21.332031v170.667969h-170.667969c-11.773437 0-21.332031 9.558594-21.332031 21.332031 0 11.777344 9.558594 21.335938 21.332031 21.335938h170.667969v170.664062c0 11.777344 9.558594 21.335938 21.332031 21.335938 11.777344 0 21.335938-9.558594 21.335938-21.335938v-170.664062h170.664062c11.777344 0 21.335938-9.558594 21.335938-21.335938 0-11.773437-9.558594-21.332031-21.335938-21.332031zm0 0"></path>
-                                                                    </svg>
-                                                                </button>
-                                                            </div>
-                                                        </div>
                                                         <div className="btn-mua">
                                                             <button
                                                                 className="btn btn-lg btn-gray btn-cart btn_buy add_to_cart"
@@ -339,7 +320,13 @@ const ProductDetail = () => {
                                         id="home"
                                         role="tabpanel"
                                     >
-                                        {product && product.description}
+                                        {product && (
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: product.description,
+                                                }}
+                                            ></div>
+                                        )}
                                     </div>
 
                                     <div
@@ -554,9 +541,9 @@ const ProductDetail = () => {
                                                             product_id={
                                                                 product.id
                                                             }
-                                                            image_url={
+                                                            image_url={JSON.parse(
                                                                 product.image_url
-                                                            }
+                                                            )}
                                                             name={product.name}
                                                             price={
                                                                 product.price

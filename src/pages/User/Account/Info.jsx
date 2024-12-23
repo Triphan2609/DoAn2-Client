@@ -2,9 +2,17 @@ import { useSelector } from "react-redux";
 import BlockAccount from "../../../components/BlockAccount/BlockAccount";
 import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 import "./Account.scss";
+import EditUserModal from "../../Admin/Modal/ModalEditUser";
+import { useState } from "react";
+import { Button } from "antd";
 
 const Info = () => {
     const user = useSelector((state) => state.account.user);
+    const [openEdit, setOpenEdit] = useState(false);
+
+    const onCloseEdit = () => {
+        setOpenEdit(false);
+    };
 
     return (
         <div className="info-page" style={{ background: "#fff" }}>
@@ -28,11 +36,34 @@ const Info = () => {
                                     <strong>Email:</strong>{" "}
                                     {user ? user?.email : ""}
                                 </p>
+                                <p>
+                                    <strong>Số điện thoại:</strong>{" "}
+                                    {user ? user?.phone : "Chưa có"}
+                                </p>
+                                <p>
+                                    <strong>Địa chỉ:</strong>{" "}
+                                    {user ? user?.address : "Chưa có"}
+                                </p>
+                                <button
+                                    onClick={() => setOpenEdit(true)}
+                                    className="btn "
+                                    style={{
+                                        background: "#505d9f",
+                                        color: "white",
+                                    }}
+                                >
+                                    Cập nhật thông tin
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+            <EditUserModal
+                openEdit={openEdit}
+                onCloseEdit={onCloseEdit}
+                user={user}
+            />
         </div>
     );
 };

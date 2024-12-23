@@ -17,7 +17,7 @@ const AllProducts = () => {
         currentPage: 1,
         totalPages: 0,
         totalProducts: 0,
-        limit: 10,
+        limit: 12,
     });
 
     const [sortBy, setSortBy] = useState("createdAt"); // Mặc định sắp xếp theo ngày thêm mới
@@ -62,6 +62,8 @@ const AllProducts = () => {
 
         if (res && res.data) {
             setProducts(res.data.products);
+            console.log(products);
+
             setPagination({
                 currentPage: page,
                 totalPages: res.data.pagination.totalPages,

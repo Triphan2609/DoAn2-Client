@@ -187,9 +187,9 @@ const HomePage = () => {
                                             >
                                                 <BlockProducts
                                                     product_id={product.id}
-                                                    image_url={
+                                                    image_url={JSON.parse(
                                                         product.image_url
-                                                    }
+                                                    )}
                                                     name={product.name}
                                                     price={product.price}
                                                     slug={product.slug}
@@ -200,7 +200,7 @@ const HomePage = () => {
                             </div>
                             <div className="ant-view-more text-center mt-5">
                                 <NavLink
-                                    to="/san-pham-noi-bat"
+                                    to="/san-pham/tat-ca-san-pham"
                                     title="Xem tất cả"
                                 >
                                     Xem tất cả
@@ -302,9 +302,9 @@ const HomePage = () => {
                                                 <SwiperSlide key={product.id}>
                                                     <BlockProducts
                                                         product_id={product.id}
-                                                        image_url={
+                                                        image_url={JSON.parse(
                                                             product.image_url
-                                                        }
+                                                        )}
                                                         name={product.name}
                                                         price={product.price}
                                                         slug={product.slug}
@@ -362,7 +362,7 @@ const HomePage = () => {
                                 </div>
                                 <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
                                     <NavLink
-                                        to="products/thuc-an-hat"
+                                        to="/san-pham/tat-ca-san-pham"
                                         title="hức ăn hạt"
                                         className="section-title"
                                     >
@@ -385,7 +385,10 @@ const HomePage = () => {
                                                             <img
                                                                 className="lazy loaded"
                                                                 src={
-                                                                    product.image_url
+                                                                    "/public/" +
+                                                                    JSON.parse(
+                                                                        product.image_url
+                                                                    )[0]
                                                                 }
                                                                 alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
                                                             />
@@ -429,7 +432,7 @@ const HomePage = () => {
                                 </div>
                                 <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
                                     <NavLink
-                                        to="phong-ngu"
+                                        to="/san-pham/tat-ca-san-pham"
                                         title="cát mèo"
                                         className="section-title"
                                     >
@@ -452,7 +455,10 @@ const HomePage = () => {
                                                             <img
                                                                 className="lazy loaded"
                                                                 src={
-                                                                    product.image_url
+                                                                    "/public/" +
+                                                                    JSON.parse(
+                                                                        product.image_url
+                                                                    )[0]
                                                                 }
                                                                 alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
                                                             />
@@ -495,13 +501,13 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 <div className="col-lg-3 col-md-6 mb-margin d-none d-md-block">
-                                    <a
-                                        to="phong-ngu"
+                                    <NavLink
+                                        to="/san-pham/tat-ca-san-pham"
                                         title="Vòng cổ cho mèo "
                                         className="section-title"
                                     >
                                         Vòng cổ cho mèo
-                                    </a>
+                                    </NavLink>
 
                                     <div className="fix-item-mobile">
                                         {productByType3 &&
@@ -519,7 +525,10 @@ const HomePage = () => {
                                                             <img
                                                                 className="lazy loaded"
                                                                 src={
-                                                                    product.image_url
+                                                                    "/public/" +
+                                                                    JSON.parse(
+                                                                        product.image_url
+                                                                    )[0]
                                                                 }
                                                                 alt="Bộ chăn ga gối (bọc) Gấu Grizzly (1.6*2m)"
                                                             />
@@ -562,13 +571,13 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 <div className="d-block d-md-none">
-                                    <a
-                                        href="phong-ngu"
+                                    <NavLink
+                                        to="/san-pham/tat-ca-san-pham"
                                         title="Phòng ngủ "
                                         className="section-title"
                                     >
-                                        Phòng ngủ
-                                    </a>
+                                        Sản phẩm
+                                    </NavLink>
                                     <Swiper
                                         pagination={{
                                             clickable: true,
@@ -599,27 +608,28 @@ const HomePage = () => {
                                         modules={[Navigation, Pagination]}
                                         className="mySwiper"
                                     >
-                                        <SwiperSlide>
-                                            <BlockProducts />
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <BlockProducts />
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <BlockProducts />
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <BlockProducts />
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <BlockProducts />
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <BlockProducts />
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <BlockProducts />
-                                        </SwiperSlide>
+                                        {newProducts &&
+                                            newProducts.map((product) => {
+                                                return (
+                                                    <SwiperSlide
+                                                        key={product.id}
+                                                    >
+                                                        <BlockProducts
+                                                            product_id={
+                                                                product.id
+                                                            }
+                                                            image_url={JSON.parse(
+                                                                product.image_url
+                                                            )}
+                                                            name={product.name}
+                                                            price={
+                                                                product.price
+                                                            }
+                                                            slug={product.slug}
+                                                        />
+                                                    </SwiperSlide>
+                                                );
+                                            })}
                                     </Swiper>
                                 </div>
                             </div>

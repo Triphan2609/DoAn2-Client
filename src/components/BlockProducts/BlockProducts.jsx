@@ -13,7 +13,7 @@ const BlockProducts = (props) => {
                 >
                     <img
                         className="product-thumbnail lazy loaded"
-                        src={image_url}
+                        src={"/public/" + image_url[0]}
                         alt={name}
                     />
                 </NavLink>

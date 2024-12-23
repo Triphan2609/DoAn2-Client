@@ -19,7 +19,6 @@ import Admin from "./pages/Admin/Admin";
 import Info from "./pages/User/Account/Info";
 import Order from "./pages/User/Account/Order";
 import ChangePass from "./pages/User/Account/ChangePass";
-import Address from "./pages/User/Account/Address";
 import ProductDetail from "./pages/User/Product/ProductDetail";
 import AllProducts from "./pages/User/Product/AllProducts";
 import Contact from "./pages/User/Contact/Contact";
@@ -28,6 +27,11 @@ import Payment from "./pages/User/Payment/Payment";
 import Cart from "./pages/User/Cart/Cart";
 import ProductsAnimals from "./pages/User/Product/ProductsAnimals";
 import ProductsCategories from "./pages/User/Product/ProductsCategories";
+import Successfully from "./pages/User/Payment/Successfully/Successfully";
+import Dashboard from "./pages/Admin/Dasboard/Dashboard";
+import ManageUser from "./pages/Admin/Manage/ManageUser";
+import ManageProduct from "./pages/Admin/Manage/ManageProduct";
+import ManageOrder from "./pages/Admin/Manage/ManageOrder";
 
 const App = () => {
     const Layout = () => {
@@ -87,10 +91,6 @@ const App = () => {
                     element: <ChangePass />,
                 },
                 {
-                    path: "tai-khoan/dia-chi",
-                    element: <Address />,
-                },
-                {
                     path: "san-pham/chi-tiet-san-pham/:slug",
                     element: <ProductDetail />,
                 },
@@ -101,6 +101,10 @@ const App = () => {
                 {
                     path: "gio-hang",
                     element: <Cart />,
+                },
+                {
+                    path: "thanh-toan/thanh-cong",
+                    element: <Successfully />,
                 },
             ],
         },
@@ -116,6 +120,7 @@ const App = () => {
             path: "thanh-toan",
             element: <Payment />,
         },
+
         {
             path: "admin",
             element: (
@@ -123,6 +128,24 @@ const App = () => {
                     <Admin />
                 </ProtectedRoute>
             ),
+            children: [
+                {
+                    index: true,
+                    element: <Dashboard />,
+                },
+                {
+                    path: "/admin/account",
+                    element: <ManageUser />,
+                },
+                {
+                    path: "/admin/product",
+                    element: <ManageProduct />,
+                },
+                {
+                    path: "/admin/order",
+                    element: <ManageOrder />,
+                },
+            ],
         },
     ]);
 

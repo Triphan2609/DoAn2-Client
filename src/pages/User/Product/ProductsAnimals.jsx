@@ -20,7 +20,7 @@ const ProductsAnimals = () => {
         currentPage: 1,
         totalPages: 0,
         totalProducts: 0,
-        limit: 10,
+        limit: 12,
     });
 
     // Context

@@ -71,7 +71,13 @@ const DrawerCart = ({ loading, drawer, setDrawer }) => {
                                 to={`/san-pham/chi-tiet-san-pham/${item.slug}`}
                                 title={item.name}
                             >
-                                <img src={item.image_url} alt={item.name} />
+                                <img
+                                    src={
+                                        "/public/" +
+                                        JSON.parse(item.image_url)[0]
+                                    }
+                                    alt={item.name}
+                                />
                             </NavLink>
                             <div className="cart_info">
                                 <div className="cart_name">

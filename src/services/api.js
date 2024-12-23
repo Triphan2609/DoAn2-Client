@@ -1,3 +1,4 @@
+import { values } from "lodash";
 import axios from "../utils/axiosCustomize.js";
 
 export const callRegister = (name, email, password, phone) => {
@@ -11,27 +12,6 @@ export const callRegister = (name, email, password, phone) => {
 
 export const callLogin = (email, password) => {
     return axios.post("/auth/login", { email, password });
-};
-
-export const callFetchAccount = () => {
-    return axios.get("/api/v1/auth/account");
-};
-
-export const callFetchListUser = (query) => {
-    // current=1&pageSize=3
-    return axios.get(`/api/v1/user?${query}`);
-};
-
-export const callCreateAUser = (fullName, password, email, phone) => {
-    return axios.post("/api/v1/user", { fullName, password, email, phone });
-};
-
-export const callUpdateUser = (_id, fullName, phone) => {
-    return axios.put("/api/v1/user", { _id, fullName, phone });
-};
-
-export const callDeleteUser = (id) => {
-    return axios.delete(`/api/v1/user/${id}`);
 };
 
 ///////////////////////
@@ -54,6 +34,14 @@ export const callFetchAllProducts = (
             priceRange: priceRange.join(","),
         },
     });
+};
+
+export const callFetchAllProductsType = () => {
+    return axios.get(`/products/product-type/all`);
+};
+
+export const callFetchAllProductsAdmin = (page, limit) => {
+    return axios.get("/products/all/admin", { params: { page, limit } });
 };
 
 export const callFetchAllProductsCategories = (
@@ -121,6 +109,68 @@ export const callSearchProducts = (query) => {
     return axios.get(`/products/getProductsSearch?searchQuery=${query}`);
 };
 
+export const callCreateProduct = async (formData) => {
+    return axios.post("/products/createProduct", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data", // Đảm bảo đúng header khi gửi FormData
+        },
+    });
+};
+
+export const callUpdateProduct = async (
+    productId,
+    name,
+    description,
+    price,
+    quantity,
+    category_id,
+    brand_id,
+    product_type_id
+) => {
+    return axios.put(`/products/updateProduct/${productId}`, {
+        name,
+        description,
+        price,
+        quantity,
+        category_id,
+        brand_id,
+        product_type_id,
+    });
+};
+
+export const callGetAllImages = () => {
+    return axios.get(`/products/getAllImages`);
+};
+
+export const callUpdateSingleImage = (formData) => {
+    return axios.put(`/products/updateSingleImage`, formData);
+};
+
+export const callUpdateAllImages = (formData) => {
+    return axios.put(`/products/updateAllImages`, formData);
+};
+
+export const callAddImages = (formData) => {
+    return axios.post("/products/addImages", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+};
+
+export const callDeleteProduct = (productId) => {
+    return axios.delete(`/products/deleteProduct/${productId}`);
+};
+
+export const callDeleteImage = (productId, imageName) => {
+    return axios.delete(`/products/deleteImage`, {
+        params: {
+            productId,
+            imageName,
+        },
+    });
+};
+
 ///////////////////////
 
 export const callFetchCategory = () => {
@@ -141,6 +191,18 @@ export const callFetchBrand = () => {
     return axios.get("/brands/all");
 };
 
+export const callCreateBrand = (data) => {
+    return axios.post("/brands/createBrand", data);
+};
+
+export const callUpdateBrand = (brand_id, name) => {
+    return axios.put(`/brands/updateBrand/${brand_id}`, { name });
+};
+
+export const callDeleteBrand = (brand_id) => {
+    return axios.delete(`/brands/deleteBrand/${brand_id}`);
+};
+
 ///////////////////////
 
 export const callFetchAnimal = () => {
@@ -148,54 +210,103 @@ export const callFetchAnimal = () => {
 };
 
 ///////////////////////
-
-export const callUpdateBook = (
-    id,
-    thumbnail,
-    slider,
-    mainText,
-    author,
-    price,
-    sold,
-    quantity,
-    category
+export const callCheckOutCOD = (
+    userId,
+    cartItems,
+    totalPrice,
+    payment_method,
+    customer_name,
+    email,
+    phone,
+    address,
+    description
 ) => {
-    return axios.put(`/api/v1/book/${id}`, {
-        thumbnail,
-        slider,
-        mainText,
-        author,
-        price,
-        sold,
-        quantity,
-        category,
+    return axios.post(`/order/cod`, {
+        userId,
+        cartItems,
+        totalPrice,
+        payment_method,
+        customer_name,
+        email,
+        phone,
+        address,
+        description,
     });
 };
 
-export const callUploadBookImg = (fileImg) => {
-    const bodyFormData = new FormData();
-    bodyFormData.append("fileImg", fileImg);
-    return axios({
-        method: "post",
-        url: "/api/v1/file/upload",
-        data: bodyFormData,
-        headers: {
-            "Content-Type": "multipart/form-data",
-            "upload-type": "book",
-        },
+export const callCheckOutZaloPay = (
+    userId,
+    cartItems,
+    totalPrice,
+    payment_method,
+    customer_name,
+    email,
+    phone,
+    address,
+    description
+) => {
+    return axios.post(`/order/zalopay`, {
+        userId,
+        cartItems,
+        totalPrice,
+        payment_method,
+        customer_name,
+        email,
+        phone,
+        address,
+        description,
     });
 };
 
-export const callUpdateAvatar = (fileImg) => {
-    const bodyFormData = new FormData();
-    bodyFormData.append("fileImg", fileImg);
-    return axios({
-        method: "post",
-        url: "/api/v1/file/upload",
-        data: bodyFormData,
-        headers: {
-            "Content-Type": "multipart/form-data",
-            "upload-type": "avatar",
-        },
+///////////////////////
+
+export const callFetchAllUser = (page, limit) => {
+    return axios.get("/users/all", { params: { page, limit } });
+};
+
+export const callCreateUser = (name, email, password, phone, address, role) => {
+    return axios.post("/users/create", {
+        name,
+        email,
+        password,
+        phone,
+        address,
+        role,
     });
+};
+
+export const callUpdateUser = (userId, name, phone, address) => {
+    return axios.put(`/users/update/${userId}`, {
+        name,
+        phone,
+        address,
+    });
+};
+
+export const callDeleteUser = (userId) => {
+    return axios.delete(`/users/delete/${userId}`);
+};
+
+export const callChangePassWord = (
+    userId,
+    oldPassword,
+    newPassword,
+    confirmPassword
+) => {
+    return axios.post(`/users/changePass`, {
+        userId,
+        oldPassword,
+        newPassword,
+        confirmPassword,
+    });
+};
+
+/////////////////////////
+
+export const callFetchAllOrders = (page, limit) => {
+    return axios.get("/order/all", { params: { page, limit } });
+};
+
+export const callFetchAllOrdersByUserId = (userId) => {
+    return axios.get("/order/" + userId);
 };

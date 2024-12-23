@@ -1,8 +1,29 @@
+import { useEffect, useState } from "react";
 import BlockAccount from "../../../components/BlockAccount/BlockAccount";
 import BreadCrumb from "../../../components/BreadCrumb/BreadCrumb";
 import "./Account.scss";
+import { callFetchAllOrdersByUserId } from "../../../services/api";
+import { useSelector } from "react-redux";
 
 const Order = () => {
+    const [orders, setOrders] = useState();
+    const [loading, setLoading] = useState(false);
+    const user = useSelector((state) => state.account.user);
+
+    const fetchAllOrdersByUserId = async (user) => {
+        setLoading(true);
+        const res = await callFetchAllOrdersByUserId(user.user_id);
+        if (res && res.data) {
+            let raw = res.data.orders;
+            setLoading(false);
+            setOrders(raw);
+        }
+    };
+
+    useEffect(() => {
+        fetchAllOrdersByUserId(user);
+    }, [user]);
+
     return (
         <div className="order-page" style={{ background: "#fff" }}>
             <BreadCrumb title="Trang đơn hàng" />
@@ -28,29 +49,106 @@ const Order = () => {
                                                     <thead className="thead-default">
                                                         <tr>
                                                             <th>Đơn hàng</th>
-                                                            <th>Ngày</th>
-                                                            <th>Địa chỉ</th>
                                                             <th>
-                                                                Giá trị đơn hàng
+                                                                Ngày đặt hàng
                                                             </th>
                                                             <th>
-                                                                TT thanh toán
+                                                                Địa chỉ nhận
+                                                                hàng
                                                             </th>
                                                             <th>
-                                                                TT vận chuyển
+                                                                Số điện thoại
                                                             </th>
+                                                            <th>Tổng tiền</th>
+                                                            <th>
+                                                                Phương thức
+                                                                thanh toán
+                                                            </th>
+                                                            <th>Ghi chú</th>
                                                         </tr>
                                                     </thead>
 
                                                     <tbody>
-                                                        <tr>
-                                                            <td colSpan="6">
-                                                                <p>
-                                                                    Không có đơn
-                                                                    hàng nào.
-                                                                </p>
-                                                            </td>
-                                                        </tr>
+                                                        {orders &&
+                                                        orders?.length > 0 ? (
+                                                            orders?.map(
+                                                                (
+                                                                    item,
+                                                                    index
+                                                                ) => {
+                                                                    return (
+                                                                        <tr
+                                                                            key={
+                                                                                index
+                                                                            }
+                                                                        >
+                                                                            <td>
+                                                                                {
+                                                                                    item.order_id
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                {new Intl.DateTimeFormat(
+                                                                                    "vi-VN",
+                                                                                    {
+                                                                                        day: "2-digit",
+                                                                                        month: "2-digit",
+                                                                                        year: "numeric",
+                                                                                    }
+                                                                                ).format(
+                                                                                    new Date(
+                                                                                        item.createdAt
+                                                                                    )
+                                                                                )}
+                                                                            </td>
+
+                                                                            <td>
+                                                                                {
+                                                                                    item.address
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                {
+                                                                                    item.phone
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                {new Intl.NumberFormat(
+                                                                                    "vi-VN",
+                                                                                    {
+                                                                                        style: "currency",
+                                                                                        currency:
+                                                                                            "VND",
+                                                                                    }
+                                                                                ).format(
+                                                                                    item.total_price
+                                                                                )}
+                                                                            </td>
+                                                                            <td>
+                                                                                {
+                                                                                    item.payment_method
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                {
+                                                                                    item.description
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                    );
+                                                                }
+                                                            )
+                                                        ) : (
+                                                            <tr>
+                                                                <td colSpan="6">
+                                                                    <p>
+                                                                        Không có
+                                                                        đơn hàng
+                                                                        nào.
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        )}
                                                     </tbody>
                                                 </table>
                                             </div>

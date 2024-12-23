@@ -40,7 +40,9 @@ const BlockAccount = () => {
                             Đơn hàng của bạn
                         </NavLink>
                     </li>
-                    {isLoginWithGoogle && isLoginWithGoogle === false ? (
+                    {isLoginWithGoogle && isLoginWithGoogle === true ? (
+                        ""
+                    ) : (
                         <li>
                             <NavLink
                                 to="/tai-khoan/doi-mat-khau"
@@ -54,21 +56,7 @@ const BlockAccount = () => {
                                 Đổi mật khẩu
                             </NavLink>
                         </li>
-                    ) : (
-                        ""
                     )}
-
-                    <li>
-                        <NavLink
-                            className={({ isActive }) =>
-                                isActive ? "title-info active" : "title-info"
-                            }
-                            to="/tai-khoan/dia-chi"
-                            title="Sổ địa chỉ"
-                        >
-                            Sổ địa chỉ (0)
-                        </NavLink>
-                    </li>
                 </ul>
             </div>
         </>

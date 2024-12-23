@@ -167,9 +167,9 @@ const Collection = ({
                                             >
                                                 <BlockProducts
                                                     product_id={product.id}
-                                                    image_url={
+                                                    image_url={JSON.parse(
                                                         product.image_url
-                                                    }
+                                                    )}
                                                     name={product.name}
                                                     price={product.price}
                                                     slug={product.slug}

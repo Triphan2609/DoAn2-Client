@@ -1,15 +1,29 @@
 import { Helmet } from "react-helmet";
 import "./Payment.scss";
-import { NavLink } from "react-router-dom";
-import { Form, Input, Radio, Select, Space } from "antd";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Button, Form, Input, message, notification, Radio, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { callCheckOutCOD, callCheckOutZaloPay } from "../../../services/api";
 
 const Payment = () => {
-    const dispatch = useDispatch();
-    const cartItems = useSelector((state) => state.cart.items);
+    const navigate = useNavigate();
 
+    // Redux
+    const cartItems = useSelector((state) => state.cart.items);
+    const user = useSelector((state) => state.account.user);
+    const isAuthenticated = useSelector(
+        (state) => state.account.isAuthenticated
+    );
+
+    // React
+    const [value, setValue] = useState(1);
+    const [payment_method, setPaymentMethod] = useState(
+        "Thanh toán khi nhận hàng (COD)"
+    );
+
+    // Functions
     // Hàm tính tổng tiền
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => {
@@ -17,24 +31,79 @@ const Payment = () => {
         }, 0);
     };
 
-    const [value, setValue] = useState(1);
-    const onFinish = (values) => {
-        console.log("Success:", values);
+    const onFinish = async (values) => {
+        const totalPrice = calculateTotal();
+        const { email, fullname, phone, address, description } = values;
+
+        if (value === 1) {
+            const res = await callCheckOutCOD(
+                user.user_id,
+                cartItems,
+                totalPrice,
+                payment_method,
+                fullname,
+                email,
+                phone,
+                address,
+                description
+            );
+
+            if (res?.data?.orderId) {
+                message.success("Đặt hàng thành công!!!");
+                navigate("/thanh-toan/thanh-cong");
+            } else {
+                notification.error({
+                    message: "Có lỗi xảy ra",
+                    description: res.data.message,
+                    duration: 5,
+                });
+            }
+        } else {
+            const res = await callCheckOutZaloPay(
+                user.user_id,
+                cartItems,
+                totalPrice,
+                payment_method,
+                fullname,
+                email,
+                phone,
+                address,
+                description
+            );
+
+            if (res?.data) {
+                window.location.href = res.data.zpt_url.order_url;
+            } else {
+                notification.error({
+                    message: "Có lỗi xảy ra",
+                    description: res.data.message,
+                    duration: 5,
+                });
+            }
+        }
     };
+
     const onChange = (e) => {
-        console.log("radio checked", e.target.value);
         setValue(e.target.value);
+        if (e.target.value === 1) {
+            setPaymentMethod("Thanh toán khi nhận hàng (COD)");
+        } else {
+            setPaymentMethod(" Thanh toán bằng ZALO PAY");
+        }
     };
     return (
         <div className="payment-page">
             <Helmet>
-                <title>Thanh toán đơn hàng</title>
+                <title>Thanh toán đơn đặt hàng</title>
             </Helmet>
             <div className="container ">
                 <Form
                     layout={"vertical"}
                     initialValues={{
-                        remember: true,
+                        email: user && user?.email,
+                        fullname: user && user?.name,
+                        phone: user && user?.phone,
+                        address: user && user?.address,
                     }}
                     onFinish={onFinish}
                     autoComplete="off"
@@ -66,7 +135,7 @@ const Payment = () => {
                                             </div>
                                         </div>
                                         <div className="section__content">
-                                            <Form.Item
+                                            {/* <Form.Item
                                                 label="Địa chỉ của bạn"
                                                 style={{ fontWeight: "bold" }}
                                                 name="diachi_sanco"
@@ -81,7 +150,7 @@ const Payment = () => {
                                                         Sample
                                                     </Select.Option>
                                                 </Select>
-                                            </Form.Item>
+                                            </Form.Item> */}
                                             <Form.Item
                                                 label="Email"
                                                 style={{ fontWeight: "bold" }}
@@ -92,11 +161,20 @@ const Payment = () => {
                                                         message:
                                                             "Vui lòng nhập email",
                                                     },
+                                                    {
+                                                        type: "email",
+                                                        message:
+                                                            "Vui lòng nhập đúng định dạng email",
+                                                    },
                                                 ]}
                                             >
                                                 <Input
-                                                    placeholder="Nhập số điện thoại"
-                                                    disabled
+                                                    placeholder="Nhập email"
+                                                    disabled={
+                                                        isAuthenticated === true
+                                                            ? true
+                                                            : false
+                                                    }
                                                 />
                                             </Form.Item>
                                             <Form.Item
@@ -123,6 +201,11 @@ const Payment = () => {
                                                         message:
                                                             "Vui lòng nhập số điện thoại!",
                                                     },
+                                                    {
+                                                        type: "phone",
+                                                        message:
+                                                            "Vui lòng nhập đúng định dạng số điện thoại",
+                                                    },
                                                 ]}
                                             >
                                                 <Input placeholder="Nhập số điện thoại" />
@@ -144,7 +227,7 @@ const Payment = () => {
                                             <Form.Item
                                                 style={{ fontWeight: "bold" }}
                                                 label="Nội dung"
-                                                name="content"
+                                                name="description"
                                                 rules={[
                                                     {
                                                         required: false,
@@ -385,14 +468,16 @@ const Payment = () => {
                                         </table>
                                     </div>
                                     <div className="order-summary__nav field__input-btn-wrapper hide-on-mobile layout-flex--row-reverse">
-                                        <button
-                                            type="submit"
-                                            className="btn btn-checkout spinner"
+                                        <Button
+                                            htmlType="submit"
+                                            className="btn btn-checkout"
+                                            style={{
+                                                width: "100px",
+                                                height: "40px",
+                                            }}
                                         >
-                                            <span className="spinner-label">
-                                                ĐẶT HÀNG
-                                            </span>
-                                        </button>
+                                            ĐẶT HÀNG
+                                        </Button>
 
                                         <NavLink
                                             to={"/gio-hang"}

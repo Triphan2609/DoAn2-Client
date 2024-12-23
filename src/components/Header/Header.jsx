@@ -47,6 +47,7 @@ const Header = () => {
         (state) => state.account.isAuthenticated
     );
     const isAdmin = useSelector((state) => state.account?.user?.role);
+    const cartItems = useSelector((state) => state.cart.items);
 
     // Fetch API
     useEffect(() => {
@@ -208,8 +209,14 @@ const Header = () => {
                                 aria-label="Tìm kiếm"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    dispatch(doGetSearchQuery(searchQuery));
-                                    navigate("/tim-kiem");
+                                    if (searchQuery) {
+                                        dispatch(doGetSearchQuery(searchQuery));
+                                        navigate("/tim-kiem");
+                                    } else {
+                                        message.error(
+                                            "Vui lòng nhập từ khóa tìm kiếm"
+                                        );
+                                    }
                                 }}
                             >
                                 <svg
@@ -274,7 +281,10 @@ const Header = () => {
                                                       <div className="img">
                                                           <img
                                                               src={
-                                                                  product.image_url
+                                                                  "/public/" +
+                                                                  JSON.parse(
+                                                                      product.image_url
+                                                                  )[0]
                                                               }
                                                               alt={product.name}
                                                           />
@@ -462,7 +472,9 @@ const Header = () => {
                                     ></path>
                                 </g>
                             </svg>
-                            <span className="count_item_pr">0</span>
+                            <span className="count_item_pr">
+                                {cartItems && cartItems?.length}
+                            </span>
                             <span className="acc-text">Giỏ hàng</span>
                         </a>
                     </div>
