@@ -19,8 +19,6 @@ import { callDeleteCategory, callFetchCategory } from "../../../services/api";
 import Highlighter from "react-highlight-words";
 import ModalCreateCategory from "../Modal/ModalCreateCategory";
 import ModalUpdateCategory from "../Modal/ModalUpdateCategory";
-// import ModalCreateCategory from "../Modal/ModalCreateCategory";
-// import ModalUpdateCategory from "../Modal/ModalUpdateCategory";
 
 const DrawerCategories = ({
     sizeCategories,
@@ -34,6 +32,8 @@ const DrawerCategories = ({
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [filteredInfo, setFilteredInfo] = useState({});
+    const [sortedInfo, setSortedInfo] = useState({});
 
     const fetchAllCategories = async () => {
         const res = await callFetchCategory();
@@ -198,9 +198,25 @@ const DrawerCategories = ({
         setOpenCreate(false);
     };
 
+    const clearFilters = () => {
+        setFilteredInfo({});
+        setSearchText(""); // Xóa tìm kiếm
+    };
+
+    const clearAll = () => {
+        setFilteredInfo({});
+        setSortedInfo({});
+        setSearchText(""); // Xóa tìm kiếm
+    };
+
+    const handleChange = (pagination, filters, sorter) => {
+        setFilteredInfo(filters); // Lưu thông tin bộ lọc hiện tại
+        setSortedInfo(sorter); // Lưu thông tin sắp xếp hiện tại
+    };
+
     const columns = [
         {
-            title: "Category ID",
+            title: "Danh mục sản phẩm ID",
             dataIndex: "category_id",
             key: "category_id",
             width: "20%",
@@ -209,28 +225,25 @@ const DrawerCategories = ({
             title: "Name",
             dataIndex: "name",
             key: "name",
-            width: "20%",
+            filteredValue: filteredInfo.name || null,
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
             ...getColumnSearchProps("name"),
-            sorter: (a, b) => a.name.length - b.name.length,
-            sortDirections: ["descend", "ascend"],
         },
         {
-            title: "Animal ID",
-            dataIndex: "animal_id",
-            key: "animal_id",
-            width: "10%",
-            ...getColumnSearchProps("animal_id"),
-            sorter: (a, b) => {
-                // So sánh trực tiếp giá trị chuỗi
-                if (a.animal_id < b.animal_id) return -1;
-                if (a.animal_id > b.animal_id) return 1;
-                return 0;
-            },
-            sortDirections: ["descend", "ascend"],
+            title: "Danh mục sản phẩm ID",
+            dataIndex: "category_id",
+            key: "category_id",
+            width: "20%",
+            filteredValue: filteredInfo?.category_id || null, // Đồng bộ hóa bộ lọc
+            sorter: (a, b) => a.category_id.localeCompare(b.category_id), // Sắp xếp giá trị chuỗi
+            sortOrder:
+                sortedInfo?.columnKey === "category_id" && sortedInfo.order, // Đồng bộ thứ tự sắp xếp
+            ...getColumnSearchProps("category_id"), // Tìm kiếm
         },
 
         {
-            title: "Action",
+            title: "Hành động",
             key: "action",
             width: "20%",
             render: (_, record) => (
@@ -241,7 +254,7 @@ const DrawerCategories = ({
                         size="small"
                         onClick={() => handleEditCategory(record)} // Gọi hàm chỉnh sửa
                     >
-                        Edit
+                        Chỉnh sửa
                     </Button>
 
                     <Popconfirm
@@ -257,7 +270,7 @@ const DrawerCategories = ({
                             type="danger"
                             size="small"
                         >
-                            Delete
+                            Xoá
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -292,11 +305,20 @@ const DrawerCategories = ({
                     </Space>
                 }
             >
+                <Button className="mt-2 mb-2" onClick={clearFilters}>
+                    Clear filters
+                </Button>
+                <Button className="mt-2 mb-2 mx-2" onClick={clearAll}>
+                    Clear filters and sorters
+                </Button>
                 <Table
                     columns={columns}
                     dataSource={categories}
                     rowKey="category_id"
                     pagination={false}
+                    onChange={handleChange}
+                    filters={filteredInfo} // Thêm thông tin bộ lọc
+                    sorter={sortedInfo} // Thêm thông tin sắp xếp
                 />
                 <ModalCreateCategory
                     openCreate={openCreate}

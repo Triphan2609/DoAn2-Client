@@ -42,6 +42,9 @@ const ManageProduct = () => {
     const [openProductTypes, setOpenProductTypes] = useState(false);
     const [sizeProductTypes, setSizeProductTypes] = useState();
 
+    const [filteredInfo, setFilteredInfo] = useState({});
+    const [sortedInfo, setSortedInfo] = useState({});
+
     const searchInput = useRef(null);
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -274,59 +277,130 @@ const ManageProduct = () => {
             dataIndex: "name",
             key: "name",
             width: "20%",
+            filteredValue: filteredInfo.name || null,
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
             ...getColumnSearchProps("name"),
-            sorter: (a, b) => a.name.length - b.name.length,
-            sortDirections: ["descend", "ascend"],
         },
         {
-            title: "Price",
+            title: "Giá sản phẩm",
             dataIndex: "price",
             key: "price",
             width: "10%",
-            ...getColumnSearchProps("price"),
-            sorter: (a, b) => a.price - b.price,
-            sortDirections: ["descend", "ascend"],
+            filteredValue: filteredInfo?.price || null, // Đồng bộ hóa bộ lọc
+            sorter: (a, b) => a.price - b.price, // Sắp xếp theo giá trị số
+            sortOrder: sortedInfo?.columnKey === "price" && sortedInfo.order, // Đồng bộ hóa thứ tự sắp xếp
             render: (text) => {
                 // Định dạng số theo kiểu tiền tệ Việt Nam (VND)
                 return new Intl.NumberFormat("vi-VN", {
                     style: "currency",
                     currency: "VND",
-                }).format(text);
+                }).format(text || 0); // Xử lý trường hợp giá trị null
             },
         },
         {
-            title: "Quantity",
+            title: "Số lượng",
             dataIndex: "quantity",
             key: "quantity",
-            width: "5%",
-
-            sorter: (a, b) => a.quantity - b.quantity,
-            sortDirections: ["descend", "ascend"],
-            ...getColumnSearchProps("quantity"),
+            width: "10%",
+            sorter: (a, b) => a.quantity - b.quantity, // Sắp xếp theo số lượng
+            sortOrder: sortedInfo?.columnKey === "quantity" && sortedInfo.order, // Đồng bộ trạng thái sắp xếp
+            filteredValue: filteredInfo?.quantity || null, // Đồng bộ trạng thái bộ lọc
+            filterDropdown: ({
+                setSelectedKeys,
+                selectedKeys,
+                confirm,
+                clearFilters,
+            }) => (
+                <div
+                    style={{
+                        padding: 8,
+                    }}
+                    onKeyDown={(e) => e.stopPropagation()}
+                >
+                    <Input
+                        placeholder="Search Số lượng"
+                        value={selectedKeys[0]}
+                        onChange={(e) =>
+                            setSelectedKeys(
+                                e.target.value ? [e.target.value] : []
+                            )
+                        }
+                        onPressEnter={confirm}
+                        style={{
+                            marginBottom: 8,
+                            display: "block",
+                        }}
+                    />
+                    <Space>
+                        <Button
+                            type="primary"
+                            onClick={confirm}
+                            size="small"
+                            style={{
+                                width: 90,
+                            }}
+                        >
+                            Search
+                        </Button>
+                        <Button
+                            onClick={clearFilters}
+                            size="small"
+                            style={{
+                                width: 90,
+                            }}
+                        >
+                            Reset
+                        </Button>
+                    </Space>
+                </div>
+            ), // Bộ lọc tìm kiếm cho số lượng
+            render: (text) => (
+                <span
+                    style={{
+                        fontWeight: "bold",
+                        color: text > 10 ? "green" : "red",
+                    }}
+                >
+                    {text}
+                </span>
+            ), // Định dạng hiển thị số lượng
         },
+
         {
-            title: "Category",
+            title: "Danh mục sản phẩm",
             dataIndex: "category_name",
             key: "category_name",
-            width: "10%",
-            ...getColumnSearchProps("category_name"),
+            width: "15%", // Tăng chiều rộng nếu cần
+            filteredValue: filteredInfo?.category_name || null, // Đồng bộ bộ lọc
+            sortOrder:
+                sortedInfo?.columnKey === "category_name" && sortedInfo.order, // Đồng bộ thứ tự sắp xếp
+            ...getColumnSearchProps("category_name"), // Tìm kiếm
         },
         {
-            title: "Brand",
+            title: "Thương hiệu",
             dataIndex: "brand_name",
             key: "brand_name",
             width: "10%",
+            filteredValue: filteredInfo?.brand_name || null,
+            sortOrder:
+                sortedInfo?.columnKey === "brand_name" && sortedInfo.order,
             ...getColumnSearchProps("brand_name"),
         },
         {
-            title: "Product Type",
+            title: "Loại sản phẩm",
             dataIndex: "product_type_name",
             key: "product_type_name",
             width: "10%",
+            filteredValue: filteredInfo?.product_type_name || null,
+            sortOrder:
+                sortedInfo?.columnKey === "product_type_name" &&
+                sortedInfo.order,
             ...getColumnSearchProps("product_type_name"),
         },
+
         {
-            title: "Action",
+            title: "Hành động",
             key: "action",
             width: "10%",
             render: (_, record) => (
@@ -337,7 +411,7 @@ const ManageProduct = () => {
                         type="primary"
                         size="small"
                     >
-                        Edit
+                        Chỉnh sửa
                     </Button>
 
                     <Popconfirm
@@ -351,7 +425,7 @@ const ManageProduct = () => {
                             type="danger"
                             size="small"
                         >
-                            Delete
+                            Xoá
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -360,8 +434,18 @@ const ManageProduct = () => {
     ];
 
     // Cập nhật trang khi thay đổi
-    const handleTableChange = (pagination) => {
+    const clearFilters = () => {
+        setFilteredInfo({});
+    };
+
+    const clearAll = () => {
+        setFilteredInfo({});
+        setSortedInfo({});
+    };
+    const handleTableChange = (pagination, filters, sorter) => {
         setPage(pagination.current);
+        setFilteredInfo(filters); // Lưu thông tin bộ lọc hiện tại
+        setSortedInfo(sorter); // Lưu thông tin sắp xếp hiện tại
     };
 
     return (
@@ -393,7 +477,7 @@ const ManageProduct = () => {
                         size="small"
                         className="mb-3 mx-2"
                     >
-                        Brands
+                        Thương hiệu
                     </Button>
                     <Button
                         icon={<AppstoreOutlined />}
@@ -401,7 +485,7 @@ const ManageProduct = () => {
                         size="small"
                         className="mb-3"
                     >
-                        Categories
+                        Danh mục sản phẩm
                     </Button>
                     <Button
                         icon={<AppstoreOutlined />}
@@ -409,8 +493,14 @@ const ManageProduct = () => {
                         size="small"
                         className="mb-3 mx-2"
                     >
-                        Product Types
+                        Loại sản phẩm
                     </Button>
+                    <div className="mb-3" style={{ float: "right" }}>
+                        <Button onClick={clearFilters}>Xoá bộ lọc</Button>
+                        <Button onClick={clearAll} className="mx-2">
+                            Xoá bộ lọc và sắp xếp
+                        </Button>
+                    </div>
                     <Table
                         columns={columns}
                         dataSource={data}

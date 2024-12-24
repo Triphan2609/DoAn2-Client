@@ -27,6 +27,8 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [selectedBrand, setSelectedBrand] = useState(null);
+    const [filteredInfo, setFilteredInfo] = useState({});
+    const [sortedInfo, setSortedInfo] = useState({});
 
     const fetchAllBrands = async () => {
         const res = await callFetchBrand();
@@ -194,7 +196,7 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
 
     const columns = [
         {
-            title: "Brands",
+            title: "Thương hiệu",
             dataIndex: "brand_id",
             key: "brand_id",
             width: "20%",
@@ -203,13 +205,13 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
             title: "Name",
             dataIndex: "name",
             key: "name",
-            width: "20%",
+            filteredValue: filteredInfo.name || null,
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
             ...getColumnSearchProps("name"),
-            sorter: (a, b) => a.name.length - b.name.length,
-            sortDirections: ["descend", "ascend"],
         },
         {
-            title: "Action",
+            title: "Hành động",
             key: "action",
             width: "20%",
             render: (_, record) => (
@@ -220,7 +222,7 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
                         size="small"
                         onClick={() => handleEditBrand(record)} // Gọi hàm chỉnh sửa
                     >
-                        Edit
+                        Chỉnh sửa
                     </Button>
 
                     <Popconfirm
@@ -234,13 +236,29 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
                             type="danger"
                             size="small"
                         >
-                            Delete
+                            Xoá
                         </Button>
                     </Popconfirm>
                 </Space>
             ),
         },
     ];
+
+    const clearFilters = () => {
+        setFilteredInfo({});
+        setSearchText(""); // Xóa tìm kiếm
+    };
+
+    const clearAll = () => {
+        setFilteredInfo({});
+        setSortedInfo({});
+        setSearchText(""); // Xóa tìm kiếm
+    };
+
+    const handleChange = (pagination, filters, sorter) => {
+        setFilteredInfo(filters); // Lưu thông tin bộ lọc hiện tại
+        setSortedInfo(sorter); // Lưu thông tin sắp xếp hiện tại
+    };
 
     return (
         <>
@@ -269,11 +287,20 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
                     </Space>
                 }
             >
+                <Button className="mt-2 mb-2" onClick={clearFilters}>
+                    Clear filters
+                </Button>
+                <Button className="mt-2 mb-2 mx-2" onClick={clearAll}>
+                    Clear filters and sorters
+                </Button>
                 <Table
                     columns={columns}
                     dataSource={brands}
                     rowKey="key"
                     pagination={false}
+                    onChange={handleChange}
+                    filters={filteredInfo} // Thêm thông tin bộ lọc
+                    sorter={sortedInfo} // Thêm thông tin sắp xếp
                 />
                 <ModalCreateBrand
                     openCreate={openCreate}

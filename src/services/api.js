@@ -344,6 +344,22 @@ export const callFetchAllOrders = (page, limit) => {
     return axios.get("/order/all", { params: { page, limit } });
 };
 
+export const callFetchAllProductByOrderId = (orderId) => {
+    return axios.get(`/order/getAllProductsByOrderId/${orderId}`);
+};
+
 export const callFetchAllOrdersByUserId = (userId) => {
     return axios.get("/order/" + userId);
+};
+
+export const callUpdateOrderStatus = (orderId, status) => {
+    return axios.put(`/order/updateStatus/${orderId}`, { status });
+};
+
+export const callFetchOrderDetails = (order_id) => {
+    return axios.get(`/order/details/${order_id}`);
+};
+
+export const callDeleteOrder = (order_id) => {
+    return axios.delete(`/order/deleteOrder/${order_id}`);
 };

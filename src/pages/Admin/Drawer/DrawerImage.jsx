@@ -103,7 +103,7 @@ const DrawerImage = ({ size, onClose, open, product, fetchAllProducts }) => {
             ),
         },
         {
-            title: "Action",
+            title: "Hành động",
             key: "action",
             width: "20%",
             render: (_, record) => (
@@ -117,7 +117,7 @@ const DrawerImage = ({ size, onClose, open, product, fetchAllProducts }) => {
                         size="small"
                         onClick={() => handleUpdateSingleImage(record)}
                     >
-                        Edit
+                        Chỉnh sửa
                     </Button>
 
                     <Popconfirm
@@ -131,7 +131,7 @@ const DrawerImage = ({ size, onClose, open, product, fetchAllProducts }) => {
                             type="danger"
                             size="small"
                         >
-                            Delete
+                            Xoá
                         </Button>
                     </Popconfirm>
                 </Space>

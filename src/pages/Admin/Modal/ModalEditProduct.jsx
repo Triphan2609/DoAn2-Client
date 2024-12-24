@@ -90,7 +90,7 @@ const EditProductModal = ({
 
     return (
         <Modal
-            title="Edit Product"
+            title="Chỉnh sửa Product"
             open={openEdit}
             onCancel={onCloseEdit}
             footer={null}
@@ -110,7 +110,7 @@ const EditProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Price"
+                    label="Giá sản phẩm"
                     name="price"
                     style={{
                         display: "inline-block",
@@ -127,7 +127,7 @@ const EditProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Quantity"
+                    label="Số lượng"
                     name="quantity"
                     style={{
                         display: "inline-block",
@@ -145,7 +145,7 @@ const EditProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Category"
+                    label="Danh mục sản phẩm"
                     name="category_id"
                     rules={[
                         { required: true, message: "Vui lòng chọn danh mục!" },
@@ -169,7 +169,7 @@ const EditProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Product Type"
+                    label="Loại sản phẩm"
                     name="product_type_id"
                     rules={[
                         {
@@ -196,7 +196,7 @@ const EditProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Brand"
+                    label="Thương hiệu"
                     name="brand_id"
                     rules={[
                         {
@@ -222,7 +222,7 @@ const EditProductModal = ({
                     </Select>
                 </Form.Item>
 
-                <Form.Item label="Description" name="description">
+                <Form.Item label="Ghi chú" name="description">
                     <ReactQuill
                         theme="snow"
                         value={description}

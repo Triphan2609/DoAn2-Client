@@ -22,8 +22,6 @@ import {
 import Highlighter from "react-highlight-words";
 import ModalCreateProductType from "../Modal/ModalCreateProductType";
 import ModalUpdateProductType from "../Modal/ModalUpdateProductType";
-// import ModalCreateProductType from "../Modal/ModalCreateProductType";
-// import ModalUpdateProductType from "../Modal/ModalUpdateProductType";
 
 const DrawerProductTypes = ({
     sizeProductTypes,
@@ -37,6 +35,9 @@ const DrawerProductTypes = ({
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [selectedProductType, setSelectedProductType] = useState(null);
+
+    const [filteredInfo, setFilteredInfo] = useState({});
+    const [sortedInfo, setSortedInfo] = useState({});
 
     const fetchAllProductTypes = async () => {
         const res = await callFetchAllProductsType();
@@ -167,7 +168,7 @@ const DrawerProductTypes = ({
     };
 
     const handleEditProductType = (record) => {
-        setSelectedProductType(record); // Lưu Product Type cần chỉnh sửa
+        setSelectedProductType(record); // Lưu Loại sản phẩm cần chỉnh sửa
         setOpenEdit(true);
     };
 
@@ -202,6 +203,22 @@ const DrawerProductTypes = ({
         setOpenCreate(false);
     };
 
+    const clearFilters = () => {
+        setFilteredInfo({});
+        setSearchText(""); // Xóa tìm kiếm
+    };
+
+    const clearAll = () => {
+        setFilteredInfo({});
+        setSortedInfo({});
+        setSearchText(""); // Xóa tìm kiếm
+    };
+
+    const handleChange = (pagination, filters, sorter) => {
+        setFilteredInfo(filters); // Lưu thông tin bộ lọc hiện tại
+        setSortedInfo(sorter); // Lưu thông tin sắp xếp hiện tại
+    };
+
     const columns = [
         {
             title: "Product Type ID",
@@ -213,28 +230,25 @@ const DrawerProductTypes = ({
             title: "Name",
             dataIndex: "name",
             key: "name",
-            width: "20%",
+            filteredValue: filteredInfo.name || null,
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
             ...getColumnSearchProps("name"),
-            sorter: (a, b) => a.name.length - b.name.length,
-            sortDirections: ["descend", "ascend"],
         },
         {
-            title: "Category ID",
+            title: "Danh mục sản phẩm ID",
             dataIndex: "category_id",
             key: "category_id",
-            width: "10%",
-            ...getColumnSearchProps("category_id"),
-            sorter: (a, b) => {
-                // So sánh trực tiếp giá trị chuỗi
-                if (a.category_id < b.category_id) return -1;
-                if (a.category_id > b.category_id) return 1;
-                return 0;
-            },
-            sortDirections: ["descend", "ascend"],
+            width: "20%",
+            filteredValue: filteredInfo?.category_id || null, // Đồng bộ hóa bộ lọc
+            sorter: (a, b) => a.category_id.localeCompare(b.category_id), // Sắp xếp giá trị chuỗi
+            sortOrder:
+                sortedInfo?.columnKey === "category_id" && sortedInfo.order, // Đồng bộ thứ tự sắp xếp
+            ...getColumnSearchProps("category_id"), // Tìm kiếm
         },
 
         {
-            title: "Action",
+            title: "Hành động",
             key: "action",
             width: "20%",
             render: (_, record) => (
@@ -245,7 +259,7 @@ const DrawerProductTypes = ({
                         size="small"
                         onClick={() => handleEditProductType(record)} // Gọi hàm chỉnh sửa
                     >
-                        Edit
+                        Chỉnh sửa
                     </Button>
 
                     <Popconfirm
@@ -261,7 +275,7 @@ const DrawerProductTypes = ({
                             type="danger"
                             size="small"
                         >
-                            Delete
+                            Xoá
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -296,11 +310,20 @@ const DrawerProductTypes = ({
                     </Space>
                 }
             >
+                <Button className="mt-2 mb-2" onClick={clearFilters}>
+                    Clear filters
+                </Button>
+                <Button className="mt-2 mb-2 mx-2" onClick={clearAll}>
+                    Clear filters and sorters
+                </Button>
                 <Table
                     columns={columns}
                     dataSource={productTypes}
                     rowKey="product_type_id"
                     pagination={false}
+                    onChange={handleChange}
+                    filters={filteredInfo} // Thêm thông tin bộ lọc
+                    sorter={sortedInfo} // Thêm thông tin sắp xếp
                 />
                 <ModalCreateProductType
                     openCreate={openCreate}

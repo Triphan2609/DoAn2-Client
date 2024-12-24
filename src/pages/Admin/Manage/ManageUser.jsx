@@ -24,6 +24,10 @@ const ManageUser = () => {
     const [openEdit, setOpenEdit] = useState(false);
     const [openCreate, setOpenCreate] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
+
+    const [filteredInfo, setFilteredInfo] = useState({});
+    const [sortedInfo, setSortedInfo] = useState({});
+
     const searchInput = useRef(null);
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -193,47 +197,57 @@ const ManageUser = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
-            width: "20%",
+            filteredValue: filteredInfo.name || null,
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
             ...getColumnSearchProps("name"),
-            sorter: (a, b) => a.name.length - b.name.length,
-            sortDirections: ["descend", "ascend"],
         },
         {
             title: "Email",
             dataIndex: "email",
             key: "email",
             width: "20%",
-            ...getColumnSearchProps("email"),
+            filteredValue: filteredInfo?.email || null, // Đồng bộ bộ lọc
+            sorter: (a, b) => a.email.localeCompare(b.email), // Sắp xếp số điện thoại
+            sortOrder: sortedInfo?.columnKey === "email" && sortedInfo.order, // Thứ tự sắp xếp
+            ...getColumnSearchProps("email"), // Tìm kiếm
         },
         {
-            title: "Phone",
+            title: "Số điện thoại",
             dataIndex: "phone",
             key: "phone",
             width: "10%",
-            ...getColumnSearchProps("phone"),
+            filteredValue: filteredInfo?.phone || null, // Đồng bộ bộ lọc
+            sorter: (a, b) => a.phone.localeCompare(b.phone), // Sắp xếp số điện thoại
+            sortOrder: sortedInfo?.columnKey === "phone" && sortedInfo.order, // Thứ tự sắp xếp
+            ...getColumnSearchProps("phone"), // Tìm kiếm
         },
         {
-            title: "Address",
+            title: "Địa chỉ",
             dataIndex: "address",
             key: "address",
-            ...getColumnSearchProps("address"),
+            width: "10%",
+            filteredValue: filteredInfo?.address || null, // Đồng bộ bộ lọc
+            sorter: (a, b) => a.address.localeCompare(b.address), // Sắp xếp số điện thoại
+            sortOrder: sortedInfo?.columnKey === "address" && sortedInfo.order, // Thứ tự sắp xếp
+            ...getColumnSearchProps("address"), // Tìm kiếm
         },
         {
-            title: "Role",
+            title: "Vai trò",
             dataIndex: "role",
             key: "role",
             width: "10%",
             ...getColumnSearchProps("role"),
         },
         {
-            title: "Method",
+            title: "Phương thức đăng nhập",
             dataIndex: "method",
             key: "method",
-            width: "10%",
+            width: "15%",
             ...getColumnSearchProps("method"),
         },
         {
-            title: "Action",
+            title: "Hành động",
             key: "action",
             width: "10%",
             render: (_, record) => (
@@ -244,7 +258,7 @@ const ManageUser = () => {
                         type="primary"
                         size="small"
                     >
-                        Edit
+                        Chỉnh sửa
                     </Button>
 
                     <Popconfirm
@@ -258,7 +272,7 @@ const ManageUser = () => {
                             type="danger"
                             size="small"
                         >
-                            Delete
+                            Xoá
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -267,10 +281,20 @@ const ManageUser = () => {
     ];
 
     // Cập nhật trang khi thay đổi
-    const handleTableChange = (pagination) => {
-        setPage(pagination.current);
+
+    const clearFilters = () => {
+        setFilteredInfo({});
     };
 
+    const clearAll = () => {
+        setFilteredInfo({});
+        setSortedInfo({});
+    };
+    const handleTableChange = (pagination, filters, sorter) => {
+        setPage(pagination.current);
+        setFilteredInfo(filters); // Lưu thông tin bộ lọc hiện tại
+        setSortedInfo(sorter); // Lưu thông tin sắp xếp hiện tại
+    };
     return (
         <>
             <Content
@@ -295,6 +319,12 @@ const ManageUser = () => {
                         >
                             Create User
                         </Button>
+                        <div className="mb-3">
+                            <Button onClick={clearFilters}>Xoá bộ lọc</Button>
+                            <Button onClick={clearAll} className="mx-2">
+                                Xoá bộ lọc và sắp xếp
+                            </Button>
+                        </div>
                         <Table
                             columns={columns}
                             dataSource={data}
@@ -305,7 +335,7 @@ const ManageUser = () => {
                                 pageSize: LIMIT,
                                 showSizeChanger: false,
                             }}
-                            onChange={handleTableChange} // Cập nhật trang khi thay đổi
+                            onChange={handleTableChange} // Xử lý thay đổi sort, filter
                             rowKey="key"
                         />
                     </div>

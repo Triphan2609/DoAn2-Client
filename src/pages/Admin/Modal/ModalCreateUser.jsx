@@ -67,16 +67,16 @@ const CreateUserModal = ({ openCreate, onCloseCreate, fetchAllUsers }) => {
                     <Input.Password />
                 </Form.Item>
 
-                <Form.Item label="Phone" name="phone">
+                <Form.Item label="Số điện thoại" name="phone">
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="Address" name="address">
+                <Form.Item label="Địa chỉ" name="address">
                     <Input.TextArea />
                 </Form.Item>
 
                 <Form.Item
-                    label="Role"
+                    label="Vai trò"
                     name="role"
                     rules={[
                         { required: true, message: "Vui lòng chọn vai trò!" },

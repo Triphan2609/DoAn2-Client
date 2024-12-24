@@ -34,7 +34,7 @@ const EditUserModal = ({ openEdit, onCloseEdit, user, fetchAllUsers }) => {
 
     return (
         <Modal
-            title="Edit User"
+            title="Chỉnh sửa User"
             open={openEdit}
             onCancel={onCloseEdit}
             footer={null}
@@ -65,11 +65,11 @@ const EditUserModal = ({ openEdit, onCloseEdit, user, fetchAllUsers }) => {
                     <Input disabled />
                 </Form.Item>
 
-                <Form.Item label="Phone" name="phone">
+                <Form.Item label="Số điện thoại" name="phone">
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="Address" name="address">
+                <Form.Item label="Địa chỉ" name="address">
                     <Input.TextArea />
                 </Form.Item>
 

@@ -115,7 +115,7 @@ const CreateProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Price"
+                    label="Giá sản phẩm"
                     name="price"
                     style={{
                         display: "inline-block",
@@ -138,7 +138,7 @@ const CreateProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Quantity"
+                    label="Số lượng"
                     name="quantity"
                     style={{
                         display: "inline-block",
@@ -162,7 +162,7 @@ const CreateProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Category"
+                    label="Danh mục sản phẩm"
                     name="category_id"
                     rules={[
                         { required: true, message: "Vui lòng chọn danh mục!" },
@@ -188,7 +188,7 @@ const CreateProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Product Type"
+                    label="Loại sản phẩm"
                     name="product_type_id"
                     rules={[
                         {
@@ -217,7 +217,7 @@ const CreateProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Brand"
+                    label="Thương hiệu"
                     name="brand_id"
                     rules={[
                         {
@@ -243,7 +243,7 @@ const CreateProductModal = ({
                 </Form.Item>
 
                 <Form.Item
-                    label="Description"
+                    label="Ghi chú"
                     name="description"
                     rules={[
                         {
