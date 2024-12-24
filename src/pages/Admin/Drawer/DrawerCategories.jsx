@@ -15,29 +15,36 @@ import {
     SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
-import { callDeleteBrand, callFetchBrand } from "../../../services/api";
+import { callDeleteCategory, callFetchCategory } from "../../../services/api";
 import Highlighter from "react-highlight-words";
-import ModalCreateBrand from "../Modal/ModalCreateBrand";
-import ModalUpdateBrand from "../Modal/ModalUpdateBrand";
-const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
-    const [brands, setBrands] = useState();
+import ModalCreateCategory from "../Modal/ModalCreateCategory";
+import ModalUpdateCategory from "../Modal/ModalUpdateCategory";
+// import ModalCreateCategory from "../Modal/ModalCreateCategory";
+// import ModalUpdateCategory from "../Modal/ModalUpdateCategory";
+
+const DrawerCategories = ({
+    sizeCategories,
+    onCloseCategories,
+    openCategories,
+}) => {
+    const [categories, setCategories] = useState();
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef(null);
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-    const [selectedBrand, setSelectedBrand] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const fetchAllBrands = async () => {
-        const res = await callFetchBrand();
+    const fetchAllCategories = async () => {
+        const res = await callFetchCategory();
         if (res && res.data) {
-            setBrands(res.data);
+            setCategories(res.data);
         }
     };
 
     useEffect(() => {
-        fetchAllBrands();
-    }, [openBrands]);
+        fetchAllCategories();
+    }, [openCategories]);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -152,38 +159,37 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
             ),
     });
 
-    const handleCreateBrand = () => {
+    const handleCreateCategory = () => {
         setOpenCreate(true);
     };
 
-    const handleEditBrand = (record) => {
-        setSelectedBrand(record); // Lưu brand cần chỉnh sửa
+    const handleEditCategory = (record) => {
+        setSelectedCategory(record); // Lưu category cần chỉnh sửa
         setOpenEdit(true);
     };
 
     const onCloseEdit = () => {
         setOpenEdit(false);
-        setSelectedBrand(null);
+        setSelectedCategory(null);
     };
 
-    const handleDeleteBrand = async (brand_id) => {
+    const handleDeleteCategory = async (category_id) => {
         try {
-            const res = await callDeleteBrand(brand_id);
+            const res = await callDeleteCategory(category_id);
             if (res?.data?.ec === 1) {
-                message.success("Thương hiệu đã được xóa thành công!");
-                fetchAllBrands(); // Cập nhật lại danh sách thương hiệu
+                message.success("Danh mục đã được xóa thành công!");
+                fetchAllCategories(); // Cập nhật lại danh sách danh mục
             } else {
                 notification.error({
                     message: "Có lỗi xảy ra",
-                    description:
-                        res.data.message || "Không thể xóa thương hiệu",
+                    description: res.data.message || "Không thể xóa danh mục",
                 });
             }
         } catch (error) {
-            console.error("Error deleting brand:", error);
+            console.error("Error deleting category:", error);
             notification.error({
                 message: "Có lỗi xảy ra",
-                description: "Không thể xóa thương hiệu",
+                description: "Không thể xóa danh mục",
             });
         }
     };
@@ -194,9 +200,9 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
 
     const columns = [
         {
-            title: "Brands",
-            dataIndex: "brand_id",
-            key: "brand_id",
+            title: "Category ID",
+            dataIndex: "category_id",
+            key: "category_id",
             width: "20%",
         },
         {
@@ -209,6 +215,21 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
             sortDirections: ["descend", "ascend"],
         },
         {
+            title: "Animal ID",
+            dataIndex: "animal_id",
+            key: "animal_id",
+            width: "10%",
+            ...getColumnSearchProps("animal_id"),
+            sorter: (a, b) => {
+                // So sánh trực tiếp giá trị chuỗi
+                if (a.animal_id < b.animal_id) return -1;
+                if (a.animal_id > b.animal_id) return 1;
+                return 0;
+            },
+            sortDirections: ["descend", "ascend"],
+        },
+
+        {
             title: "Action",
             key: "action",
             width: "20%",
@@ -218,7 +239,7 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
                         icon={<EditOutlined />}
                         type="primary"
                         size="small"
-                        onClick={() => handleEditBrand(record)} // Gọi hàm chỉnh sửa
+                        onClick={() => handleEditCategory(record)} // Gọi hàm chỉnh sửa
                     >
                         Edit
                     </Button>
@@ -227,7 +248,9 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
                         title="Are you sure to delete?"
                         okText="Yes"
                         cancelText="No"
-                        onConfirm={() => handleDeleteBrand(record.brand_id)} // Gọi hàm xóa
+                        onConfirm={() =>
+                            handleDeleteCategory(record.category_id)
+                        } // Gọi hàm xóa
                     >
                         <Button
                             icon={<DeleteOutlined />}
@@ -245,24 +268,24 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
     return (
         <>
             <Drawer
-                title="Danh sách hình ảnh"
+                title="Danh sách danh mục"
                 placement="right"
-                size={sizeBrands}
-                onClose={onCloseBrands}
-                open={openBrands}
+                size={sizeCategories}
+                onClose={onCloseCategories}
+                open={openCategories}
                 extra={
                     <Space>
                         <Button
                             onClick={() => {
-                                handleCreateBrand();
+                                handleCreateCategory();
                             }}
                         >
-                            Thêm thương hiệu
+                            Thêm danh mục
                         </Button>
                         <Button
                             color="danger"
                             variant="solid"
-                            onClick={onCloseBrands}
+                            onClick={onCloseCategories}
                         >
                             Đóng
                         </Button>
@@ -271,24 +294,24 @@ const DrawerBrands = ({ sizeBrands, onCloseBrands, openBrands }) => {
             >
                 <Table
                     columns={columns}
-                    dataSource={brands}
-                    rowKey="key"
+                    dataSource={categories}
+                    rowKey="category_id"
                     pagination={false}
                 />
-                <ModalCreateBrand
+                <ModalCreateCategory
                     openCreate={openCreate}
                     onCloseCreate={onCloseCreate}
-                    fetchAllBrands={fetchAllBrands}
+                    fetchAllCategories={fetchAllCategories}
                 />
-                <ModalUpdateBrand
+                <ModalUpdateCategory
                     openEdit={openEdit}
                     onCloseEdit={onCloseEdit}
-                    brand={selectedBrand}
-                    fetchAllBrands={fetchAllBrands}
+                    category={selectedCategory}
+                    fetchAllCategories={fetchAllCategories}
                 />
             </Drawer>
         </>
     );
 };
 
-export default DrawerBrands;
+export default DrawerCategories;

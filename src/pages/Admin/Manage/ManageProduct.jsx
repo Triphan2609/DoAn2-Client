@@ -1,6 +1,7 @@
 import { message, notification, Popconfirm, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
 import {
+    AppstoreOutlined,
     DeleteOutlined,
     EditOutlined,
     SearchOutlined,
@@ -18,6 +19,8 @@ import CreateProductModal from "../Modal/ModalCreateProduct";
 import EditProductModal from "../Modal/ModalEditProduct";
 import DrawerImage from "../Drawer/DrawerImage";
 import DrawerBrands from "../Drawer/DrawerBrands";
+import DrawerCategories from "../Drawer/DrawerCategories";
+import DrawerProductTypes from "../Drawer/DrawerProductType";
 
 const ManageProduct = () => {
     const LIMIT = 5;
@@ -34,6 +37,10 @@ const ManageProduct = () => {
     const [size, setSize] = useState();
     const [openBrands, setOpenBrands] = useState(false);
     const [sizeBrands, setSizeBrands] = useState();
+    const [openCategories, setOpenCategories] = useState(false);
+    const [sizeCategories, setSizeCategories] = useState();
+    const [openProductTypes, setOpenProductTypes] = useState(false);
+    const [sizeProductTypes, setSizeProductTypes] = useState();
 
     const searchInput = useRef(null);
     const {
@@ -108,12 +115,30 @@ const ManageProduct = () => {
         setOpenBrands(true);
     };
 
+    const showLargeCategories = () => {
+        setSizeCategories("large");
+        setOpenCategories(true);
+    };
+
+    const showLargeProductType = () => {
+        setSizeProductTypes("large");
+        setOpenProductTypes(true);
+    };
+
     const onCloseDrawer = () => {
         setOpen(false);
     };
 
     const onCloseBrands = () => {
         setOpenBrands(false);
+    };
+
+    const onCloseCategories = () => {
+        setOpenCategories(false);
+    };
+
+    const onCloseProductTypes = () => {
+        setOpenProductTypes(false);
     };
 
     const getColumnSearchProps = (dataIndex) => ({
@@ -366,9 +391,25 @@ const ManageProduct = () => {
                         icon={<TagsOutlined />}
                         onClick={() => showLargeBrands()}
                         size="small"
-                        className="mb-3 mx-3"
+                        className="mb-3 mx-2"
                     >
                         Brands
+                    </Button>
+                    <Button
+                        icon={<AppstoreOutlined />}
+                        onClick={() => showLargeCategories()}
+                        size="small"
+                        className="mb-3"
+                    >
+                        Categories
+                    </Button>
+                    <Button
+                        icon={<AppstoreOutlined />}
+                        onClick={() => showLargeProductType()}
+                        size="small"
+                        className="mb-3 mx-2"
+                    >
+                        Product Types
                     </Button>
                     <Table
                         columns={columns}
@@ -407,6 +448,16 @@ const ManageProduct = () => {
                 sizeBrands={sizeBrands}
                 openBrands={openBrands}
                 onCloseBrands={onCloseBrands}
+            />
+            <DrawerCategories
+                sizeCategories={sizeCategories}
+                openCategories={openCategories}
+                onCloseCategories={onCloseCategories}
+            />
+            <DrawerProductTypes
+                sizeProductTypes={sizeProductTypes}
+                openProductTypes={openProductTypes}
+                onCloseProductTypes={onCloseProductTypes}
             />
         </Content>
     );

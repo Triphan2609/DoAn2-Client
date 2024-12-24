@@ -185,6 +185,21 @@ export const callFetchCategoryCat = () => {
     return axios.get("/categories/cat");
 };
 
+export const callCreateCategory = (data) => {
+    return axios.post("/categories/createCategory", data);
+};
+
+export const callUpdateCategory = (category_id, name, animal_id) => {
+    return axios.put(`/categories/updateCategory/${category_id}`, {
+        name,
+        animal_id,
+    });
+};
+
+export const callDeleteCategory = (category_id) => {
+    return axios.delete(`/categories/deleteCategory/${category_id}`);
+};
+
 ///////////////////////
 
 export const callFetchBrand = () => {
@@ -201,6 +216,28 @@ export const callUpdateBrand = (brand_id, name) => {
 
 export const callDeleteBrand = (brand_id) => {
     return axios.delete(`/brands/deleteBrand/${brand_id}`);
+};
+
+///////////////////////
+
+export const callCreateProductType = (data) => {
+    return axios.post("/products/product-type/createProductType", data);
+};
+
+export const callUpdateProductType = (product_type_id, name, category_id) => {
+    return axios.put(
+        `/products/product-type/updateProductType/${product_type_id}`,
+        {
+            name,
+            category_id,
+        }
+    );
+};
+
+export const callDeleteProductType = (product_type_id) => {
+    return axios.delete(
+        `/products/product-type/deleteProductType/${product_type_id}`
+    );
 };
 
 ///////////////////////

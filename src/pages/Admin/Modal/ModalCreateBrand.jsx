@@ -36,7 +36,6 @@ const ModalCreateBrand = ({ openCreate, onCloseCreate, fetchAllBrands }) => {
             setLoading(false);
         }
     };
-    console.log(openCreate);
 
     return (
         <Modal

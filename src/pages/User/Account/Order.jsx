@@ -82,12 +82,21 @@ const Order = () => {
                                                                                 index
                                                                             }
                                                                         >
-                                                                            <td>
-                                                                                {
-                                                                                    item.order_id
-                                                                                }
+                                                                            <td
+                                                                                style={{
+                                                                                    textAlign:
+                                                                                        "center",
+                                                                                }}
+                                                                            >
+                                                                                {index +
+                                                                                    1}
                                                                             </td>
-                                                                            <td>
+                                                                            <td
+                                                                                style={{
+                                                                                    textAlign:
+                                                                                        "center",
+                                                                                }}
+                                                                            >
                                                                                 {new Intl.DateTimeFormat(
                                                                                     "vi-VN",
                                                                                     {
@@ -107,12 +116,22 @@ const Order = () => {
                                                                                     item.address
                                                                                 }
                                                                             </td>
-                                                                            <td>
+                                                                            <td
+                                                                                style={{
+                                                                                    textAlign:
+                                                                                        "center",
+                                                                                }}
+                                                                            >
                                                                                 {
                                                                                     item.phone
                                                                                 }
                                                                             </td>
-                                                                            <td>
+                                                                            <td
+                                                                                style={{
+                                                                                    textAlign:
+                                                                                        "center",
+                                                                                }}
+                                                                            >
                                                                                 {new Intl.NumberFormat(
                                                                                     "vi-VN",
                                                                                     {

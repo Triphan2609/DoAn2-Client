@@ -11,9 +11,9 @@ import {
 } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { callDeleteImage, callGetAllImages } from "../../../services/api";
-import ModalUpdateSingleImage from "../Modal/ModalUpdateAllImages";
 import ModalUpdateAllImages from "../Modal/ModalUpdateAllImages";
 import ModalAddImages from "../Modal/ModalAddImages";
+import ModalUpdateSingleImage from "../Modal/ModalUpdateSingleImage";
 
 const DrawerImage = ({ size, onClose, open, product, fetchAllProducts }) => {
     // State để lưu danh sách hình ảnh hiển thị
