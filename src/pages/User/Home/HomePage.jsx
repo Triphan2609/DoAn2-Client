@@ -50,11 +50,11 @@ const HomePage = () => {
     };
 
     const fetctProductsByType = async () => {
-        const res1 = await callFetchProductByType("TA002");
+        const res1 = await callFetchProductByType("MEO_HAT");
         setProductsByType1(res1.data);
-        const res2 = await callFetchProductByType("VS002");
+        const res2 = await callFetchProductByType("MEO_CATMEO");
         setProductsByType2(res2.data);
-        const res3 = await callFetchProductByType("PC004");
+        const res3 = await callFetchProductByType("MEO_VITA");
         setProductsByType3(res3.data);
     };
 

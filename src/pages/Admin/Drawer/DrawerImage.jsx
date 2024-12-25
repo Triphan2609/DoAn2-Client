@@ -25,7 +25,7 @@ const DrawerImage = ({ size, onClose, open, product, fetchAllProducts }) => {
 
     // Cập nhật state khi sản phẩm thay đổi
     const fetchAllImages = async () => {
-        const res = await callGetAllImages();
+        const res = await callGetAllImages(product?.product_id);
         setImages(
             res?.data?.map((url, index) => ({
                 key: index, // Dùng index làm key duy nhất
@@ -33,6 +33,8 @@ const DrawerImage = ({ size, onClose, open, product, fetchAllProducts }) => {
             }))
         );
     };
+
+    console.log(images);
 
     useEffect(() => {
         fetchAllImages();

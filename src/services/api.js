@@ -138,8 +138,8 @@ export const callUpdateProduct = async (
     });
 };
 
-export const callGetAllImages = () => {
-    return axios.get(`/products/getAllImages`);
+export const callGetAllImages = (product_id) => {
+    return axios.get(`/products/getAllImages/${product_id}`);
 };
 
 export const callUpdateSingleImage = (formData) => {
@@ -362,4 +362,30 @@ export const callFetchOrderDetails = (order_id) => {
 
 export const callDeleteOrder = (order_id) => {
     return axios.delete(`/order/deleteOrder/${order_id}`);
+};
+
+/////////////////////////
+
+export const callFetchAllStatistics = (period) => {
+    return axios.get("/statistics/revenue", {
+        params: { period },
+    });
+};
+
+export const callFetchProductsByCategory = () => {
+    return axios.get("/statistics/products-by-category");
+};
+
+export const callFetchBestSellingProducts = () => {
+    return axios.get("/statistics/best-selling-products");
+};
+
+export const callFetchUserRegistrationStatistics = (period) => {
+    return axios.get("/statistics/user-registrations", {
+        params: { period },
+    });
+};
+
+export const callFetchRecordsCount = () => {
+    return axios.get("/statistics/records-count");
 };

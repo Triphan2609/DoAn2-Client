@@ -22,7 +22,7 @@ const FindPage = () => {
     };
 
     return (
-        <div className="find-page">
+        <div className="find-page" style={{ background: "#fff" }}>
             <Helmet>
                 <title>Tìm kiếm</title>
             </Helmet>
@@ -45,9 +45,9 @@ const FindPage = () => {
                                             >
                                                 <BlockProducts
                                                     product_id={product.id}
-                                                    image_url={
+                                                    image_url={JSON.parse(
                                                         product.image_url
-                                                    }
+                                                    )}
                                                     name={product.name}
                                                     price={product.price}
                                                     slug={product.slug}

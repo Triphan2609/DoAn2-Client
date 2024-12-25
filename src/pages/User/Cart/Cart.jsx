@@ -298,7 +298,7 @@ const Cart = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="d-lg-none d-xl-none">
+                            {/* <div className="d-lg-none d-xl-none">
                                 <div className="cart-mobile">
                                     <div className="header-cart">
                                         <div className="title-cart clearfix">
@@ -403,7 +403,7 @@ const Cart = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="col-lg-3">
@@ -505,13 +505,6 @@ const Cart = () => {
                                             Không lo về giá
                                         </span>
                                         <p></p>
-                                    </li>
-
-                                    <li>
-                                        <span className="color-grey-dark">
-                                            Miễn phí vận chuyển
-                                        </span>
-                                        <p>cho đơn hàng từ 1.500.000 VNĐ</p>
                                     </li>
                                 </ul>
                                 <ul className="payment">

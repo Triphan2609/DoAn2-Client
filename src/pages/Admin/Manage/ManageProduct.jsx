@@ -23,7 +23,7 @@ import DrawerCategories from "../Drawer/DrawerCategories";
 import DrawerProductTypes from "../Drawer/DrawerProductType";
 
 const ManageProduct = () => {
-    const LIMIT = 5;
+    const LIMIT = 4;
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const [data, setData] = useState([]);

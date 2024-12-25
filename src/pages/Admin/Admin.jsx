@@ -25,6 +25,10 @@ const Admin = () => {
                     style={{
                         background: colorBgContainer,
                         height: "100vh",
+                        position: "fixed", // Cố định sider
+                        left: 0, // Đặt sider ở cạnh trái
+                        top: 0, // Đặt sider ở cạnh trên
+                        bottom: 0, // Đặt sider ở cạnh dưới
                     }}
                 >
                     <div className="logo" style={{ padding: "10px" }}>
@@ -63,7 +67,13 @@ const Admin = () => {
                         </MenuItem>
                     </Menu>
                 </Sider>
-                <Layout>
+
+                <Layout
+                    style={{
+                        marginLeft: 200, // Căn lề bên trái để tránh đè lên Sider
+                        minHeight: "100vh",
+                    }}
+                >
                     <Header
                         style={{
                             padding: 0,
